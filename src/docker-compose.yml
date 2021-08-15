@@ -7,10 +7,10 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
 
-  tasks.api:
-    image: ${DOCKER_REGISTRY-poc}/tasks.api:${PLATFORM:-linux}-${TAG:-latest}
+  issues.api:
+    image: ${DOCKER_REGISTRY-poc}/issues.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
-      dockerfile: Services/Tasks/Tasks.API/Dockerfile
+      dockerfile: Services/Issues/Issues.API/Dockerfile
     depends_on:
       - sqlserver

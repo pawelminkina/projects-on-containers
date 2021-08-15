@@ -1,0 +1,96 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Issues.API.Protos";
+
+service IssueService{
+	rpc GetIssueWithContent(GetIssueWithContentRequest) returns (GetIssueWithContentResponse);
+	rpc GetIssuesForGroup(GetIssuesForGroupRequest) returns (GetIssuesForGroupResponse);
+	rpc GetIssuesForUser(GetIssuesForUserRequest) returns (GetIssuesForUserResponse);
+	rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
+	rpc DeleteIssue(DeleteIssueRequest) returns (DeleteIssueResponse);
+	rpc RenameIssue(RenameIssueRequest) returns (RenameIssueResponse);
+	rpc UpdateIssueContent(UpdateIssueContentRequest) returns (UpdateIssueContentResponse);
+	rpc UpdateIssueStatus(UpdateIssueStatusRequest) returns (UpdateIssueStatusResponse);
+}
+
+message GetIssueWithContentRequest{
+	string issueId = 1;
+}
+
+message GetIssueWithContentResponse{
+	IssueReference issue = 1;
+	IssueContent content = 2;
+}
+
+message GetIssuesForGroupRequest{
+	string groupId = 1;
+}
+
+message GetIssuesForGroupResponse{
+	repeated IssueReference issue = 1;
+}
+
+message GetIssuesForUserRequest{
+	string userId = 1;
+}
+
+message GetIssuesForUserResponse{
+	repeated IssueReference issues = 1;
+}
+
+message CreateIssueRequest{
+	string name = 1;
+	string groupId = 2;
+	string textContent = 3;
+}
+
+message CreateIssueResponse{
+	string id = 1;
+}
+
+message DeleteIssueRequest{
+	string id = 1;
+}
+
+message DeleteIssueResponse {}
+
+message RenameIssueRequest{
+	string id = 1;
+	string newName = 2;
+}
+
+message RenameIssueResponse{}
+
+message UpdateIssueContentRequest{
+	string issueId = 1;
+	string textContent = 2;
+}
+
+message UpdateIssueContentResponse{}
+
+message UpdateIssueStatusRequest{
+	string issueId = 1;
+	string newStatusId = 2;
+}
+
+message UpdateIssueStatusResponse{}
+
+
+//Models
+message IssueReference{
+	string id = 1;
+	string name = 2;
+	Status status = 3;
+	string creatingUserId = 4;
+}
+
+message IssueContent{
+	string id = 1;
+	string issueId = 2;
+	string textContent = 3;
+}
+
+message Status{
+	string id = 1;
+	string name = 2;
+}

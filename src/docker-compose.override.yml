@@ -17,7 +17,7 @@ services:
     volumes:
       - poc-sqlserver:/var/opt/mssql
 
-  tasks.api:
+  issues.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
