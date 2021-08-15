@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "15040:80"
+
+  sqlserver:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "1533:1433"
+    volumes:
+      - poc-sqlserver:/var/opt/mssql
+
+  tasks.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "15000:80"
+      - "15001:81"
+
+volumes:
+
+  poc-sqlserver:
+    external: false

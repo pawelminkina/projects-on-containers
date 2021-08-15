@@ -1,0 +1,70 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Tasks.API.Protos";
+
+service TaskService{
+	rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
+	rpc GetTasks(GetTasksRequest) returns (GetTasksResponse);
+	rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+	rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
+	rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
+	rpc UpdateTaskStatus(UpdateTaskStatusRequest) returns (UpdateTaskStatusResponse);
+}
+
+message GetTaskRequest{
+	string taskId = 1;
+}
+
+message GetTaskResponse{
+	Task task = 1;
+}
+
+message GetTasksRequest{}
+
+message GetTasksResponse{
+	repeated Task tasks = 1;
+}
+
+message CreateTaskRequest{
+	string name = 1;
+	string content = 2;
+}
+
+message CreateTaskResponse{
+	string id = 1;
+}
+
+message DeleteTaskRequest{
+	string id = 1;
+}
+
+message DeleteTaskResponse{}
+
+message UpdateTaskRequest{
+	string id = 1;
+	string name = 2;
+	string content = 3;
+}
+
+message UpdateTaskStatusRequest{
+	string taskId = 1;
+	string newStatusId = 2;
+}
+
+message UpdateTaskStatusResponse{}
+
+message UpdateTaskResponse{}
+
+//models
+message Status{
+	string id = 1;
+	string name = 2;
+}
+
+message Task{
+	string id = 1;
+	google.protobuf.Timestamp timeOfCreation = 2;
+	string name = 3;
+	string content = 4;
+	//TODO There should be status
+}

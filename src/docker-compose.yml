@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  seq:
+    image: datalust/seq:latest
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+
+  tasks.api:
+    image: ${DOCKER_REGISTRY-poc}/tasks.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Tasks/Tasks.API/Dockerfile
+    depends_on:
+      - sqlserver
