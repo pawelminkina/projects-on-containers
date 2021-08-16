@@ -15,10 +15,15 @@ using Issues.Application.Issues.RenameIssue;
 using Issues.Application.Issues.UpdateIssueContent;
 using Issues.Domain.Issues;
 using MediatR;
-using IssueContent = Issues.Domain.Issues.IssueContent;
 
 namespace Issues.API.GrpcServices
 {
+    //TODO First thing to do is create code first database and link all together
+    //TODO Units tests for Domain logic of issue, group and flow
+    //how? Dunno, but i will get the answer
+    //TODO Removing tests, if possible try to unit test, but for sure I need integration and acceptance tests for that
+    //i think at this moment that i will need to add delete policy interface which will be implemented by class which will operate on db directly
+    //TODO connection in flows schema should be refactor, now it's hard to read and understand
     public class GrpcIssueService : Protos.IssueService.IssueServiceBase
     {
         private readonly IMediator _mediator;
@@ -83,13 +88,13 @@ namespace Issues.API.GrpcServices
             Id = issue.Id,
             Name = issue.Name,
             StatusId = issue.StatusId,
-            TimeOfCreation = issue.TimeOfCreationUTC.ToTimestamp()
+            TimeOfCreation = issue.TimeOfCreation.ToTimestamp()
         };
 
-        private Protos.IssueContent MapToIssueContent(IssueContent content) => new Protos.IssueContent()
+        private Protos.IssueContent MapToIssueContent(Domain.Issues.IssueContent content) => new Protos.IssueContent()
         {
             Id = content.Id,
-            IssueId = content.IssueId,
+            IssueId = content.ParentIssue.Id,
             TextContent = content.TextContent
         };
     }

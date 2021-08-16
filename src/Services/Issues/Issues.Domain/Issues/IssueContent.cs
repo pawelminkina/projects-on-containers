@@ -11,10 +11,10 @@ namespace Issues.Domain.Issues
     public class IssueContent : EntityBase
     {
 
-        public IssueContent(string issueId, string textContent)
+        public IssueContent(string textContent, Issue parentIssue)
         {
             Id = Guid.NewGuid().ToString();
-            IssueId = issueId;
+            ParentIssue = parentIssue;
             TextContent = textContent;
         }
 
@@ -23,8 +23,6 @@ namespace Issues.Domain.Issues
 
         }
         public string TextContent { get; }
-#warning instead of foreignkey i should use fluent api from dbcontext
-        [ForeignKey("Issue")]
-    public string IssueId { get; }
+        public Issue ParentIssue { get; }
     }
 }
