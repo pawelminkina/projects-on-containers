@@ -4,4 +4,17 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Issues\GetIssuesForGroup\" />
+    <Folder Include="Issues\UpdateIssueContent\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Issues.Domain\Issues.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -29,5 +29,6 @@ namespace Issues.Domain.Issues
         public virtual IssueContent Content { get; }
         public string CreatingUserId { get; }
         public string GroupOfIssuesId { get; set; }
+        public DateTime TimeOfCreationUTC { get; set; }
     }
 }

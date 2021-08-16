@@ -10,7 +10,6 @@ service IssueService{
 	rpc DeleteIssue(DeleteIssueRequest) returns (DeleteIssueResponse);
 	rpc RenameIssue(RenameIssueRequest) returns (RenameIssueResponse);
 	rpc UpdateIssueContent(UpdateIssueContentRequest) returns (UpdateIssueContentResponse);
-	rpc UpdateIssueStatus(UpdateIssueStatusRequest) returns (UpdateIssueStatusResponse);
 }
 
 message GetIssueWithContentRequest{
@@ -27,7 +26,7 @@ message GetIssuesForGroupRequest{
 }
 
 message GetIssuesForGroupResponse{
-	repeated IssueReference issue = 1;
+	repeated IssueReference issues = 1;
 }
 
 message GetIssuesForUserRequest{
@@ -68,29 +67,18 @@ message UpdateIssueContentRequest{
 
 message UpdateIssueContentResponse{}
 
-message UpdateIssueStatusRequest{
-	string issueId = 1;
-	string newStatusId = 2;
-}
-
-message UpdateIssueStatusResponse{}
-
 
 //Models
 message IssueReference{
 	string id = 1;
 	string name = 2;
-	Status status = 3;
+	string statusId = 3;
 	string creatingUserId = 4;
+	google.protobuf.Timestamp timeOfCreation = 5;
 }
 
 message IssueContent{
 	string id = 1;
 	string issueId = 2;
 	string textContent = 3;
-}
-
-message Status{
-	string id = 1;
-	string name = 2;
 }
