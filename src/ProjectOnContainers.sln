@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architecture", "Architecture", "{EC3D3B19-385F-4ED2-A6D1-40786C938D21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architecture.DDD", "Architecture\Architecture.DDD\Architecture.DDD.csproj", "{B5F8866E-F989-4BD6-BD71-01AA469EE783}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Architecture.DDD", "Architecture\Architecture.DDD\Architecture.DDD.csproj", "{B5F8866E-F989-4BD6-BD71-01AA469EE783}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{6CFF99BB-8ACD-45B4-A1A5-7FB5485F9BD7}"
 EndProject
@@ -13,11 +13,15 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Issues", "Issues", "{E47882A9-10A3-477D-8C06-17A6835C9EE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issues.API", "Services\Issues\Issues.API\Issues.API.csproj", "{1F1E1B3F-5821-4C90-A9AA-94342B471FB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.API", "Services\Issues\Issues.API\Issues.API.csproj", "{1F1E1B3F-5821-4C90-A9AA-94342B471FB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issues.Application", "Services\Issues\Issues.Application\Issues.Application.csproj", "{956AD57B-51DA-46A9-9405-A66861C70AB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Application", "Services\Issues\Issues.Application\Issues.Application.csproj", "{956AD57B-51DA-46A9-9405-A66861C70AB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issues.Domain", "Services\Issues\Issues.Domain\Issues.Domain.csproj", "{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Domain", "Services\Issues\Issues.Domain\Issues.Domain.csproj", "{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AC589D28-0A75-484F-BFD0-34FB593EFF7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issues.Tests", "Services\Issues\Tests\Issues.Tests\Issues.Tests.csproj", "{23E4F67F-3E41-4752-B3A1-32D45455975C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,10 @@ Global
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +63,8 @@ Global
 		{1F1E1B3F-5821-4C90-A9AA-94342B471FB4} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
 		{956AD57B-51DA-46A9-9405-A66861C70AB3} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
+		{AC589D28-0A75-484F-BFD0-34FB593EFF7B} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
+		{23E4F67F-3E41-4752-B3A1-32D45455975C} = {AC589D28-0A75-484F-BFD0-34FB593EFF7B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE4CC04-3FAE-4D6E-BB1A-B76AD5C8F2E4}

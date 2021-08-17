@@ -22,12 +22,23 @@ namespace Issues.Domain.Issues
         {
 
         }
-        public string TextContent { get; private set; }
-        public Issue ParentIssue { get; private set; }
+        public string TextContent { get; protected set; }
+        public Issue ParentIssue { get; protected set; }
+        public bool IsArchived { get; private set; }
 
         public void ChangeTextContent(string newTextContent)
         {
-            TextContent = newTextContent ?? string.Empty;
+            TextContent = string.IsNullOrWhiteSpace(newTextContent) ? string.Empty : newTextContent;
+        }
+
+        public void Archive()
+        {
+            IsArchived = true;
+        }
+
+        public void UnArchive()
+        {
+            IsArchived = false;
         }
     }
 }

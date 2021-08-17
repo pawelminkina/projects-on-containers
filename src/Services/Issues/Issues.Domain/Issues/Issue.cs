@@ -30,7 +30,7 @@ namespace Issues.Domain.Issues
         public string CreatingUserId { get; protected set; }
         public string GroupOfIssuesId { get; protected set; }
         public DateTimeOffset TimeOfCreation { get; protected set; }
-
+        public bool IsArchived { get; private set; }
 
         public IssueContent AddContent(string textContent)
         {
@@ -45,6 +45,10 @@ namespace Issues.Domain.Issues
         {
             if (string.IsNullOrWhiteSpace(newName))
                 throw new InvalidOperationException("Given name to change is empty");
+
+            if (newName == Name)
+                throw new InvalidOperationException("Given new name is the same as current");
+
             Name = newName;
         }
 
@@ -52,6 +56,10 @@ namespace Issues.Domain.Issues
         {
             if (string.IsNullOrWhiteSpace(statusId))
                 throw new InvalidOperationException("Given status to change is empty");
+
+            if (statusId == StatusId)
+                throw new InvalidOperationException("Given new status id is the same as current");
+
             StatusId = statusId;
         }
 
@@ -59,12 +67,23 @@ namespace Issues.Domain.Issues
         {
             if (string.IsNullOrWhiteSpace(newGroupOfIssueId))
                 throw new InvalidOperationException("Given group of issues id to change is empty");
+
+            if (newGroupOfIssueId == GroupOfIssuesId)
+                throw new InvalidOperationException("Given new group of issues is the same as current");
+
             GroupOfIssuesId = newGroupOfIssueId;
         }
 
-        internal void DeleteContent()
+        public void Archive()
         {
-            Content = null;
+            Content.Archive();
+            IsArchived = true;
+        }
+
+        public void UnArchive()
+        {
+            Content.UnArchive();
+            IsArchived = false;
         }
     }
 }

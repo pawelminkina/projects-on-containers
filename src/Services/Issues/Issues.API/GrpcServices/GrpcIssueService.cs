@@ -18,9 +18,10 @@ using MediatR;
 
 namespace Issues.API.GrpcServices
 {
+    //TODO Units tests for Domain logic of issue, group and flow
+    //TODO Refactor names of tests because they can be simpler like: https://stackoverflow.com/questions/155436/unit-test-naming-best-practices
     //TODO First thing to do is create code first database and link all together
     //TODO Lists in entities can be readonly collections
-    //TODO Units tests for Domain logic of issue, group and flow
     //how? Dunno, but i will get the answer
     //TODO Removing tests, if possible try to unit test, but for sure I need integration and acceptance tests for that
     //i think at this moment that i will need to add delete policy interface which will be implemented by class which will operate on db directly

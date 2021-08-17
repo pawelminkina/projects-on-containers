@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace Issues.Domain.StatusesFlow
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
+            StatusesInFlow = new List<StatusInFlow>();
         }
         private StatusFlow()
         {
@@ -21,7 +23,8 @@ namespace Issues.Domain.StatusesFlow
         }
         public string Name { get; protected set; }
         public string OrganizationId { get; protected set; }
-        public List<StatusInFlow> StatusesInFlow { get; protected set; } 
+        public List<StatusInFlow> StatusesInFlow { get; protected set; }
+        public bool IsArchived { get; private set; }
 
         public StatusInFlow AddNewStatusToFlow(Status statusToAdd, int indexInFlow)
         {
@@ -35,13 +38,15 @@ namespace Issues.Domain.StatusesFlow
             return status;
         }
 
-        public void DeleteStatusFromFlow(string statusId)
+        public void DeleteStatusFromFlow(string statusId, IStatusInFlowDeletePolicy policy)
         {
-            var statusToDelete = StatusesInFlow.FirstOrDefault(a => a.ParentStatus.Id == statusId);
-            if (statusToDelete == null)
+            var statusInFlowToDelete = StatusesInFlow.FirstOrDefault(a => a.ParentStatus.Id == statusId);
+            if (statusInFlowToDelete == null)
                 throw new InvalidOperationException(
                     $"Requested status to delete with id: {statusId} doesn't exist in flow with id: {Id}");
-            StatusesInFlow.Remove(statusToDelete);
+            
+            policy.Delete(statusInFlowToDelete.Id);
+            StatusesInFlow.Remove(statusInFlowToDelete);
         }
 
         public void Rename(string newName)
@@ -49,7 +54,22 @@ namespace Issues.Domain.StatusesFlow
             if (string.IsNullOrWhiteSpace(newName))
                 throw new InvalidOperationException("Given name to change is empty");
 
+            if (newName == Name)
+                throw new InvalidOperationException("Given name is the same as current");
+
             Name = newName;
+        }
+
+        public void Archive()
+        {
+            StatusesInFlow.ForEach(s=>s.Archive());
+            IsArchived = true;
+        }
+
+        public void UnArchive()
+        {
+            StatusesInFlow.ForEach(s => s.UnArchive());
+            IsArchived = false;
         }
     }
 }

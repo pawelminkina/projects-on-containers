@@ -21,13 +21,27 @@ namespace Issues.Domain.StatusesFlow
         }
         public string Name { get; protected set; }
         public string OrganizationId { get; protected set; }
+        public bool IsArchived { get; private set; }
 
         public void Rename(string newName)
         {
             if (string.IsNullOrWhiteSpace(newName))
                 throw new InvalidOperationException("Given name to change is empty");
-            
+
+            if (Name == newName)
+                throw new InvalidOperationException("Given new name of status is the same as current");
             Name = newName;
+        }
+
+        public void Archive(IStatusArchivePolicy policy)
+        {
+            policy.Archive();
+            IsArchived = true;
+        }
+
+        public void UnArchive()
+        {
+            IsArchived = false;
         }
     }
 }

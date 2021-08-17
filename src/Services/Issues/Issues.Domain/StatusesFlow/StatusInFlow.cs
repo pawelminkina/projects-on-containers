@@ -25,8 +25,9 @@ namespace Issues.Domain.StatusesFlow
         //one to many
         public StatusFlow StatusFlow { get; protected set; }
         public int IndexInFlow { get; protected set; }
+        public bool IsArchived { get; private set; }
 
-        public readonly List<Status> ConnectedStatuses;
+        public readonly List<Status> ConnectedStatuses; //dunno how i will do this xD, functional tests will show
         public void AddConnectedStatus(Status status)
         {
             if (status == null)
@@ -38,7 +39,7 @@ namespace Issues.Domain.StatusesFlow
             ConnectedStatuses.Add(status);
         }
 
-        public void DeleteConnectionStatus(string id)
+        public void DeleteConnectedStatus(string id)
         {
 
             var connectionToDelete = ConnectedStatuses.FirstOrDefault(s => s.Id == id);
@@ -46,6 +47,16 @@ namespace Issues.Domain.StatusesFlow
                 throw new InvalidOperationException($"Requested status in flow to delete with id: {id} in parent {Id} doesn't exist");
 
             ConnectedStatuses.Remove(connectionToDelete);
+        }
+
+        public void Archive()
+        {
+            IsArchived = true;
+        }
+
+        public void UnArchive()
+        {
+            IsArchived = false;
         }
     }
 }
