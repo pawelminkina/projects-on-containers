@@ -11,18 +11,23 @@ namespace Issues.Domain.Issues
     public class IssueContent : EntityBase
     {
 
-        public IssueContent(string textContent, Issue parentIssue)
+        internal IssueContent(string textContent, Issue parentIssue)
         {
             Id = Guid.NewGuid().ToString();
             ParentIssue = parentIssue;
             TextContent = textContent;
         }
 
-        public IssueContent()
+        private IssueContent()
         {
 
         }
-        public string TextContent { get; }
-        public Issue ParentIssue { get; }
+        public string TextContent { get; private set; }
+        public Issue ParentIssue { get; private set; }
+
+        public void ChangeTextContent(string newTextContent)
+        {
+            TextContent = newTextContent ?? string.Empty;
+        }
     }
 }

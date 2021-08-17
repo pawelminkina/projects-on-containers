@@ -19,11 +19,11 @@ using MediatR;
 namespace Issues.API.GrpcServices
 {
     //TODO First thing to do is create code first database and link all together
+    //TODO Lists in entities can be readonly collections
     //TODO Units tests for Domain logic of issue, group and flow
     //how? Dunno, but i will get the answer
     //TODO Removing tests, if possible try to unit test, but for sure I need integration and acceptance tests for that
     //i think at this moment that i will need to add delete policy interface which will be implemented by class which will operate on db directly
-    //TODO connection in flows schema should be refactor, now it's hard to read and understand
     public class GrpcIssueService : Protos.IssueService.IssueServiceBase
     {
         private readonly IMediator _mediator;

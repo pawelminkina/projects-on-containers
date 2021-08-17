@@ -9,7 +9,7 @@ namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        public Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation)
+        internal Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -19,17 +19,17 @@ namespace Issues.Domain.Issues
             TimeOfCreation = timeOfCreation;
         }
 
-        public Issue()
+        private Issue()
         {
 
         }
 
-        public string Name { get; }
-        public string StatusId { get; }
-        public IssueContent Content { get; set; }
-        public string CreatingUserId { get; }
-        public string GroupOfIssuesId { get; set; }
-        public DateTimeOffset TimeOfCreation { get; set; }
+        public string Name { get; protected set; }
+        public string StatusId { get; protected set; }
+        public IssueContent Content { get; protected set; }
+        public string CreatingUserId { get; protected set; }
+        public string GroupOfIssuesId { get; protected set; }
+        public DateTimeOffset TimeOfCreation { get; protected set; }
 
 
         public IssueContent AddContent(string textContent)
@@ -41,7 +41,28 @@ namespace Issues.Domain.Issues
             return Content;
         }
 
-        public void DeleteContent()
+        public void Rename(string newName)
+        {
+            if (string.IsNullOrWhiteSpace(newName))
+                throw new InvalidOperationException("Given name to change is empty");
+            Name = newName;
+        }
+
+        public void ChangeStatus(string statusId)
+        {
+            if (string.IsNullOrWhiteSpace(statusId))
+                throw new InvalidOperationException("Given status to change is empty");
+            StatusId = statusId;
+        }
+
+        internal void ChangeGroupOfIssue(string newGroupOfIssueId)
+        {
+            if (string.IsNullOrWhiteSpace(newGroupOfIssueId))
+                throw new InvalidOperationException("Given group of issues id to change is empty");
+            GroupOfIssuesId = newGroupOfIssueId;
+        }
+
+        internal void DeleteContent()
         {
             Content = null;
         }

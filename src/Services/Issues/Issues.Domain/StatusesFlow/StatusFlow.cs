@@ -9,34 +9,47 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusFlow : EntityBase
     {
-        public StatusFlow(string name, string organizationId)
+        internal StatusFlow(string name, string organizationId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
         }
-        public StatusFlow()
+        private StatusFlow()
         {
 
         }
-        public string Name { get; set; }
-        public string OrganizationId { get; set; }
-        public List<StatusInFlow> StatusesInFlow { get; set; }
+        public string Name { get; protected set; }
+        public string OrganizationId { get; protected set; }
+        public List<StatusInFlow> StatusesInFlow { get; protected set; } 
 
-        public StatusInFlow AddNewStatusInFlow(Status statusToAdd, int indexInFlow)
+        public StatusInFlow AddNewStatusToFlow(Status statusToAdd, int indexInFlow)
         {
+            var statusCurrentlyExistInFlow = StatusesInFlow.Any(s => s.ParentStatus.Id == statusToAdd.Id);
+            if (statusCurrentlyExistInFlow)
+                throw new InvalidOperationException(
+                    $"Requested status to add with id: {statusToAdd.Id} currently exist in flow with id: {Id}");
+
             var status = new StatusInFlow(statusToAdd, this, indexInFlow);
             StatusesInFlow.Add(status);
             return status;
         }
 
-        public void DeleteStatusInFlow(string statusInFlowId)
+        public void DeleteStatusFromFlow(string statusId)
         {
-            var statusToDelete = StatusesInFlow.FirstOrDefault(a => a.Id == statusInFlowId);
+            var statusToDelete = StatusesInFlow.FirstOrDefault(a => a.ParentStatus.Id == statusId);
             if (statusToDelete == null)
                 throw new InvalidOperationException(
-                    $"Requested status to delete with id: {statusInFlowId} doesn't exist");
+                    $"Requested status to delete with id: {statusId} doesn't exist in flow with id: {Id}");
             StatusesInFlow.Remove(statusToDelete);
+        }
+
+        public void Rename(string newName)
+        {
+            if (string.IsNullOrWhiteSpace(newName))
+                throw new InvalidOperationException("Given name to change is empty");
+
+            Name = newName;
         }
     }
 }

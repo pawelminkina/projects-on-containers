@@ -9,46 +9,42 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlow : EntityBase
     {
-        public StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow)
+        internal StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow)
         {
             Id = Guid.NewGuid().ToString();
             ParentStatus = parentStatus;
             StatusFlow = statusFlow;
             IndexInFlow = indexInFlow;
-            ConnectedStatuses = new List<StatusInFlow>();
+            ConnectedStatuses = new List<Status>();
         }
-        public StatusInFlow()
+        private StatusInFlow()
         {
-            ConnectedStatuses = new List<StatusInFlow>();
+            ConnectedStatuses = new List<Status>();
         }
-        public Status ParentStatus { get; }
+        public Status ParentStatus { get; protected set; }
         //one to many
-        public StatusFlow StatusFlow { get; }
-        public int IndexInFlow { get; }
-        //would be nice if it will exist in db, how dunno
-        //got idea: who if it will be populated by using StatusInFlowConnection from DB
-        public readonly List<StatusInFlow> ConnectedStatuses;
-        private readonly List<StatusInFlowConnection> _connections;
-        public void AddConnectedStatus(StatusInFlow status)
+        public StatusFlow StatusFlow { get; protected set; }
+        public int IndexInFlow { get; protected set; }
+
+        public readonly List<Status> ConnectedStatuses;
+        public void AddConnectedStatus(Status status)
         {
-            var connection = new StatusInFlowConnection(Id, status.Id);
-            _connections.Add(connection);
+            if (status == null)
+                throw new InvalidOperationException("Given status to add is null");
+            if (ConnectedStatuses.Contains(status))
+                throw new InvalidOperationException(
+                    $"Status with id: {status?.Id} is already added to connected statuses where parent status has id: {Id}");
+
             ConnectedStatuses.Add(status);
         }
 
         public void DeleteConnectionStatus(string id)
         {
-            var connection =
-                _connections.FirstOrDefault(s => s.ParentStatusInFlowId == Id && s.ChildStatusInFlowId == id);
-            if (connection == null)
-                throw new InvalidOperationException($"Requested status in flow to delete with id: {id} in parent {Id} doesn't exist");
-
-            _connections.Remove(connection);
 
             var connectionToDelete = ConnectedStatuses.FirstOrDefault(s => s.Id == id);
             if (connectionToDelete == null)
-                throw new InvalidOperationException($"Requested status in flow to delete with id: {id} doesn't exist");
-            
+                throw new InvalidOperationException($"Requested status in flow to delete with id: {id} in parent {Id} doesn't exist");
+
             ConnectedStatuses.Remove(connectionToDelete);
         }
     }

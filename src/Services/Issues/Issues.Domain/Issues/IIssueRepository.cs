@@ -8,5 +8,7 @@ namespace Issues.Domain.Issues
 {
     public interface IIssueRepository
     {
+        Task<Issue> GetIssueByIdAsync(string id);
+        Task<IEnumerable<Issue>> GetIssuesForUserAsync(string userId);
     }
 }

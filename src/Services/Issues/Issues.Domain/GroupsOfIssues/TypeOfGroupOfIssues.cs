@@ -9,17 +9,26 @@ namespace Issues.Domain.GroupsOfIssues
 {
     public class TypeOfGroupOfIssues : EntityBase
     {
-        public TypeOfGroupOfIssues(string name)
+        internal TypeOfGroupOfIssues(string name, string organizationId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
+            OrganizationId = organizationId;
         }
 
-        public TypeOfGroupOfIssues()
+        private TypeOfGroupOfIssues()
         {
 
         }
 
-        public string Name { get; }
+        public string Name { get; protected set; }
+        public string OrganizationId { get; protected set; }
+
+        public void Rename(string newName)
+        {
+            if (string.IsNullOrWhiteSpace(newName))
+                throw new InvalidOperationException("Given name to change is empty");
+            Name = newName;
+        }
     }
 }

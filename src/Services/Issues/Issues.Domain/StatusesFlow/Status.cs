@@ -9,17 +9,25 @@ namespace Issues.Domain.StatusesFlow
 {
     public class Status : EntityBase
     {
-        public Status(string name, string organizationId)
+        internal Status(string name, string organizationId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
         }
-        public Status()
+        private Status()
         {
 
         }
-        public string Name { get; set; }
-        public string OrganizationId { get; set; }
+        public string Name { get; protected set; }
+        public string OrganizationId { get; protected set; }
+
+        public void Rename(string newName)
+        {
+            if (string.IsNullOrWhiteSpace(newName))
+                throw new InvalidOperationException("Given name to change is empty");
+            
+            Name = newName;
+        }
     }
 }
