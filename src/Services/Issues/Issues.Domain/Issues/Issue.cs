@@ -9,7 +9,7 @@ namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        internal Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation)
+        public Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -19,7 +19,7 @@ namespace Issues.Domain.Issues
             TimeOfCreation = timeOfCreation;
         }
 
-        private Issue()
+        public Issue()
         {
 
         }

@@ -10,14 +10,14 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusFlow : EntityBase
     {
-        internal StatusFlow(string name, string organizationId)
+        public StatusFlow(string name, string organizationId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
             StatusesInFlow = new List<StatusInFlow>();
         }
-        private StatusFlow()
+        public StatusFlow()
         {
 
         }

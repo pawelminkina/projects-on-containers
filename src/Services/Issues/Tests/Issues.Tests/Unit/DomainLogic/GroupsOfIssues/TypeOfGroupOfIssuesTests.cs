@@ -1,4 +1,6 @@
 ﻿using System;
+using Issues.Domain.GroupsOfIssues;
+using Moq;
 using Xunit;
 
 namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
@@ -33,12 +35,17 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
         public void Archive_Sets_Is_Archived_Property_Value_To_True()
         {
             throw new NotImplementedException();
+
         }
 
         [Fact]
         public void Un_Archive_Sets_Is_Archived_Property_Value_To_False()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<TypeOfGroupOfIssues>();
+            mock.SetupGet(a => a.IsArchived).Returns(true);
+            var obj = mock.Object;
+            obj.UnArchive();
+            Assert.True(false == obj.IsArchived);
         }
     }
 }

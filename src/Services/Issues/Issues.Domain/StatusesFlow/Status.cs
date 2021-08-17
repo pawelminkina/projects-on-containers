@@ -9,13 +9,13 @@ namespace Issues.Domain.StatusesFlow
 {
     public class Status : EntityBase
     {
-        internal Status(string name, string organizationId)
+        public Status(string name, string organizationId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
         }
-        private Status()
+        public Status()
         {
 
         }

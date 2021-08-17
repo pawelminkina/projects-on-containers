@@ -9,7 +9,7 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlow : EntityBase
     {
-        internal StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow)
+        public StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow)
         {
             Id = Guid.NewGuid().ToString();
             ParentStatus = parentStatus;
@@ -17,7 +17,7 @@ namespace Issues.Domain.StatusesFlow
             IndexInFlow = indexInFlow;
             ConnectedStatuses = new List<Status>();
         }
-        private StatusInFlow()
+        public StatusInFlow()
         {
             ConnectedStatuses = new List<Status>();
         }
