@@ -12,19 +12,26 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
         [Fact]
         public void Rename_Throws_Exception_Because_Requested_Name_Is_Empty_String()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<TypeOfGroupOfIssues>(string.Empty, "firstName");
+            mock.SetupProperty(d => d.Name, "firstName");
+            Assert.Throws<InvalidOperationException>(() => mock.Object.RenameGroup(string.Empty));
         }
 
         [Fact]
         public void Rename_Throws_Exception_Because_Requested_Name_Is_The_Same_As_Current_Name()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<TypeOfGroupOfIssues>(string.Empty, "firstName");
+            mock.SetupProperty(d => d.Name, "firstName");
+            Assert.Throws<InvalidOperationException>(() => mock.Object.RenameGroup("firstName"));
         }
 
         [Fact]
         public void Rename_Changes_Type_Of_Group_Name_To_Requested()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<TypeOfGroupOfIssues>(string.Empty, string.Empty);
+            mock.SetupProperty(d => d.Name);
+            mock.Object.RenameGroup("secondName");
+            Assert.True(mock.Object.Name == "secondName", "Parameter for rename was different than name after executing method");
         }
 
         [Fact]
@@ -52,7 +59,7 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
             var mock = new Mock<TypeOfGroupOfIssues>(string.Empty, string.Empty);
             mock.SetupProperty(d => d.IsArchived, true);
             mock.Object.UnArchive();
-            Assert.True(mock.Object.IsArchived == false);
+            Assert.True(mock.Object.IsArchived == false, "UnArchive method does not set IsArchived property to false");
         }
     }
 }
