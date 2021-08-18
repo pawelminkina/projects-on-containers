@@ -9,7 +9,7 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlow : EntityBase
     {
-        public StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow)
+        internal StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow)
         {
             Id = Guid.NewGuid().ToString();
             ParentStatus = parentStatus;
@@ -17,17 +17,18 @@ namespace Issues.Domain.StatusesFlow
             IndexInFlow = indexInFlow;
             ConnectedStatuses = new List<Status>();
         }
-        public StatusInFlow()
+        private StatusInFlow()
         {
             ConnectedStatuses = new List<Status>();
         }
-        public Status ParentStatus { get; protected set; }
+        public virtual Status ParentStatus { get; protected set; }
         //one to many
-        public StatusFlow StatusFlow { get; protected set; }
-        public int IndexInFlow { get; protected set; }
-        public bool IsArchived { get; private set; }
+        public virtual StatusFlow StatusFlow { get; protected set; }
+        public virtual int IndexInFlow { get; protected set; }
+        public virtual bool IsArchived { get; protected set; }
 
-        public readonly List<Status> ConnectedStatuses; //dunno how i will do this xD, functional tests will show
+        public virtual List<Status> ConnectedStatuses { get; protected set; } //dunno how i will do this xD, functional tests will show
+
         public void AddConnectedStatus(Status status)
         {
             if (status == null)

@@ -9,7 +9,7 @@ namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        public Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation)
+        internal Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -19,18 +19,18 @@ namespace Issues.Domain.Issues
             TimeOfCreation = timeOfCreation;
         }
 
-        public Issue()
+        private Issue()
         {
 
         }
 
-        public string Name { get; protected set; }
-        public string StatusId { get; protected set; }
-        public IssueContent Content { get; protected set; }
-        public string CreatingUserId { get; protected set; }
-        public string GroupOfIssuesId { get; protected set; }
-        public DateTimeOffset TimeOfCreation { get; protected set; }
-        public bool IsArchived { get; private set; }
+        public virtual string Name { get; protected set; }
+        public virtual string StatusId { get; protected set; }
+        public virtual IssueContent Content { get; protected set; }
+        public virtual string CreatingUserId { get; protected set; }
+        public virtual string GroupOfIssuesId { get; protected set; }
+        public virtual DateTimeOffset TimeOfCreation { get; protected set; }
+        public virtual bool IsArchived { get; protected set; }
 
         public IssueContent AddContent(string textContent)
         {

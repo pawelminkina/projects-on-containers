@@ -9,19 +9,19 @@ namespace Issues.Domain.StatusesFlow
 {
     public class Status : EntityBase
     {
-        public Status(string name, string organizationId)
+        internal Status(string name, string organizationId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
         }
-        public Status()
+        private Status()
         {
 
         }
-        public string Name { get; protected set; }
-        public string OrganizationId { get; protected set; }
-        public bool IsArchived { get; private set; }
+        public virtual string Name { get; protected set; }
+        public virtual string OrganizationId { get; protected set; }
+        public virtual bool IsArchived { get; protected set; }
 
         public void Rename(string newName)
         {

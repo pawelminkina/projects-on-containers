@@ -22,7 +22,7 @@ namespace Issues.Domain.GroupsOfIssues
             StatusFlowId = statusFlowId;
         }
 
-        internal GroupOfIssues()
+        private GroupOfIssues()
         {
 
         }
@@ -32,7 +32,7 @@ namespace Issues.Domain.GroupsOfIssues
         public string StatusFlowId { get; protected set; }
         public List<Issue> Issues { get; protected set; }
         public StatusFlow Flow { get; protected set; } //I need to get it by statusFlow in EF
-        public bool IsArchived { get; private set; }
+        public bool IsArchived { get; protected set; }
 
         public Issue AddIssue(string name, string creatingUserId, string textContent)
         {
