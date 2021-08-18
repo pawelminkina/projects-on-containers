@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Issues.Domain.StatusesFlow;
@@ -21,7 +22,7 @@ namespace Issues.Domain.GroupsOfIssues
             StatusFlowId = statusFlowId;
         }
 
-        private GroupOfIssues()
+        internal GroupOfIssues()
         {
 
         }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Issues.Domain.GroupsOfIssues;
 using Moq;
+using Moq.Protected;
 using Xunit;
 
 namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
@@ -34,18 +36,23 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
         [Fact]
         public void Archive_Sets_Is_Archived_Property_Value_To_True()
         {
-            throw new NotImplementedException();
+            var policyMock = new Mock<ITypeGroupOfIssuesArchivePolicy>();
+            policyMock.Setup(d => d.Archive()).Returns(true);
 
+            var mock = new Mock<TypeOfGroupOfIssues>(string.Empty, string.Empty);
+            mock.SetupProperty(d => d.IsArchived, false);
+            mock.Object.Archive(policyMock.Object);
+
+            Assert.True(mock.Object.IsArchived == true, "Archive method does not set IsArchived property to true");
         }
 
         [Fact]
         public void Un_Archive_Sets_Is_Archived_Property_Value_To_False()
         {
-            var mock = new Mock<TypeOfGroupOfIssues>();
-            mock.SetupGet(a => a.IsArchived).Returns(true);
-            var obj = mock.Object;
-            obj.UnArchive();
-            Assert.True(false == obj.IsArchived);
+            var mock = new Mock<TypeOfGroupOfIssues>(string.Empty, string.Empty);
+            mock.SetupProperty(d => d.IsArchived, true);
+            mock.Object.UnArchive();
+            Assert.True(mock.Object.IsArchived == false);
         }
     }
 }

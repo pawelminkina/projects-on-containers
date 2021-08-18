@@ -18,7 +18,6 @@
     <PackageReference Include="Serilog.Sinks.Http" Version="7.2.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Issues.Application\Issues.Application.csproj" />
     <ProjectReference Include="..\Issues.Domain\Issues.Domain.csproj" />
