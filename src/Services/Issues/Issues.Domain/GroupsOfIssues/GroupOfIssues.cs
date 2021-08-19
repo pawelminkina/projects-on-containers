@@ -34,11 +34,11 @@ namespace Issues.Domain.GroupsOfIssues
         public StatusFlow Flow { get; protected set; } //I need to get it by statusFlow in EF
         public bool IsArchived { get; protected set; }
 
-        public Issue AddIssue(string name, string creatingUserId, string textContent)
+        public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId)
         {
             var defaultStatus = GetDefaultStatusInFlow();
 
-            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this.Id, DateTimeOffset.UtcNow);
+            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this.Id, DateTimeOffset.UtcNow, typeOfIssueId);
             issue.AddContent(textContent);
             Issues.Add(issue);
             return issue;
