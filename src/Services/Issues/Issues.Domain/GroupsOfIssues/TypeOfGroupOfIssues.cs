@@ -19,7 +19,7 @@ namespace Issues.Domain.GroupsOfIssues
             OrganizationId = organizationId;
         }
 
-        private TypeOfGroupOfIssues()
+        internal TypeOfGroupOfIssues()
         {
 
         }
@@ -28,16 +28,7 @@ namespace Issues.Domain.GroupsOfIssues
         public virtual string OrganizationId { get; protected set; }
         public virtual bool IsArchived { get; protected set; }
 
-        public void RenameGroup(string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-                throw new InvalidOperationException("Given name to change is empty");
-
-            if (newName == Name)
-                throw new InvalidOperationException("Requested new name is the same as current");
-
-            Name = newName;
-        }
+        public void RenameGroup(string newName)=> ChangeStringProperty("Name", newName);
 
         public void Archive(ITypeGroupOfIssuesArchivePolicy policy)
         {

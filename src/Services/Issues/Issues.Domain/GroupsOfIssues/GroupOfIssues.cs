@@ -22,17 +22,17 @@ namespace Issues.Domain.GroupsOfIssues
             StatusFlowId = statusFlowId;
         }
 
-        private GroupOfIssues()
+        internal GroupOfIssues()
         {
 
         }
-        public string Name { get; protected set; }
-        public string OrganizationId { get; protected set; }
-        public string TypeOfGroupId { get; protected set; }
-        public string StatusFlowId { get; protected set; }
-        public List<Issue> Issues { get; protected set; }
-        public StatusFlow Flow { get; protected set; } //I need to get it by statusFlow in EF
-        public bool IsArchived { get; protected set; }
+        public virtual string Name { get; protected set; }
+        public virtual string OrganizationId { get; protected set; }
+        public virtual string TypeOfGroupId { get; protected set; }
+        public virtual string StatusFlowId { get; protected set; }
+        public virtual List<Issue> Issues { get; protected set; }
+        public virtual StatusFlow Flow { get; protected set; } //I need to get it by statusFlow in EF
+        public virtual bool IsArchived { get; protected set; }
 
         public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId)
         {
@@ -45,31 +45,26 @@ namespace Issues.Domain.GroupsOfIssues
         }
 
 
-        public Issue AssignIssueToGroup(Issue existingIssue)
+        public Issue AssignIssueToGroup(Issue existingIssue, string newStatusId)
         {
+
+            if (string.IsNullOrWhiteSpace(newStatusId))
+                throw new InvalidOperationException("Given new statusId is empty string");
+
             var issueToAdd = Issues.FirstOrDefault(a => a.Id == existingIssue.Id);
             if (issueToAdd != null)
                 throw new InvalidOperationException(
                     $"Requested issue to assign with id: {existingIssue.Id} is already added in group with {Id}");
 
-            var defaultStatus = GetDefaultStatusInFlow();
-
-            existingIssue.ChangeStatus(defaultStatus.ParentStatus.Id);
+            existingIssue.ChangeStatus(newStatusId);
             existingIssue.ChangeGroupOfIssue(Id);
             Issues.Add(existingIssue);
             return existingIssue;
         }
 
-        public void Rename(string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-                throw new InvalidOperationException("Given name to change is empty");
+        public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
-            if (newName == Name)
-                throw new InvalidOperationException("Requested new name is the same as current");
-
-            Name = newName;
-        }
+        public void ChangeStatusFlow(string newStatusFlowId) => ChangeStringProperty("StatusFlowId", newStatusFlowId);
 
         public void Archive()
         {

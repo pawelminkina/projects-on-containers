@@ -17,7 +17,7 @@ namespace Issues.Domain.StatusesFlow
             IndexInFlow = indexInFlow;
             ConnectedStatuses = new List<Status>();
         }
-        private StatusInFlow()
+        internal StatusInFlow()
         {
             ConnectedStatuses = new List<Status>();
         }

@@ -20,7 +20,7 @@ namespace Issues.Domain.Issues
             TypeOfIssueId = typeOfIssueId;
         }
 
-        private Issue()
+        internal Issue()
         {
 
         }
@@ -43,38 +43,12 @@ namespace Issues.Domain.Issues
             return Content;
         }
 
-        public void Rename(string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-                throw new InvalidOperationException("Given name to change is empty");
+        public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
-            if (newName == Name)
-                throw new InvalidOperationException("Given new name is the same as current");
+        public void ChangeStatus(string statusId) => ChangeStringProperty("StatusId", statusId);
 
-            Name = newName;
-        }
+        internal void ChangeGroupOfIssue(string newGroupOfIssueId) => ChangeStringProperty("GroupOfIssuesId", newGroupOfIssueId);
 
-        public void ChangeStatus(string statusId)
-        {
-            if (string.IsNullOrWhiteSpace(statusId))
-                throw new InvalidOperationException("Given status to change is empty");
-
-            if (statusId == StatusId)
-                throw new InvalidOperationException("Given new status id is the same as current");
-
-            StatusId = statusId;
-        }
-
-        internal void ChangeGroupOfIssue(string newGroupOfIssueId)
-        {
-            if (string.IsNullOrWhiteSpace(newGroupOfIssueId))
-                throw new InvalidOperationException("Given group of issues id to change is empty");
-
-            if (newGroupOfIssueId == GroupOfIssuesId)
-                throw new InvalidOperationException("Given new group of issues is the same as current");
-
-            GroupOfIssuesId = newGroupOfIssueId;
-        }
 
         public void Archive()
         {

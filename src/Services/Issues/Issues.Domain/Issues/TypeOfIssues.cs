@@ -1,30 +1,36 @@
-﻿using System;
-using Architecture.DDD;
+﻿using Architecture.DDD;
+using System;
+using System.Reflection;
 
 namespace Issues.Domain.Issues
 {
-    public class TypeOfIssue : EntityBase
+    public class TypeOfIssues : EntityBase
     {
-        internal TypeOfIssue(string organizationId, string name, string flowId, string typeOfGroupOfIssuesId, byte[] icon)
+        internal TypeOfIssues(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId, byte[] icon)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
-            FlowId = flowId;
+            StatusFlowId = statusFlowId;
             TypeOfGroupOfIssuesId = typeOfGroupOfIssuesId;
             Icon = icon;
             OrganizationId = organizationId;
         }
 
-        private TypeOfIssue()
+        internal TypeOfIssues()
         {
-                
+
         }
         public virtual string Name { get; protected set; }
-        public virtual string FlowId { get; protected set; }
+        public virtual string StatusFlowId { get; protected set; }
         public virtual string TypeOfGroupOfIssuesId { get; protected set; }
         public virtual byte[] Icon { get; protected set; }
         public virtual string OrganizationId { get; protected set; }
         public virtual bool IsArchived { get; protected set; }
+
+        public void Rename(string newName) => ChangeStringProperty("Name", newName);
+
+        public void ChangeStatusFlow(string newStatusFlowId) => ChangeStringProperty("StatusFlowId", newStatusFlowId);
+
 
     }
 }

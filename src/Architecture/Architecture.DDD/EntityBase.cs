@@ -83,5 +83,29 @@ namespace Architecture.DDD
         }
 
         #endregion
+
+        #region Helpers
+
+        public virtual void ChangeStringProperty(string propertyName, string newValue)
+        {
+            var propToChange = this.GetType().GetProperty(propertyName);
+            if (propToChange is null)
+                throw new InvalidOperationException(
+                    $"property with requested name: {propertyName} does not exist in type {this.GetType()}");
+
+            if (propToChange.GetValue(this) is not string propToChangeValue)
+                throw new InvalidOperationException(
+                    $"{propToChange.Name} is not a string but type of {propToChange.PropertyType}");
+
+            if (string.IsNullOrWhiteSpace(newValue))
+                throw new InvalidOperationException($"Given {propToChange.Name} to change is empty");
+
+            if (propToChangeValue == newValue)
+                throw new InvalidOperationException($"Given new {propToChange.Name} is the same as current");
+
+            propToChange.SetValue(this, newValue);
+        }
+
+        #endregion
     }
 }

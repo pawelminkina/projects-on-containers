@@ -18,7 +18,7 @@ namespace Issues.Domain.Issues
             TextContent = textContent;
         }
 
-        private IssueContent()
+        internal IssueContent()
         {
 
         }

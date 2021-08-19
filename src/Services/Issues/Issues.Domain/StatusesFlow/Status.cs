@@ -15,23 +15,14 @@ namespace Issues.Domain.StatusesFlow
             Name = name;
             OrganizationId = organizationId;
         }
-        private Status()
+        internal Status()
         {
 
         }
         public virtual string Name { get; protected set; }
         public virtual string OrganizationId { get; protected set; }
         public virtual bool IsArchived { get; protected set; }
-
-        public void Rename(string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-                throw new InvalidOperationException("Given name to change is empty");
-
-            if (Name == newName)
-                throw new InvalidOperationException("Given new name of status is the same as current");
-            Name = newName;
-        }
+        public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
         public void Archive(IStatusArchivePolicy policy)
         {

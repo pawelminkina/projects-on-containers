@@ -17,7 +17,7 @@ namespace Issues.Domain.StatusesFlow
             OrganizationId = organizationId;
             StatusesInFlow = new List<StatusInFlow>();
         }
-        private StatusFlow()
+        internal StatusFlow()
         {
 
         }
@@ -49,16 +49,7 @@ namespace Issues.Domain.StatusesFlow
             StatusesInFlow.Remove(statusInFlowToDelete);
         }
 
-        public void Rename(string newName)
-        {
-            if (string.IsNullOrWhiteSpace(newName))
-                throw new InvalidOperationException("Given name to change is empty");
-
-            if (newName == Name)
-                throw new InvalidOperationException("Given name is the same as current");
-
-            Name = newName;
-        }
+        public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
         public void Archive()
         {
