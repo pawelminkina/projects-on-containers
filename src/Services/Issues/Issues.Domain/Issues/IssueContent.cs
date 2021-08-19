@@ -31,12 +31,12 @@ namespace Issues.Domain.Issues
             TextContent = string.IsNullOrWhiteSpace(newTextContent) ? string.Empty : newTextContent;
         }
 
-        public void Archive()
+        public virtual void Archive()
         {
             IsArchived = true;
         }
 
-        public void UnArchive()
+        public virtual void UnArchive()
         {
             IsArchived = false;
         }

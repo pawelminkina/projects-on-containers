@@ -1,9 +1,5 @@
 ﻿using Architecture.DDD;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Issues.Domain.Issues
 {
@@ -38,7 +34,7 @@ namespace Issues.Domain.Issues
         {
             if (Content != null)
                 throw new InvalidOperationException($"Content to issue with id: {Id} is already added");
-            
+
             Content = new IssueContent(textContent, this);
             return Content;
         }
@@ -47,6 +43,7 @@ namespace Issues.Domain.Issues
 
         public void ChangeStatus(string statusId) => ChangeStringProperty("StatusId", statusId);
 
+        //TODO should be tested with integration test
         internal void ChangeGroupOfIssue(string newGroupOfIssueId) => ChangeStringProperty("GroupOfIssuesId", newGroupOfIssueId);
 
 
