@@ -9,7 +9,7 @@ namespace Architecture.DDD
 {
     public abstract class EntityBase
     {
-        public virtual string Id { get; protected set; }
+        public virtual string Id { get; set; }
 
         #region Equality
 

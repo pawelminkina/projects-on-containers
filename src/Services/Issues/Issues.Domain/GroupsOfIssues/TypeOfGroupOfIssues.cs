@@ -12,21 +12,21 @@ namespace Issues.Domain.GroupsOfIssues
 
     public class TypeOfGroupOfIssues : EntityBase
     {
-        internal TypeOfGroupOfIssues(string organizationId, string name)
+        public TypeOfGroupOfIssues(string organizationId, string name)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
         }
 
-        internal TypeOfGroupOfIssues()
+        public TypeOfGroupOfIssues()
         {
 
         }
 
-        public virtual string Name { get; protected set; }
-        public virtual string OrganizationId { get; protected set; }
-        public virtual bool IsArchived { get; protected set; }
+        public virtual string Name { get; set; }
+        public virtual string OrganizationId { get; set; }
+        public virtual bool IsArchived { get; set; }
 
         public void RenameGroup(string newName)=> ChangeStringProperty("Name", newName);
 

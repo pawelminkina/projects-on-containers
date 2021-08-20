@@ -10,21 +10,21 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusFlow : EntityBase
     {
-        internal StatusFlow(string name, string organizationId)
+        public StatusFlow(string name, string organizationId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
             StatusesInFlow = new List<StatusInFlow>();
         }
-        internal StatusFlow()
+        public StatusFlow()
         {
 
         }
-        public virtual string Name { get; protected set; }
-        public virtual string OrganizationId { get; protected set; }
-        public virtual List<StatusInFlow> StatusesInFlow { get; protected set; }
-        public virtual bool IsArchived { get; protected set; }
+        public virtual string Name { get; set; }
+        public virtual string OrganizationId { get; set; }
+        public virtual List<StatusInFlow> StatusesInFlow { get; set; }
+        public virtual bool IsArchived { get; set; }
 
         public StatusInFlow AddNewStatusToFlow(Status statusToAdd, int indexInFlow)
         {

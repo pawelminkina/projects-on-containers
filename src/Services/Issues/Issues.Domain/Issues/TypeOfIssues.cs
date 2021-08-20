@@ -6,7 +6,7 @@ namespace Issues.Domain.Issues
 {
     public class TypeOfIssues : EntityBase
     {
-        internal TypeOfIssues(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId, byte[] icon)
+        public TypeOfIssues(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId, byte[] icon)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -16,21 +16,29 @@ namespace Issues.Domain.Issues
             OrganizationId = organizationId;
         }
 
-        internal TypeOfIssues()
+        public TypeOfIssues()
         {
 
         }
-        public virtual string Name { get; protected set; }
-        public virtual string StatusFlowId { get; protected set; }
-        public virtual string TypeOfGroupOfIssuesId { get; protected set; }
-        public virtual byte[] Icon { get; protected set; }
-        public virtual string OrganizationId { get; protected set; }
-        public virtual bool IsArchived { get; protected set; }
+        public virtual string Name { get; set; }
+        public virtual string StatusFlowId { get; set; }
+        public virtual string TypeOfGroupOfIssuesId { get; set; }
+        public virtual byte[] Icon { get; set; }
+        public virtual string OrganizationId { get; set; }
+        public virtual bool IsArchived { get; set; }
 
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
         public void ChangeStatusFlow(string newStatusFlowId) => ChangeStringProperty("StatusFlowId", newStatusFlowId);
+        public void Archive()
+        {
+            IsArchived = true;
+        }
 
+        public void UnArchive()
+        {
+            IsArchived = false;
+        }
 
     }
 }

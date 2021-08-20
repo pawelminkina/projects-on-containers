@@ -11,20 +11,20 @@ namespace Issues.Domain.Issues
     public class IssueContent : EntityBase
     {
 
-        internal IssueContent(string textContent, Issue parentIssue)
+        public IssueContent(string textContent, Issue parentIssue)
         {
             Id = Guid.NewGuid().ToString();
             ParentIssue = parentIssue;
             TextContent = textContent;
         }
 
-        internal IssueContent()
+        public IssueContent()
         {
 
         }
-        public virtual string TextContent { get; protected set; }
-        public virtual Issue ParentIssue { get; protected set; }
-        public virtual bool IsArchived { get; protected set; }
+        public virtual string TextContent { get; set; }
+        public virtual Issue ParentIssue { get; set; }
+        public virtual bool IsArchived { get; set; }
 
         public void ChangeTextContent(string newTextContent)
         {

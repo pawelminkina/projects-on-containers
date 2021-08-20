@@ -5,7 +5,7 @@ namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        internal Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation, string typeOfIssueId)
+        public Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation, string typeOfIssueId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -16,19 +16,19 @@ namespace Issues.Domain.Issues
             TypeOfIssueId = typeOfIssueId;
         }
 
-        internal Issue()
+        public Issue()
         {
 
         }
 
-        public virtual string Name { get; protected set; }
-        public virtual string StatusId { get; protected set; }
-        public virtual IssueContent Content { get; protected set; }
-        public virtual string CreatingUserId { get; protected set; }
-        public virtual string GroupOfIssuesId { get; protected set; }
-        public virtual DateTimeOffset TimeOfCreation { get; protected set; }
-        public virtual bool IsArchived { get; protected set; }
-        public virtual string TypeOfIssueId { get; protected set; }
+        public virtual string Name { get; set; }
+        public virtual string StatusId { get; set; }
+        public virtual IssueContent Content { get; set; }
+        public virtual string CreatingUserId { get; set; }
+        public virtual string GroupOfIssuesId { get; set; }
+        public virtual DateTimeOffset TimeOfCreation { get; set; }
+        public virtual bool IsArchived { get; set; }
+        public virtual string TypeOfIssueId { get; set; }
 
         public IssueContent AddContent(string textContent)
         {

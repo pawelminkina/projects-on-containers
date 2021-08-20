@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.Issues;
 using Issues.Domain.StatusesFlow;
@@ -67,15 +68,17 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
         [Fact]
         public void Assign_Issue_To_Group_Correctly_Assigns_New_Item_To_Collection_Of_Issues_In_Group()
         {
-            var groupOfIssuesMock = new Mock<GroupOfIssues>();
-            var statusInFlow = new Mock<StatusInFlow>();
-            var statusFlow = new Mock<StatusFlow>();
+            var groupOfIssuesMock = new GroupOfIssues
+            {
+                Issues = new List<Issue>(),
+                Id = "4"
+            };
 
-            statusInFlow.Setup(s => s.ParentStatus.Id).Returns("someStatusId");
-            statusFlow.Setup(s => s.StatusesInFlow).Returns(new List<StatusInFlow>() { statusInFlow.Object });
-            groupOfIssuesMock.SetupProperty(d => d.Flow, statusFlow.Object);
-            groupOfIssuesMock.SetupProperty(d => d.Issues, new List<Issue>());
-
+            var assigned =groupOfIssuesMock.AssignIssueToGroup(new Issue() {Id = "123", StatusId = "134", GroupOfIssuesId = "15"}, "12");
+            assigned.StatusId.Should().Be("12");
+            assigned.GroupOfIssuesId.Should().Be("4");
+            assigned.Id.Should().Be("123");
+            groupOfIssuesMock.Issues.Should().HaveCount(1);
         }
 
         [Fact]
