@@ -1,19 +1,21 @@
 ﻿using Architecture.DDD;
 using System;
+using Issues.Domain.GroupsOfIssues;
 
 namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        public Issue(string name, string statusId, string creatingUserId, string groupOfIssuesId, DateTimeOffset timeOfCreation, string typeOfIssueId)
+        public Issue(string name, string statusId, string creatingUserId, GroupOfIssues groupOfIssue, DateTimeOffset timeOfCreation, string typeOfIssueId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             StatusId = statusId;
             CreatingUserId = creatingUserId;
-            GroupOfIssuesId = groupOfIssuesId;
+            GroupOfIssue = groupOfIssue;
             TimeOfCreation = timeOfCreation;
             TypeOfIssueId = typeOfIssueId;
+            IsArchived = false;
         }
 
         public Issue()
@@ -25,10 +27,11 @@ namespace Issues.Domain.Issues
         public virtual string StatusId { get; set; }
         public virtual IssueContent Content { get; set; }
         public virtual string CreatingUserId { get; set; }
-        public virtual string GroupOfIssuesId { get; set; }
+        public virtual GroupOfIssues GroupOfIssue { get; set; }
         public virtual DateTimeOffset TimeOfCreation { get; set; }
         public virtual bool IsArchived { get; set; }
         public virtual string TypeOfIssueId { get; set; }
+        public virtual TypeOfIssue TypeOfIssue { get; set; }
 
         public IssueContent AddContent(string textContent)
         {
@@ -44,7 +47,12 @@ namespace Issues.Domain.Issues
         public void ChangeStatus(string statusId) => ChangeStringProperty("StatusId", statusId);
 
         //TODO should be tested with integration test
-        internal void ChangeGroupOfIssue(string newGroupOfIssueId) => ChangeStringProperty("GroupOfIssuesId", newGroupOfIssueId);
+        internal void ChangeGroupOfIssue(GroupOfIssues newGroup)
+        {
+            if (newGroup == null)
+                throw new InvalidOperationException("Given group issue to set is null");
+            GroupOfIssue = newGroup;
+        }
 
 
         public void Archive()

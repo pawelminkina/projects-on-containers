@@ -15,30 +15,33 @@ namespace Issues.Domain.StatusesFlow
             ParentStatus = parentStatus;
             StatusFlow = statusFlow;
             IndexInFlow = indexInFlow;
-            ConnectedStatuses = new List<Status>();
+            ConnectedStatuses = new List<StatusInFlowConnection>();
+            IsArchived = false;
         }
         public StatusInFlow()
         {
-            ConnectedStatuses = new List<Status>();
+            ConnectedStatuses = new List<StatusInFlowConnection>();
         }
         public virtual Status ParentStatus { get; set; }
+        public virtual string ParentStatusId { get; set; }
         //one to many
         public virtual StatusFlow StatusFlow { get; set; }
         public virtual int IndexInFlow { get; set; }
         public virtual bool IsArchived { get; set; }
 
-        public virtual List<Status> ConnectedStatuses { get; set; } //dunno how i will do this xD, functional tests will show
+        public virtual List<StatusInFlowConnection> ConnectedStatuses { get; set; } //dunno how i will do this xD, functional tests will show
 
         public void AddConnectedStatus(Status status)
         {
             if (status == null)
                 throw new InvalidOperationException("Given status to add is null");
 
-            if (ConnectedStatuses.Any(s=> s.Id == status.Id))
+            if (ConnectedStatuses.Any(s=> s.ConnectedWithParent.Id == status.Id))
                 throw new InvalidOperationException(
                     $"Status with id: {status.Id} is already added to connected statuses where status in flow has id: {Id}");
 
-            ConnectedStatuses.Add(status);
+            var connectedStatus = new StatusInFlowConnection(status, this);
+            ConnectedStatuses.Add(connectedStatus);
         }
 
         public void DeleteConnectedStatus(string id)

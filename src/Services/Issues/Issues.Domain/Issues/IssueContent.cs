@@ -15,7 +15,9 @@ namespace Issues.Domain.Issues
         {
             Id = Guid.NewGuid().ToString();
             ParentIssue = parentIssue;
+            ParentIssueId = parentIssue.Id;
             TextContent = textContent;
+            IsArchived = false;
         }
 
         public IssueContent()
@@ -24,6 +26,7 @@ namespace Issues.Domain.Issues
         }
         public virtual string TextContent { get; set; }
         public virtual Issue ParentIssue { get; set; }
+        public virtual string ParentIssueId { get; set; }
         public virtual bool IsArchived { get; set; }
 
         public void ChangeTextContent(string newTextContent)

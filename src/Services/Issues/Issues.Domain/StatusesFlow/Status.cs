@@ -14,6 +14,7 @@ namespace Issues.Domain.StatusesFlow
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
+            IsArchived = false;
         }
         public Status()
         {

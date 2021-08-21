@@ -31,7 +31,6 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
             Assert.Same(createdIssue.Name, "someName");
             Assert.Same(createdIssue.CreatingUserId, "user");
             Assert.Same(createdIssue.TypeOfIssueId, "typeOfIssue");
-            Assert.Same(createdIssue.GroupOfIssuesId, "someGroupId");
             Assert.Same(createdIssue.StatusId, "someStatusId");
         }
 
@@ -74,9 +73,8 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
                 Id = "4"
             };
 
-            var assigned =groupOfIssuesMock.AssignIssueToGroup(new Issue() {Id = "123", StatusId = "134", GroupOfIssuesId = "15"}, "12");
+            var assigned =groupOfIssuesMock.AssignIssueToGroup(new Issue() {Id = "123", StatusId = "134"}, "12");
             assigned.StatusId.Should().Be("12");
-            assigned.GroupOfIssuesId.Should().Be("4");
             assigned.Id.Should().Be("123");
             groupOfIssuesMock.Issues.Should().HaveCount(1);
         }

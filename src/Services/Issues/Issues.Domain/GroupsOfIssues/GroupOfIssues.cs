@@ -20,6 +20,7 @@ namespace Issues.Domain.GroupsOfIssues
             OrganizationId = organizationId;
             TypeOfGroupId = typeOfGroupId;
             StatusFlowId = statusFlowId;
+            IsArchived = false;
         }
 
         public GroupOfIssues()
@@ -38,7 +39,7 @@ namespace Issues.Domain.GroupsOfIssues
         {
             var defaultStatus = GetDefaultStatusInFlow();
 
-            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this.Id, DateTimeOffset.UtcNow, typeOfIssueId);
+            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId);
             issue.AddContent(textContent);
             Issues.Add(issue);
             return issue;
@@ -57,7 +58,7 @@ namespace Issues.Domain.GroupsOfIssues
                     $"Requested issue to assign with id: {existingIssue.Id} is already added in group with {Id}");
 
             existingIssue.ChangeStatus(newStatusId);
-            existingIssue.ChangeGroupOfIssue(Id);
+            existingIssue.ChangeGroupOfIssue(this);
             Issues.Add(existingIssue);
             return existingIssue;
         }

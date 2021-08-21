@@ -17,6 +17,7 @@ namespace Issues.Domain.GroupsOfIssues
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
+            IsArchived = false;
         }
 
         public TypeOfGroupOfIssues()

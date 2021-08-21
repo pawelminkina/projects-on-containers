@@ -14,6 +14,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Issues.API.Infrastructure.Database.Migration;
+using Issues.API.Infrastructure.Database.Seeding;
+using Issues.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Issues.API
 {
@@ -37,6 +41,15 @@ namespace Issues.API
             services.AddMediatR(
                 typeof(IIssueRepository).Assembly, //Domain
                 typeof(CreateIssueCommand).Assembly); //Application
+
+            //Database
+            services.AddDbContext<IssuesServiceDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration["ConnectionString"]);
+            });
+            services.AddDbMigration<IssuesServiceDbContext>();
+            services.AddDbSeeding<IssuesServiceDbContext, DefaultIssuesServiceDbSeeder>();
+
 
             services.AddControllers();
         }

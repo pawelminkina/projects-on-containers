@@ -21,7 +21,7 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
         public void Add_Connected_Status_Throws_Exception_Because_Given_Status_Is_Already_Added()
         {
             var mock = new Mock<StatusInFlow>();
-            mock.Setup(s => s.ConnectedStatuses).Returns(new List<Status>() { new Mock<Status>().SetupProperty(s => s.Id, "someId").Object });
+            mock.Setup(s => s.ConnectedStatuses).Returns(new List<StatusInFlowConnection>() { new Mock<StatusInFlowConnection>().SetupProperty(s => s.ConnectedWithParent.Id, "someId").Object });
             Assert.Throws<InvalidOperationException>(() => mock.Object.AddConnectedStatus(new Mock<Status>().SetupProperty(s => s.Id, "someId").Object));
         }
 
@@ -43,7 +43,7 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
         public void Delete_Connected_Status_Throws_Exception_Because_Status_Does_Not_Exist_In_Collection()
         {
             var mock = new Mock<StatusInFlow>();
-            mock.Setup(s => s.ConnectedStatuses).Returns(new List<Status>() { new Mock<Status>().SetupProperty(s => s.Id, "someId").Object });
+            mock.Setup(s => s.ConnectedStatuses).Returns(new List<StatusInFlowConnection>() { new Mock<StatusInFlowConnection>().SetupProperty(s => s.ConnectedWithParent.Id, "someId").Object });
             Assert.Throws<InvalidOperationException>(() => mock.Object.DeleteConnectedStatus("someOtherId"));
         }
 
@@ -52,7 +52,7 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
         {
             var mock = new StatusInFlow
             {
-                ConnectedStatuses = new List<Status>() {new Status() {Id = "123"}}
+                ConnectedStatuses = new List<StatusInFlowConnection>() {new StatusInFlowConnection() {Id = "123"}}
             };
 
             mock.ConnectedStatuses.Count.Should().Be(1);

@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace Issues.Domain.Issues
 {
-    public class TypeOfIssues : EntityBase
+    public class TypeOfIssue : EntityBase
     {
-        public TypeOfIssues(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId, byte[] icon)
+        public TypeOfIssue(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId, byte[] icon)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -14,9 +14,10 @@ namespace Issues.Domain.Issues
             TypeOfGroupOfIssuesId = typeOfGroupOfIssuesId;
             Icon = icon;
             OrganizationId = organizationId;
+            IsArchived = false;
         }
 
-        public TypeOfIssues()
+        public TypeOfIssue()
         {
 
         }

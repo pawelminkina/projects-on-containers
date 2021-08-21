@@ -16,6 +16,7 @@ namespace Issues.Domain.StatusesFlow
             Name = name;
             OrganizationId = organizationId;
             StatusesInFlow = new List<StatusInFlow>();
+            IsArchived = false;
         }
         public StatusFlow()
         {
