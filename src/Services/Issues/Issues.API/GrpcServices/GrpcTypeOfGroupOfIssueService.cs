@@ -26,14 +26,14 @@ namespace Issues.API.GrpcServices
             throw new NotImplementedException();
         }
 
-        public override async Task<RenameOfGroupOfIssuesResponse> RenameOfGroupOfIssues(RenameOfGroupOfIssuesRequest request, ServerCallContext context)
+        public override async Task<DeleteTypeOfGroupOfIssuesResponse> DeleteTypeOfGroupOfIssues(DeleteTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
-            throw new NotImplementedException();
+            return await base.DeleteTypeOfGroupOfIssues(request, context);
         }
 
-        public override async Task<DeleteOfGroupOfIssuesResponse> DeleteOfGroupOfIssues(DeleteOfGroupOfIssuesRequest request, ServerCallContext context)
+        public override async Task<RenameTypeOfGroupOfIssuesResponse> RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
-            throw new NotImplementedException();
+            return await base.RenameTypeOfGroupOfIssues(request, context);
         }
     }
 }

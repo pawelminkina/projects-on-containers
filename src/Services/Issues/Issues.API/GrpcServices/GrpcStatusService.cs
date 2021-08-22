@@ -11,6 +11,10 @@ namespace Issues.API.GrpcServices
         {
             throw new NotImplementedException();
         }
+        public override async Task<GetStatusResponse> GetStatus(GetStatusRequest request, ServerCallContext context)
+        {
+            return await base.GetStatus(request, context);
+        }
 
         public override async Task<CreateStatusResponse> CreateStatus(CreateStatusRequest request, ServerCallContext context)
         {
