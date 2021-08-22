@@ -67,6 +67,11 @@ namespace Issues.API
                 endpoints.MapDefaultControllerRoute();
 
                 endpoints.MapGrpcService<GrpcIssueService>();
+                endpoints.MapGrpcService<GrpcGroupOfIssueService>();
+                endpoints.MapGrpcService<GrpcStatusFlowService>();
+                endpoints.MapGrpcService<GrpcStatusService>();
+                endpoints.MapGrpcService<GrpcTypeOfGroupOfIssueService>();
+                endpoints.MapGrpcService<GrpcTypeOfIssueService>();
             });
         }
     }

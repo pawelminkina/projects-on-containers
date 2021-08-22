@@ -1,0 +1,59 @@
+syntax = "proto3";
+option csharp_namespace = "Issues.API.Protos";
+
+service GroupOfIssueService{
+	rpc GetGroupsOfIssues(GetGroupsOfIssuesRequest) returns (GetGroupsOfIssuesResponse);
+	rpc GetGroupOfIssues(GetGroupOfIssuesRequest) returns (GetGroupOfIssuesResponse);
+	rpc CreateGroupOfIssues(CreateGroupOfIssuesRequest) returns (CreateGroupOfIssuesResponse);
+	rpc RenameGroupOfIssues(RenameGroupOfIssuesRequest) returns (RenameGroupOfIssuesResponse);
+	rpc DeleteGroupOfIssues(DeleteGroupOfIssuesRequest) returns (DeleteGroupOfIssuesResponse);
+	rpc ChangeGroupOfIssueType(ChangeGroupOfIssueTypeRequest) returns (ChangeGroupOfIssueTypeResponse);
+}
+
+message GetGroupsOfIssuesRequest{
+
+}
+
+message GetGroupsOfIssuesResponse{
+
+}
+
+message GetGroupOfIssuesRequest{
+
+}
+
+message GetGroupOfIssuesResponse{
+
+}
+
+message CreateGroupOfIssuesRequest{
+
+}
+
+message CreateGroupOfIssuesResponse{
+
+}
+
+message RenameGroupOfIssuesRequest{
+
+}
+
+message RenameGroupOfIssuesResponse{
+
+}
+
+message DeleteGroupOfIssuesRequest{
+
+}
+
+message DeleteGroupOfIssuesResponse{
+
+}
+
+message ChangeGroupOfIssueTypeRequest{
+
+}
+
+message ChangeGroupOfIssueTypeResponse{
+
+}

@@ -1,0 +1,88 @@
+syntax = "proto3";
+option csharp_namespace = "Issues.API.Protos";
+
+service StatusFlowService{
+	rpc GetStatusFlows(GetStatusFlowsRequest) returns (GetStatusFlowsResponse);
+	rpc GetStatusFlow(GetStatusFlowRequest) returns (GetStatusFlowResponse);
+	rpc AddStatusFlow(AddStatusFlowRequest) returns (AddStatusFlowResponse);
+	rpc DeleteStatusFlow(DeleteStatusFlowsRequest) returns (DeleteStatusFlowsResponse);
+	rpc RenameStatusFlow(RenameStatusFlowsRequest) returns (RenameStatusFlowsResponse);
+	rpc AddStatusToFlow(AddStatusToFlowRequest) returns (AddStatusToFlowResponse);
+	rpc DeleteStatusFromFlow(DeleteStatusFromFlowRequest) returns (DeleteStatusFromFlowResponse);
+	rpc AddConnectionToStatusInFlow(AddConnectionToStatusInFlowRequest) returns (AddConnectionToStatusInFlowResponse);
+	rpc RemoveConnectionFromStatusInFlow(RemoveConnectionFromStatusInFlowRequest) returns (RemoveConnectionFromStatusInFlowResponse);
+}
+
+message GetStatusFlowsRequest{
+
+}
+
+message GetStatusFlowsResponse{
+
+}
+
+message GetStatusFlowRequest{
+
+}
+
+message GetStatusFlowResponse{
+
+}
+
+message AddStatusFlowRequest{
+
+}
+
+message AddStatusFlowResponse{
+
+}
+
+message DeleteStatusFlowsRequest{
+
+}
+
+message DeleteStatusFlowsResponse{
+
+}
+
+message RenameStatusFlowsRequest{
+
+}
+
+message RenameStatusFlowsResponse{
+
+}
+
+message AddStatusToFlowRequest{
+
+}
+
+message AddStatusToFlowResponse{
+
+}
+
+message DeleteStatusFromFlowRequest{
+
+}
+
+message DeleteStatusFromFlowResponse{
+
+}
+
+message AddConnectionToStatusInFlowRequest{
+
+}
+
+message AddConnectionToStatusInFlowResponse{
+
+}
+
+message RemoveConnectionFromStatusInFlowRequest{
+
+}
+
+message RemoveConnectionFromStatusInFlowResponse{
+
+}
+
+

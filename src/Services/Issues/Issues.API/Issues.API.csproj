@@ -29,8 +29,18 @@
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Protos\issue.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\groupofissue.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\typeofgroupofissue.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\status.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\statusflow.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\typeofissue.proto" GrpcServices="Server" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Protos\issue.proto" />
+    <None Remove="Protos\groupofissue.proto" />
+    <None Remove="Protos\status.proto" />
+    <None Remove="Protos\statusflow.proto" />
+    <None Remove="Protos\typeofgroupofissue.proto" />
+    <None Remove="Protos\typeofissue.proto" />
   </ItemGroup>
 </Project>

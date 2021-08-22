@@ -1,0 +1,52 @@
+syntax = "proto3";
+option csharp_namespace = "Issues.API.Protos";
+
+
+service StatusService{
+	rpc GetStatuses(GetStatusesRequest) returns (GetStatusesResponse);
+	//rpc GetStatusesForGroupOfIssues(GetStatusesForGroupOfIssuesRequest) returns (GetStatusesForGroupOfIssuesResponse) //TODO in domain logic
+	rpc GetStatus(GetStatusRequest) returns (GetStatusResponse);
+	rpc CreateStatus(CreateStatusRequest) returns (CreateStatusResponse);
+	rpc DeleteStatus(DeleteStatusRequest) returns (DeleteStatusResponse);
+	rpc RenameStatus(RenameStatusRequest) returns (RenameStatusResponse);
+}
+
+message GetStatusesRequest{
+
+}
+
+message GetStatusesResponse{
+
+}
+
+message GetStatusRequest{
+
+}
+
+message GetStatusResponse{
+
+}
+
+message CreateStatusRequest{
+
+}
+
+message CreateStatusResponse{
+
+}
+
+message DeleteStatusRequest{
+
+}
+
+message DeleteStatusResponse{
+
+}
+
+message RenameStatusRequest{
+
+}
+
+message RenameStatusResponse{
+
+}

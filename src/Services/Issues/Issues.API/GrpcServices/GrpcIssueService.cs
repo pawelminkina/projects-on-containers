@@ -18,8 +18,8 @@ using MediatR;
 
 namespace Issues.API.GrpcServices
 {
-    //TODO create commands and queries with fluent validators, if validator exist add unit test for him
     //TODO Proto services
+    //TODO create commands and queries with fluent validators, if validator exist add unit test for him
     //TODO webBff
     //TODO Acceptance tests for queries and commands
     //TODO User service
@@ -81,6 +81,12 @@ namespace Issues.API.GrpcServices
                 context.GetOrganizationId()));
             return new UpdateIssueContentResponse();
         }
+
+        public async override Task<UpdateIssueStatusResponse> UpdateIssueStatus(UpdateIssueStatusRequest request, ServerCallContext context)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private Protos.IssueReference MapToIssueReference(Issue issue) => new IssueReference()
         {

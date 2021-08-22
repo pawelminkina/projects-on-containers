@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AC589D28
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Tests", "Services\Issues\Tests\Issues.Tests\Issues.Tests.csproj", "{23E4F67F-3E41-4752-B3A1-32D45455975C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issues.Infrastructure", "Services\Issues\Issues.Infrastructure\Issues.Infrastructure.csproj", "{1706BCEB-40E5-41CA-93D3-844291FDEDCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Infrastructure", "Services\Issues\Issues.Infrastructure\Issues.Infrastructure.csproj", "{1706BCEB-40E5-41CA-93D3-844291FDEDCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
