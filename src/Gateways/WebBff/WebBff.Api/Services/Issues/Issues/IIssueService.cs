@@ -11,9 +11,9 @@ namespace WebBff.Api.Services.Issues.Issues
         Task DeleteIssueAsync(string id);
         Task<IEnumerable<IssueDto>> GetIssuesForGroupAsync(string groupId);
         Task<IEnumerable<IssueDto>> GetIssuesForUserAsync(string userId);
-        Task RenameIssueAsync(string userId);
-        Task<IssueDto> GetIssueWithContentAsync(string issueId); //TODO can be issueDTo with content
-        Task UpdateIssueContentAsync(string textContent, string issueId);
+        Task RenameIssueAsync(string issueId, string newName);
+        Task<IssueWithContent> GetIssueWithContentAsync(string issueId); //TODO can be issueDTo with content
+        Task UpdateIssueContentAsync(string issueId, string textContent);
         Task UpdateIssueStatusAsync(string issueId, string statusId);
     }
 }

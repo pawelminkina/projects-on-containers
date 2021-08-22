@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Issues.API.Protos;
 using WebBff.Api.Models.Issuses.GroupOfIssue;
+using CreateGroupOfIssuesRequest = Issues.API.Protos.CreateGroupOfIssuesRequest;
 
 namespace WebBff.Api.Services.Issues.GroupOfIssue
 {

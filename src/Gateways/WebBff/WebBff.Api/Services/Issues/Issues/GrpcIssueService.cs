@@ -41,7 +41,7 @@ namespace WebBff.Api.Services.Issues.Issues
             var res = await _client.RenameIssueAsync(new RenameIssueRequest());
         }
 
-        public async Task<IssueDto> GetIssueWithContentAsync(string issueId)
+        public async Task<IssueWithContent> GetIssueWithContentAsync(string issueId)
         {
             var res = await _client.GetIssueWithContentAsync(new GetIssueWithContentRequest());
             return null;
