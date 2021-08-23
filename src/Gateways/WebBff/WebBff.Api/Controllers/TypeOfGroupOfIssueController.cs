@@ -25,31 +25,31 @@ namespace WebBff.Api.Controllers
             return Ok(types);
         }
 
-        [HttpGet("{typeid}")]
-        public async Task<ActionResult<TypeOfGroupOfIssueDto>> GetTypeOfGroupsOfIssues(string typeid)
+        [HttpGet("{typeId}")]
+        public async Task<ActionResult<TypeOfGroupOfIssueDto>> GetTypeOfGroupsOfIssues([FromRoute] string typeId)
         {
-            var type = await _service.GetTypeOfGroupsOfIssuesAsync(typeid);
-            return Ok(typeid);
+            var type = await _service.GetTypeOfGroupsOfIssuesAsync(typeId);
+            return Ok(typeId);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssueRequest request)
+        public async Task<ActionResult> CreateTypeOfGroupOfIssues([FromBody] CreateTypeOfGroupOfIssueRequest request)
         {
             var type = await _service.CreateTypeOfGroupOfIssueAsync(new TypeOfGroupOfIssueDto());
-            return Ok(type);
+            return Ok(type);//TODO 201 WITH PARAMS
         }
 
-        [HttpPut("{typeid}/rename")]
-        public async Task<ActionResult> RenameTypeOfGroupOfIssues(string typeId, string newName)
+        [HttpPut("{typeId}/rename")]
+        public async Task<ActionResult> RenameTypeOfGroupOfIssues([FromRoute] string typeId, [FromQuery] string newName)
         {
             await _service.RenameTypeOfGroupOfIssueAsync(typeId, newName);
             return NoContent();
         }
 
-        [HttpDelete("{typeid}")]
-        public async Task<ActionResult> DeleteTypeOfGroupOfIssues(string typeid)
+        [HttpDelete("{typeId}")]
+        public async Task<ActionResult> DeleteTypeOfGroupOfIssues([FromRoute] string typeId)
         {
-            await _service.DeleteTypeOfGroupOfIssuesAsync(typeid);
+            await _service.DeleteTypeOfGroupOfIssuesAsync(typeId);
             return Ok();
         }
     }

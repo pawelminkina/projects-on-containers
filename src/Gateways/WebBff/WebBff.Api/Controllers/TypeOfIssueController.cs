@@ -25,31 +25,31 @@ namespace WebBff.Api.Controllers
             return Ok(types);
         }
 
-        [HttpGet("{typeid}")]
-        public async Task<ActionResult<TypeOfIssueDto>> GetTypeOfIssues(string typeid)
+        [HttpGet("{typeId}")]
+        public async Task<ActionResult<TypeOfIssueDto>> GetTypeOfIssues([FromRoute] string typeId)
         {
-            var type = await _service.GetTypeOfIssuesAsync(typeid);
+            var type = await _service.GetTypeOfIssuesAsync(typeId);
             return Ok(type);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTypeOfIssues(CreateTypeOfIssuesRequest request)
+        public async Task<ActionResult> CreateTypeOfIssues([FromBody] CreateTypeOfIssuesRequest request)
         {
             var res = await _service.CreateTypeOfIssuesAsync(new TypeOfIssueDto());
-            return Ok(res);
+            return Ok(res);//TODO 201 WITH PARAMS
         }
 
-        [HttpDelete("{typeid}")]
-        public async Task<ActionResult> DeleteTypeOfIssues(string typeid)
+        [HttpDelete("{typeId}")]
+        public async Task<ActionResult> DeleteTypeOfIssues([FromRoute] string typeId)
         {
-            await _service.DeleteTypeOfIssuesAsync(typeid);
+            await _service.DeleteTypeOfIssuesAsync(typeId);
             return Ok();
         }
 
-        [HttpPut("{typeid}")]
-        public async Task<ActionResult> RenameTypeOfIssues(string typeid, string newName)
+        [HttpPut("{typeId}")]
+        public async Task<ActionResult> RenameTypeOfIssues([FromRoute] string typeId, [FromQuery] string newName)
         {
-            await _service.RenameTypeOfIssuesAsync(typeid, newName);
+            await _service.RenameTypeOfIssuesAsync(typeId, newName);
             return NoContent();
         }
     }

@@ -37,7 +37,7 @@ namespace WebBff.Api.Controllers
         public async Task<ActionResult> CreateStatus([FromBody] CreateStatusRequest request)
         {
             var res = await _service.CreateStatusAsync(new StatusDto());
-            return Ok();
+            return Ok();//TODO 201 WITH PARAMS
         }
 
         [HttpDelete("{statusId}")]
