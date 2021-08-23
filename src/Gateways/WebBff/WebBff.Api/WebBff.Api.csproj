@@ -14,8 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Issuses\TypeOfGroupOfIssue\" />
-    <Folder Include="Models\Issuses\StatusFlow\" />
-    <Folder Include="Models\Issuses\Status\" />
     <Folder Include="Services\Issues\Issues\" />
     <Folder Include="Services\Issues\TypeOfGroupOfIssue\" />
     <Folder Include="Services\Issues\StatusFlow\" />
