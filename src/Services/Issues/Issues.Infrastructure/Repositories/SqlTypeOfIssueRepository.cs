@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Issues.Domain.Issues;
 using Issues.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Issues.Infrastructure.Repositories
 {
@@ -15,7 +16,7 @@ namespace Issues.Infrastructure.Repositories
         }
         public async Task<TypeOfIssue> GetTypeOfIssueByIdAsync(string id)
         {
-            throw new System.NotImplementedException();
+            _dbContext.TypesOfIssues.FirstOrDefaultAsync(s=>s.id)
         }
 
         public async Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string id)
