@@ -39,7 +39,7 @@ namespace Issues.Domain.GroupsOfIssues
         {
             var defaultStatus = GetDefaultStatusInFlow();
 
-            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId);
+            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId, OrganizationId);
             issue.AddContent(textContent);
             Issues.Add(issue);
             return issue;

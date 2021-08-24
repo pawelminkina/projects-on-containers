@@ -50,6 +50,7 @@ namespace Issues.API
             services.AddDbMigration<IssuesServiceDbContext>();
             services.AddDbSeeding<IssuesServiceDbContext, DefaultIssuesServiceDbSeeder>();
 
+            services.AddScoped<>();
 
             services.AddControllers();
         }
