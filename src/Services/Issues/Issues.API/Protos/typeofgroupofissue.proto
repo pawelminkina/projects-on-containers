@@ -1,5 +1,4 @@
 syntax = "proto3";
-
 option csharp_namespace = "Issues.API.Protos";
 
 service TypeOfGroupOfIssueService{
@@ -15,32 +14,42 @@ message GetTypesOfGroupsOfIssuesRequest{
 }
 
 message GetTypesOfGroupsOfIssuesResponse{
-
+	repeated TypeOfGroupOfIssues types = 1;
 }
 
 message GetTypeOfGroupOfIssuesRequest{
-
+	string id = 1;
 }
 
 message GetTypeOfGroupOfIssuesResponse{
-
+	TypeOfGroupOfIssues type = 1;
 }
 
 message CreateTypefOfGroupOfIssuesRequest{
-
+	string name = 1;
 }
 
 message CreateTypefOfGroupOfIssuesResponse{
+	string id = 1;
 }
 
 message RenameTypeOfGroupOfIssuesRequest{
+	string id = 1;
+	string newName = 2;
 }
 
 message RenameTypeOfGroupOfIssuesResponse{
 }
 
 message DeleteTypeOfGroupOfIssuesRequest{
+	string id = 1;
 }
 
 message DeleteTypeOfGroupOfIssuesResponse{
+}
+
+message TypeOfGroupOfIssues{
+	string id = 1;
+	string organizationId = 2;
+	string name = 3;
 }

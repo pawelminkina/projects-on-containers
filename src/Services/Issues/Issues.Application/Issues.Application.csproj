@@ -7,6 +7,9 @@
   <ItemGroup>
     <Folder Include="Issues\GetIssuesForGroup\" />
     <Folder Include="Issues\UpdateIssueContent\" />
+    <Folder Include="TypeOfGroupOfIssues\GetType\" />
+    <Folder Include="TypeOfGroupOfIssues\ArchiveType\" />
+    <Folder Include="TypeOfGroupOfIssues\RenameType\" />
   </ItemGroup>
 
   <ItemGroup>
