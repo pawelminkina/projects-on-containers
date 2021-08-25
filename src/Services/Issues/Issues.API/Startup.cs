@@ -14,8 +14,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using Issues.API.Infrastructure.Database.Migration;
 using Issues.API.Infrastructure.Database.Seeding;
+using Issues.API.Infrastructure.Validation;
+using Issues.Application.TypeOfGroupOfIssues.CreateType;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
 using Issues.Infrastructure.Database;
@@ -59,6 +62,11 @@ namespace Issues.API
             services.AddScoped<IStatusRepository, SqlStatusRepository>();
 
             services.AddControllers();
+
+            //Validators
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -43,4 +43,7 @@
     <None Remove="Protos\typeofgroupofissue.proto" />
     <None Remove="Protos\typeofissue.proto" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\Validation\" />
+  </ItemGroup>
 </Project>

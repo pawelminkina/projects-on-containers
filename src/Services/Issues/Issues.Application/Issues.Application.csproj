@@ -9,10 +9,10 @@
     <Folder Include="Issues\UpdateIssueContent\" />
     <Folder Include="TypeOfGroupOfIssues\GetType\" />
     <Folder Include="TypeOfGroupOfIssues\ArchiveType\" />
-    <Folder Include="TypeOfGroupOfIssues\RenameType\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
     <PackageReference Include="MediatR" Version="9.0.0" />
   </ItemGroup>
 
