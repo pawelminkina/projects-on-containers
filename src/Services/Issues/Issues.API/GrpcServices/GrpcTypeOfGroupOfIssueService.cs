@@ -13,6 +13,11 @@ using MediatR;
 
 namespace Issues.API.GrpcServices
 {
+    //TODO Add commands and queries for this service
+    //TODO Add db seeding for this type (in best case with usage of test server creator, bcs i can compare results at any time without checking current seeding for prod)
+    //TODO Write functional tests which will compare results with expected
+    //TODO Add connecting in bff
+    //TODO Go to next grpcservice
     public class GrpcTypeOfGroupOfIssueService : Protos.TypeOfGroupOfIssueService.TypeOfGroupOfIssueServiceBase
     {
         private readonly IMediator _mediator;
