@@ -9,7 +9,7 @@ namespace Issues.Domain.Issues
     public interface ITypeOfIssueRepository
     {
         Task<TypeOfIssue> GetTypeOfIssueByIdAsync(string id);
-        Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string id);
+        Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string organizationId);
         Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId);
     }
 }

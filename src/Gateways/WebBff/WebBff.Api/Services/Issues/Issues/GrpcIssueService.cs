@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Issues.API.Protos;
 using WebBff.Api.Models.Issuses.Issues;
+using CreateIssueRequest = Issues.API.Protos.CreateIssueRequest;
 
 namespace WebBff.Api.Services.Issues.Issues
 {
@@ -34,6 +35,11 @@ namespace WebBff.Api.Services.Issues.Issues
         {
             var res = await _client.GetIssuesForUserAsync(new GetIssuesForUserRequest());
             return null;
+        }
+
+        public async Task RenameIssueAsync(string issueId, string newName)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task RenameIssueAsync(string userId)

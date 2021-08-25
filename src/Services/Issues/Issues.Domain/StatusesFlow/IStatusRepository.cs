@@ -10,6 +10,6 @@ namespace Issues.Domain.StatusesFlow
         Task<Status> GetStatusById(string id);
         Task<IEnumerable<Status>> GetStatusesForOrganization(string organizationId);
         Task<StatusFlow> GetFlowById(string id);
-        Task<IEnumerable<StatusFlow>> GetFlowByOrganization(string organizationId);
+        Task<IEnumerable<StatusFlow>> GetFlowsByOrganization(string organizationId);
     }
 }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Issues.API.Protos;
 using WebBff.Api.Models.Issuses.Status;
+using CreateStatusRequest = Issues.API.Protos.CreateStatusRequest;
 
 namespace WebBff.Api.Services.Issues.Status
 {

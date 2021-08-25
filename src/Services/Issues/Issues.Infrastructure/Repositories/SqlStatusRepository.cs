@@ -42,12 +42,19 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<StatusFlow> GetFlowById(string id)
         {
-            return await _dbContext.StatusFlows.Include(s=>s.StatusesInFlow).ThenInclude(s=>s.ParentStatus).FirstOrDefaultAsync(s => s.Id == id);
+            return await _dbContext.StatusFlows
+                .Include(s=>s.StatusesInFlow).ThenInclude(s=>s.ConnectedStatuses).ThenInclude(d=>d.ParentStatus)
+                .Include(d=>d.StatusesInFlow).ThenInclude(d=>d.ConnectedStatuses).ThenInclude(d=>d.ConnectedWithParent)
+                .Include(d=>d.StatusesInFlow).ThenInclude(d=>d.ParentStatus).FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<IEnumerable<StatusFlow>> GetFlowByOrganization(string organizationId)
+        public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganization(string organizationId)
         {
-            return _dbContext.StatusFlows.Where(s => s.OrganizationId == organizationId);
+            return _dbContext.StatusFlows
+                .Include(s => s.StatusesInFlow).ThenInclude(s => s.ConnectedStatuses).ThenInclude(d => d.ParentStatus)
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedWithParent)
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ParentStatus)
+                .Where(s => s.OrganizationId == organizationId);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Issues.Domain.Issues;
 using Issues.Infrastructure.Database;
@@ -16,17 +17,19 @@ namespace Issues.Infrastructure.Repositories
         }
         public async Task<TypeOfIssue> GetTypeOfIssueByIdAsync(string id)
         {
-            _dbContext.TypesOfIssues.FirstOrDefaultAsync(s=>s.id)
+            return await _dbContext.TypesOfIssues.FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string id)
+        public async Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string organizationId)
         {
-            throw new System.NotImplementedException();
+            return _dbContext.TypesOfIssues.Where(s => s.OrganizationId == organizationId);
         }
 
         public async Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId)
         {
-            throw new System.NotImplementedException();
+            var type = new TypeOfIssue(organizationId, name, statusFlowId, typeOfGroupOfIssuesId);
+            await _dbContext.TypesOfIssues.AddAsync(type);
+            return await GetTypeOfIssueByIdAsync(type.Id);
         }
     }
 }

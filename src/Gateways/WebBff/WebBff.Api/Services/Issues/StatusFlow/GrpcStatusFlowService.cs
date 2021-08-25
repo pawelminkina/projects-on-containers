@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Issues.API.Protos;
 using WebBff.Api.Models.Issuses.StatusFlow;
+using AddStatusToFlowRequest = Issues.API.Protos.AddStatusToFlowRequest;
 
 namespace WebBff.Api.Services.Issues.StatusFlow
 {

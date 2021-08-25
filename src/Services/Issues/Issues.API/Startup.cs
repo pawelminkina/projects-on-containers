@@ -16,7 +16,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Issues.API.Infrastructure.Database.Migration;
 using Issues.API.Infrastructure.Database.Seeding;
+using Issues.Domain.GroupsOfIssues;
+using Issues.Domain.StatusesFlow;
 using Issues.Infrastructure.Database;
+using Issues.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Issues.API
@@ -50,7 +53,10 @@ namespace Issues.API
             services.AddDbMigration<IssuesServiceDbContext>();
             services.AddDbSeeding<IssuesServiceDbContext, DefaultIssuesServiceDbSeeder>();
 
-            services.AddScoped<>();
+            services.AddScoped<IGroupOfIssuesRepository, SqlGroupOfIssuesRepository>();
+            services.AddScoped<IIssueRepository, SqlIssueRepository>();
+            services.AddScoped<ITypeOfIssueRepository, SqlTypeOfIssueRepository>();
+            services.AddScoped<IStatusRepository, SqlStatusRepository>();
 
             services.AddControllers();
         }
