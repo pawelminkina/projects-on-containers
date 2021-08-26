@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Architecture.DDD.Repositories;
 using FluentValidation;
 using Issues.API.Infrastructure.Database.Migration;
 using Issues.API.Infrastructure.Database.Seeding;
@@ -21,7 +22,10 @@ using Issues.API.Infrastructure.Validation;
 using Issues.Application.TypeOfGroupOfIssues.CreateType;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
+using Issues.Infrastructure;
+using Issues.Infrastructure.ArchivePolicies;
 using Issues.Infrastructure.Database;
+using Issues.Infrastructure.Processing;
 using Issues.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,7 +65,12 @@ namespace Issues.API
             services.AddScoped<ITypeOfIssueRepository, SqlTypeOfIssueRepository>();
             services.AddScoped<IStatusRepository, SqlStatusRepository>();
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
+
             services.AddControllers();
+
+            services.AddScoped<ITypeGroupOfIssuesArchivePolicy, CascadeTypeGroupOfIssuesArchivePolicy>();
 
             //Validators
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));

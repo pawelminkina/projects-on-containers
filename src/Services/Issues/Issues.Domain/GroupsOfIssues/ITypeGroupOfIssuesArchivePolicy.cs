@@ -5,6 +5,6 @@
     /// </summary>
     public interface ITypeGroupOfIssuesArchivePolicy
     {
-        bool Archive();
+        void Archive(TypeOfGroupOfIssues type);
     }
 }

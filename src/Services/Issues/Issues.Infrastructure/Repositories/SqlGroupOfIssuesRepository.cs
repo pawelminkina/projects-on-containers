@@ -18,19 +18,17 @@ namespace Issues.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<TypeOfGroupOfIssues> AddNewTypeofGroupOfIssues(string name, string organizationId)
+        public async Task AddNewTypeofGroupOfIssuesAsync(TypeOfGroupOfIssues type)
         {
-            var newType = new TypeOfGroupOfIssues(organizationId, name);
-            await _dbContext.TypesOfGroupsOfIssues.AddAsync(newType);
-            return await GetTypeOfGroupOfIssuesById(newType.Id);
+            await _dbContext.TypesOfGroupsOfIssues.AddAsync(type);
         }
 
-        public async Task<TypeOfGroupOfIssues> GetTypeOfGroupOfIssuesById(string id)
+        public async Task<TypeOfGroupOfIssues> GetTypeOfGroupOfIssuesByIdAsync(string id)
         {
             return await _dbContext.TypesOfGroupsOfIssues.FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<IEnumerable<TypeOfGroupOfIssues>> GetTypeOfGroupOfIssuesForOrganization(string organizationId)
+        public async Task<IEnumerable<TypeOfGroupOfIssues>> GetTypeOfGroupOfIssuesForOrganizationAsync(string organizationId)
         {
             return _dbContext.TypesOfGroupsOfIssues.Where(s => s.OrganizationId == organizationId);
         }
