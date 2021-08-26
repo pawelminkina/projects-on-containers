@@ -22,7 +22,7 @@ namespace WebBff.Api.Services.Issues.TypeOfGroupOfIssue
 
         public async Task<TypeOfGroupOfIssueDto> GetTypeOfGroupsOfIssuesAsync(string id)
         {
-            var res = await _client.GetTypeOfGroupOfIssuesAsync(new GetTypeOfGroupOfIssuesRequest());
+            var res = await _client.GetTypeOfGroupOfIssuesAsync(new GetTypeOfGroupOfIssuesRequest(){Id = id});
             return MapToDto(res.Type);
         }
 

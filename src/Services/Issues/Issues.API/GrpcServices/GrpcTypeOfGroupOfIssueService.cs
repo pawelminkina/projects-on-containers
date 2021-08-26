@@ -65,6 +65,6 @@ namespace Issues.API.GrpcServices
         }
 
         private Protos.TypeOfGroupOfIssues MapToTypeOfGroupOfIssues(Domain.GroupsOfIssues.TypeOfGroupOfIssues type) =>
-            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name, OrganizationId = type.Name};
+            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name, OrganizationId = type.OrganizationId};
     }
 }

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Issues.Domain.GroupsOfIssues.Events;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] //For moq purpose 
 
@@ -21,7 +20,6 @@ namespace Issues.Domain.GroupsOfIssues
             OrganizationId = organizationId;
             IsArchived = false;
 
-            AddDomainEvent(new TypeOfGroupOfIssuesCreatedDomainEvent(this));
         }
 
         public TypeOfGroupOfIssues()

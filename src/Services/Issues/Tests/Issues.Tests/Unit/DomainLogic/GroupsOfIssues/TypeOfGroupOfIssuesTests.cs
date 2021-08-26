@@ -43,7 +43,7 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
             var policyMock = new Mock<ITypeGroupOfIssuesArchivePolicy>();
             bool hasBeenActivated = false;
             Func<bool> Activate() => () => true;
-            policyMock.Setup(d => d.Archive()).Callback(() => { hasBeenActivated = Activate().Invoke(); });
+            policyMock.Setup(d => d.Archive(It.IsAny<TypeOfGroupOfIssues>())).Callback(() => { hasBeenActivated = Activate().Invoke(); });
 
             var mock = new Mock<TypeOfGroupOfIssues>();
             mock.SetupProperty(d => d.IsArchived, false);
@@ -56,7 +56,7 @@ namespace Issues.Tests.Unit.DomainLogic.GroupsOfIssues
         public void Archive_Sets_Is_Archived_Property_Value_To_True()
         {
             var policyMock = new Mock<ITypeGroupOfIssuesArchivePolicy>();
-            policyMock.Setup(d => d.Archive()).Returns(true);
+            policyMock.Setup(d => d.Archive(It.IsAny<TypeOfGroupOfIssues>()));
 
             var mock = new Mock<TypeOfGroupOfIssues>();
             mock.SetupProperty(d => d.IsArchived, false);

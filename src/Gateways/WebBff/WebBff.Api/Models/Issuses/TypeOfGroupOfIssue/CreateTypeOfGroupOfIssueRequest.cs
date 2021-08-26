@@ -2,6 +2,6 @@
 {
     public class CreateTypeOfGroupOfIssueRequest
     {
-        
+        public string Name { get; set; }
     }
 }

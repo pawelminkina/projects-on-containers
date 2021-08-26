@@ -25,6 +25,14 @@ services:
       - "15000:80"
       - "15001:81"
 
+  webff.api:
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    - ASPNETCORE_URLS=http://+:80
+    - IssueServiceGrpcUrl=http://issues.api:81
+    ports:
+    - "15005:80"
+
 volumes:
 
   poc-sqlserver:

@@ -29,13 +29,13 @@ namespace WebBff.Api.Controllers
         public async Task<ActionResult<TypeOfGroupOfIssueDto>> GetTypeOfGroupsOfIssues([FromRoute] string typeId)
         {
             var type = await _service.GetTypeOfGroupsOfIssuesAsync(typeId);
-            return Ok(typeId);
+            return Ok(type);
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateTypeOfGroupOfIssues([FromBody] CreateTypeOfGroupOfIssueRequest request)
         {
-            var type = await _service.CreateTypeOfGroupOfIssueAsync(new TypeOfGroupOfIssueDto());
+            var type = await _service.CreateTypeOfGroupOfIssueAsync(new TypeOfGroupOfIssueDto(){Name = request.Name});
             return Ok(type);//TODO 201 WITH PARAMS
         }
 

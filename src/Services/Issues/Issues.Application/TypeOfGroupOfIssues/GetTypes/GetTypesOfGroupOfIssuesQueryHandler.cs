@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Issues.Domain.GroupsOfIssues;
@@ -16,7 +17,7 @@ namespace Issues.Application.TypeOfGroupOfIssues.GetTypes
         }
         public async Task<IEnumerable<Domain.GroupsOfIssues.TypeOfGroupOfIssues>> Handle(GetTypesOfGroupOfIssuesQuery request, CancellationToken cancellationToken)
         {
-            return await _repository.GetTypeOfGroupOfIssuesForOrganization(request.OrganizationId);
+            return await _repository.GetTypeOfGroupOfIssuesForOrganizationAsync(request.OrganizationId);
         }
     }
 }

@@ -25,6 +25,8 @@ namespace Issues.Application.TypeOfGroupOfIssues.CreateType
 
             var type = new Domain.GroupsOfIssues.TypeOfGroupOfIssues(request.OrganizationId, request.Name);
 
+            await _repository.AddNewTypeofGroupOfIssuesAsync(type);
+
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return type.Id;
