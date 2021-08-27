@@ -17,13 +17,20 @@ namespace Issues.Application.TypeOfGroupOfIssues.GetType
         public async Task<Domain.GroupsOfIssues.TypeOfGroupOfIssues> Handle(GetTypeOfGroupOfIssuesQuery request, CancellationToken cancellationToken)
         {
             var type = await _repository.GetTypeOfGroupOfIssuesByIdAsync(request.Id);
+
+            ValidateTypeWithRequestParameters(type,request);
+
+            return type;
+        }
+
+        private void ValidateTypeWithRequestParameters(Domain.GroupsOfIssues.TypeOfGroupOfIssues type, GetTypeOfGroupOfIssuesQuery request)
+        {
             if (type is null)
                 throw new InvalidOperationException($"Type of group of issues with id: {request.Id} was not found");
 
             if (type.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Type of group of issues with id: {request.Id} was not found is not accessible for organization with id: {request.OrganizationId}");
+                throw new InvalidOperationException($"Type of group of issues with id: {request.Id} was found and is not accessible for organization with id: {request.OrganizationId}");
 
-            return type;
         }
     }
 }

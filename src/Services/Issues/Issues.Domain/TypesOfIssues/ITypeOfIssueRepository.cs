@@ -11,7 +11,7 @@ namespace Issues.Domain.TypesOfIssues
     {
         Task<TypeOfIssue> GetTypeOfIssueByIdAsync(string id);
         Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string organizationId);
-        Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name);
+        Task<TypeOfIssue> AddNewTypeOfIssueAsync(TypeOfIssue type);
         Task RemoveTypeOfIssueInTypeofGroupOfIssues(TypeOfIssueInTypeOfGroup typeToDelete);
     }
 }

@@ -29,7 +29,7 @@ namespace Issues.Domain.TypesOfIssues
 
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
-        public TypeOfIssueInTypeOfGroup AddToTypeOfGroup(string typeOfGroupId, string statusFlowId)
+        public TypeOfIssueInTypeOfGroup AddNewTypeOfGroupToCollection(string typeOfGroupId, string statusFlowId)
         {
             if (string.IsNullOrWhiteSpace(typeOfGroupId))
                 throw new InvalidOperationException("Given type of group id is empty");

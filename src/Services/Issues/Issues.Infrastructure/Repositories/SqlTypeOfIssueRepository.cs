@@ -26,9 +26,8 @@ namespace Issues.Infrastructure.Repositories
             return _dbContext.TypesOfIssues.Where(s => s.OrganizationId == organizationId);
         }
 
-        public async Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name)
+        public async Task<TypeOfIssue> AddNewTypeOfIssueAsync(TypeOfIssue type)
         {
-            var type = new TypeOfIssue(organizationId, name);
             await _dbContext.TypesOfIssues.AddAsync(type);
             return await GetTypeOfIssueByIdAsync(type.Id);
         }

@@ -13,8 +13,6 @@ using MediatR;
 
 namespace Issues.API.GrpcServices
 {
-    //TODO Write functional tests which will compare results with expected (with custom db)
-    //TODO Go to next grpcservice
     public class GrpcTypeOfGroupOfIssueService : Protos.TypeOfGroupOfIssueService.TypeOfGroupOfIssueServiceBase
     {
         private readonly IMediator _mediator;
