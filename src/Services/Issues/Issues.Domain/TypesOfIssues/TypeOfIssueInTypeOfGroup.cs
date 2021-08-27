@@ -15,6 +15,11 @@ namespace Issues.Domain.TypesOfIssues
             TypeOfGroupOfIssuesId = typeOfGroupOfIssuesId;
             IsArchived = false;
         }
+
+        public TypeOfIssueInTypeOfGroup()
+        {
+            
+        }
         public virtual TypeOfIssue Parent { get; set; }
         public virtual StatusFlow Flow { get; set; }
         public virtual TypeOfGroupOfIssues TypeOfGroup { get; set; }

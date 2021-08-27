@@ -1,4 +1,5 @@
 ﻿using System;
+using Castle.Components.DictionaryAdapter;
 using Issues.Domain.Issues;
 using Issues.Domain.TypesOfIssues;
 using Moq;
@@ -40,6 +41,7 @@ namespace Issues.Tests.Unit.DomainLogic.Issues
         public void Archive_Sets_Is_Archived_Property_Value_To_True()
         {
             var mock = new Mock<TypeOfIssue>();
+            mock.SetupProperty(d => d.TypesInGroups, new EditableList<TypeOfIssueInTypeOfGroup>());
             mock.SetupProperty(d => d.IsArchived, false);
             mock.Object.Archive();
             Assert.True(mock.Object.IsArchived == true, "Archive method does not set IsArchived property to true");
@@ -50,6 +52,7 @@ namespace Issues.Tests.Unit.DomainLogic.Issues
         {
             var mock = new Mock<TypeOfIssue>();
             mock.SetupProperty(d => d.IsArchived, true);
+            mock.SetupProperty(d => d.TypesInGroups, new EditableList<TypeOfIssueInTypeOfGroup>());
             mock.Object.UnArchive();
             Assert.True(mock.Object.IsArchived == false, "UnArchive method does not set IsArchived property to false");
         }

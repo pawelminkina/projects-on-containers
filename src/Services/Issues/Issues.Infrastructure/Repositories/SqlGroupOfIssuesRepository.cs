@@ -30,17 +30,12 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<IEnumerable<TypeOfGroupOfIssues>> GetTypeOfGroupOfIssuesForOrganizationAsync(string organizationId)
         {
-            return _dbContext.TypesOfGroupsOfIssues.Where(s => s.OrganizationId == organizationId && !s.IsArchived);
+            return _dbContext.TypesOfGroupsOfIssues.Include(d=>d.Groups).Where(s => s.OrganizationId == organizationId && !s.IsArchived);
         }
 
         public async Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id)
         {
             return await _dbContext.GroupsOfIssues.Include(s=>s.Flow).Include(s=>s.Issues).FirstOrDefaultAsync(s => s.Id == id && !s.IsArchived);
-        }
-
-        public async Task<IEnumerable<GroupOfIssues>> GetGroupOfIssuesForOrganizationAsync(string organizationId)
-        {
-            return _dbContext.GroupsOfIssues.Include(s => s.Flow).Include(s => s.Issues).Where(s => s.OrganizationId == organizationId && !s.IsArchived);
         }
 
     }

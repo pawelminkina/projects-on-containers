@@ -32,5 +32,10 @@ namespace Issues.Infrastructure.Repositories
             await _dbContext.TypesOfIssues.AddAsync(type);
             return await GetTypeOfIssueByIdAsync(type.Id);
         }
+
+        public async Task RemoveTypeOfIssueInTypeofGroupOfIssues(TypeOfIssueInTypeOfGroup typeToDelete)
+        {
+            _dbContext.TypesOfIssueInTypeOfGroups.Remove(typeToDelete);
+        }
     }
 }

@@ -22,6 +22,7 @@ using Issues.API.Infrastructure.Validation;
 using Issues.Application.TypeOfGroupOfIssues.CreateType;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
+using Issues.Domain.TypesOfIssues;
 using Issues.Infrastructure;
 using Issues.Infrastructure.ArchivePolicies;
 using Issues.Infrastructure.Database;

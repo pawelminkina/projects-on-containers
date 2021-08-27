@@ -17,7 +17,6 @@ namespace Issues.Domain.GroupsOfIssues
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
-            OrganizationId = typeOfGroupOfIssues.OrganizationId;
             TypeOfGroupId = typeOfGroupOfIssues.Id;
             TypeOfGroup = typeOfGroupOfIssues;
             StatusFlowId = statusFlowId;
@@ -29,7 +28,6 @@ namespace Issues.Domain.GroupsOfIssues
 
         }
         public virtual string Name { get; set; }
-        public virtual string OrganizationId { get; set; }
         public virtual string TypeOfGroupId { get; set; }
         public virtual string StatusFlowId { get; set; }
         public virtual List<Issue> Issues { get; set; }
@@ -41,7 +39,7 @@ namespace Issues.Domain.GroupsOfIssues
         {
             var defaultStatus = GetDefaultStatusInFlow();
 
-            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId, OrganizationId);
+            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId);
             issue.AddContent(textContent);
             Issues.Add(issue);
             return issue;

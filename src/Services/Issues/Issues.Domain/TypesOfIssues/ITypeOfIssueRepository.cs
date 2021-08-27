@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Issues.Domain.TypesOfIssues;
 
-namespace Issues.Domain.Issues
+namespace Issues.Domain.TypesOfIssues
 {
     public interface ITypeOfIssueRepository
     {
         Task<TypeOfIssue> GetTypeOfIssueByIdAsync(string id);
         Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string organizationId);
         Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name);
+        Task RemoveTypeOfIssueInTypeofGroupOfIssues(TypeOfIssueInTypeOfGroup typeToDelete);
     }
 }

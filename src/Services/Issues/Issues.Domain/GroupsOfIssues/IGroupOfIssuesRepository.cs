@@ -9,6 +9,5 @@ namespace Issues.Domain.GroupsOfIssues
     public interface IGroupOfIssuesRepository
     {
         Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id);
-        Task<IEnumerable<GroupOfIssues>> GetGroupOfIssuesForOrganizationAsync(string organizationId);
     }
 }

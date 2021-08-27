@@ -24,10 +24,5 @@ namespace Issues.Infrastructure.Repositories
         {
             return _dbContext.Issues.Where(s => s.CreatingUserId == userId);
         }
-
-        public async Task<IEnumerable<Issue>> GetIssueReferencesForOrganizationAsync(string organizationId)
-        {
-            return _dbContext.Issues.Where(s => s.OrganizationId == organizationId);
-        }
     }
 }

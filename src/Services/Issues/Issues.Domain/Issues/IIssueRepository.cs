@@ -10,6 +10,5 @@ namespace Issues.Domain.Issues
     {
         Task<Issue> GetIssueByIdAsync(string id);
         Task<IEnumerable<Issue>> GetIssueReferencesForUserAsync(string userId);
-        Task<IEnumerable<Issue>> GetIssueReferencesForOrganizationAsync(string organizationId);
     }
 }
