@@ -5,10 +5,11 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Architecture.DDD.Repositories;
 
 namespace Issues.Domain.StatusesFlow
 {
-    public class StatusFlow : EntityBase
+    public class StatusFlow : EntityBase, IAggregateRoot
     {
         public StatusFlow(string name, string organizationId)
         {

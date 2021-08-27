@@ -1,5 +1,6 @@
 ﻿using System;
 using Issues.Domain.Issues;
+using Issues.Domain.TypesOfIssues;
 using Moq;
 using Xunit;
 
@@ -33,35 +34,6 @@ namespace Issues.Tests.Unit.DomainLogic.Issues
             mock.Setup(d => d.ChangeStringProperty(It.IsAny<string>(), It.IsAny<string>())).CallBase();
             mock.Object.Rename("secondName");
             Assert.True(mock.Object.Name == "secondName", "Parameter for rename was different than name after executing method");
-        }
-
-        [Fact]
-        public void Change_Status_Flow_Throws_Exception_Because_Requested_Flow_Status_Id_Is_Empty_String()
-        {
-            var mock = new Mock<TypeOfIssue>();
-            mock.SetupProperty(d => d.Name, "firstName");
-            mock.Setup(d => d.ChangeStringProperty(It.IsAny<string>(), It.IsAny<string>())).CallBase();
-            Assert.Throws<InvalidOperationException>(() => mock.Object.ChangeStatusFlow(string.Empty));
-        }
-
-        [Fact]
-        public void Change_Status_Flow_Throws_Exception_Because_Requested_Flow_Status_Id_Is_The_Same_As_Current_Flow_Status_Id()
-        {
-            var mock = new Mock<TypeOfIssue>();
-            mock.SetupProperty(d => d.Name, "firstStatusId");
-            mock.Setup(d => d.ChangeStringProperty(It.IsAny<string>(), It.IsAny<string>())).CallBase();
-            Assert.Throws<InvalidOperationException>(() => mock.Object.ChangeStatusFlow("firstStatusId"));
-        }
-
-        [Fact]
-        public void Change_Status_Flow_Changes_Flow_Status_Id_To_Requested()
-        {
-            var mock = new Mock<TypeOfIssue>();
-            mock.SetupProperty(d => d.StatusFlowId, string.Empty);
-            mock.Setup(d => d.ChangeStringProperty(It.IsAny<string>(), It.IsAny<string>())).CallBase();
-            mock.Object.ChangeStatusFlow("newStatus");
-            Assert.True(mock.Object.StatusFlowId == "newStatus", "Parameter for rename was different than name after executing method");
-
         }
 
         [Fact]

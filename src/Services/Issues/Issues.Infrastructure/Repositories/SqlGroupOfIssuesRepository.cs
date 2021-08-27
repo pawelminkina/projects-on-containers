@@ -43,13 +43,5 @@ namespace Issues.Infrastructure.Repositories
             return _dbContext.GroupsOfIssues.Include(s => s.Flow).Include(s => s.Issues).Where(s => s.OrganizationId == organizationId && !s.IsArchived);
         }
 
-        //TODO this can be added with domain login instead of repository pattern, i think so
-        public async Task<GroupOfIssues> AddNewGroupOfIssues(string name, string organizationId, string typeOfGroupId, string statusFlowId)
-        {
-            var newType = new GroupOfIssues(name, organizationId, typeOfGroupId, statusFlowId);
-            await _dbContext.GroupsOfIssues.AddAsync(newType);
-            return await GetGroupOfIssuesByIdAsync(newType.Id);
-        }
-
     }
 }

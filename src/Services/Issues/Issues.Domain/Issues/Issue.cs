@@ -1,6 +1,7 @@
 ﻿using Architecture.DDD;
 using System;
 using Issues.Domain.GroupsOfIssues;
+using Issues.Domain.TypesOfIssues;
 
 namespace Issues.Domain.Issues
 {

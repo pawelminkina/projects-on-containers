@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Issues.Domain.Issues;
+using Issues.Domain.TypesOfIssues;
 using Issues.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,9 +26,9 @@ namespace Issues.Infrastructure.Repositories
             return _dbContext.TypesOfIssues.Where(s => s.OrganizationId == organizationId);
         }
 
-        public async Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId)
+        public async Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name)
         {
-            var type = new TypeOfIssue(organizationId, name, statusFlowId, typeOfGroupOfIssuesId);
+            var type = new TypeOfIssue(organizationId, name);
             await _dbContext.TypesOfIssues.AddAsync(type);
             return await GetTypeOfIssueByIdAsync(type.Id);
         }

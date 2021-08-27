@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Issues.Domain.TypesOfIssues;
 
 namespace Issues.Domain.Issues
 {
@@ -10,6 +11,6 @@ namespace Issues.Domain.Issues
     {
         Task<TypeOfIssue> GetTypeOfIssueByIdAsync(string id);
         Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string organizationId);
-        Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name, string statusFlowId, string typeOfGroupOfIssuesId);
+        Task<TypeOfIssue> AddNewTypeOfIssueAsync(string organizationId, string name);
     }
 }

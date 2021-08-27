@@ -13,12 +13,13 @@ namespace Issues.Domain.GroupsOfIssues
 {
     public class GroupOfIssues : EntityBase
     {
-        public GroupOfIssues(string name, string organizationId, string typeOfGroupId, string statusFlowId)
+        public GroupOfIssues(string name, TypeOfGroupOfIssues typeOfGroupOfIssues, string statusFlowId)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
-            OrganizationId = organizationId;
-            TypeOfGroupId = typeOfGroupId;
+            OrganizationId = typeOfGroupOfIssues.OrganizationId;
+            TypeOfGroupId = typeOfGroupOfIssues.Id;
+            TypeOfGroup = typeOfGroupOfIssues;
             StatusFlowId = statusFlowId;
             IsArchived = false;
         }
@@ -32,7 +33,8 @@ namespace Issues.Domain.GroupsOfIssues
         public virtual string TypeOfGroupId { get; set; }
         public virtual string StatusFlowId { get; set; }
         public virtual List<Issue> Issues { get; set; }
-        public virtual StatusFlow Flow { get; set; } //I need to get it by statusFlow in EF
+        public virtual StatusFlow Flow { get; set; }
+        public virtual TypeOfGroupOfIssues TypeOfGroup { get; set; } 
         public virtual bool IsArchived { get; set; }
 
         public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId)
