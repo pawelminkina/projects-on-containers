@@ -21,14 +21,14 @@ namespace Issues.Domain.StatusesFlow
             //TODO creating status flow should emit some domain event which will be handled with assigning default statuses to this flow
             //TODO so i will need default statuses for all organizations
         }
-        public StatusFlow()
+        protected StatusFlow()
         {
 
         }
-        public virtual string Name { get; set; }
-        public virtual string OrganizationId { get; set; }
-        public virtual List<StatusInFlow> StatusesInFlow { get; set; }
-        public virtual bool IsArchived { get; set; }
+        public string Name { get; private set; }
+        public string OrganizationId { get; private set; }
+        public List<StatusInFlow> StatusesInFlow { get; set; }
+        public bool IsArchived { get; private set; }
 
         public StatusInFlow AddNewStatusToFlow(Status statusToAdd)
         {

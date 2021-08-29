@@ -7,7 +7,7 @@ namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        public Issue(string name, string statusId, string creatingUserId, GroupOfIssues groupOfIssue, DateTimeOffset timeOfCreation, string typeOfIssueId)
+        public Issue(string name, string statusId, string creatingUserId, GroupOfIssues groupOfIssue, DateTimeOffset timeOfCreation, string typeOfIssueId) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -15,31 +15,32 @@ namespace Issues.Domain.Issues
             CreatingUserId = creatingUserId;
             GroupOfIssue = groupOfIssue;
             TimeOfCreation = timeOfCreation;
-            TypeOfIssueId = typeOfIssueId;
+            _typeOfIssueId = typeOfIssueId;
             IsArchived = false;
         }
 
-        public Issue()
+        protected Issue()
         {
 
         }
 
-        public virtual string Name { get; set; }
-        public virtual string StatusId { get; set; }
-        public virtual IssueContent Content { get; set; }
-        public virtual string CreatingUserId { get; set; }
-        public virtual GroupOfIssues GroupOfIssue { get; set; }
-        public virtual DateTimeOffset TimeOfCreation { get; set; }
-        public virtual bool IsArchived { get; set; }
-        public virtual string TypeOfIssueId { get; set; }
-        public virtual TypeOfIssue TypeOfIssue { get; set; }
+        public string Name { get; private set; }
+        public string StatusId { get; private set; }
+        public string CreatingUserId { get; private set; }
+        public IssueContent Content { get; private set; }
+        public GroupOfIssues GroupOfIssue { get; private set; }
+        public DateTimeOffset TimeOfCreation { get; private set; }
+        public bool IsArchived { get; private set; }
+
+        private string _typeOfIssueId; //https://github.com/dotnet-architecture/eShopOnContainers/blob/71994d0ad88d51f758d8124b16bddf944cc7d91b/src/Services/Ordering/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs
+        public TypeOfIssue TypeOfIssue { get; private set; }
 
         public IssueContent AddContent(string textContent)
         {
             if (Content != null)
                 throw new InvalidOperationException($"Content to issue with id: {Id} is already added");
 
-            Content = new IssueContent(textContent, this);
+            Content = new IssueContent(textContent);
             return Content;
         }
 

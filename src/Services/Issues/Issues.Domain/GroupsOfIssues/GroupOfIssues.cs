@@ -1,4 +1,4 @@
-﻿using Architecture.DDD;
+﻿ using Architecture.DDD;
 using Issues.Domain.Issues;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Issues.Domain.GroupsOfIssues
 {
     public class GroupOfIssues : EntityBase
     {
-        public GroupOfIssues(string name, TypeOfGroupOfIssues typeOfGroupOfIssues)
+        public GroupOfIssues(string name, TypeOfGroupOfIssues typeOfGroupOfIssues) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -24,16 +24,18 @@ namespace Issues.Domain.GroupsOfIssues
 
         //TODO maybe group of issues could have not unique name, but they should have short name used for url and identification which need to be unique 
         //if so check application layer and delete all checking that name is the same
-        public GroupOfIssues()
+        protected GroupOfIssues()
         {
-
+            _issues = new List<Issue>();
         }
-        public virtual string Name { get; set; }
-        public virtual string TypeOfGroupId { get; set; }
-        public virtual List<Issue> Issues { get; set; }
-        public virtual StatusFlow Flow { get; set; }
-        public virtual TypeOfGroupOfIssues TypeOfGroup { get; set; } 
-        public virtual bool IsArchived { get; set; }
+        public string Name { get; private set; }
+        public string TypeOfGroupId { get; private set; }
+        public StatusFlow Flow { get; private set; }
+        public TypeOfGroupOfIssues TypeOfGroup { get; private set; } 
+        public bool IsArchived { get; private set; }
+
+        protected readonly List<Issue> _issues;
+        public IReadOnlyCollection<Issue> Issues => _issues;
 
         public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId)
         {
@@ -41,18 +43,9 @@ namespace Issues.Domain.GroupsOfIssues
 
             var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId);
             issue.AddContent(textContent);
-            Issues.Add(issue);
+            _issues.Add(issue);
             return issue;
         }
-
-        //public void RemoveIssue(string issueId)
-        //{ 
-        //    var issue = Issues.FirstOrDefault(d => d.Id == issueId);
-        //    if (issue is null)
-        //        throw new InvalidOperationException($"Issue with id: {issueId} not exist in group with id: {Id}");
-
-        //    Issues.Remove(issue);
-        //}
 
 
         public Issue AssignIssueToGroup(Issue existingIssue, string newStatusId)
@@ -61,14 +54,14 @@ namespace Issues.Domain.GroupsOfIssues
             if (string.IsNullOrWhiteSpace(newStatusId))
                 throw new InvalidOperationException("Given new statusId is empty string");
 
-            var issueToAdd = Issues.FirstOrDefault(a => a.Id == existingIssue.Id);
+            var issueToAdd = _issues.FirstOrDefault(a => a.Id == existingIssue.Id);
             if (issueToAdd != null)
                 throw new InvalidOperationException(
                     $"Requested issue to assign with id: {existingIssue.Id} is already added in group with {Id}");
 
             existingIssue.ChangeStatus(newStatusId);
             existingIssue.ChangeGroupOfIssue(this);
-            Issues.Add(existingIssue);
+            _issues.Add(existingIssue);
             return existingIssue;
         }
 
@@ -76,12 +69,13 @@ namespace Issues.Domain.GroupsOfIssues
 
         public void Archive()
         {
-            Issues.ForEach(s=>s.Archive());
+            _issues.ForEach(s=>s.Archive());
             IsArchived = true;
         }
 
         public void UnArchive()
         {
+            _issues.ForEach(s => s.UnArchive());
             IsArchived = false;
         }
 

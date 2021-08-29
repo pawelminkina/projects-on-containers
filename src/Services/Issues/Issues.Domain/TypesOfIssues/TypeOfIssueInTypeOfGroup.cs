@@ -7,7 +7,7 @@ namespace Issues.Domain.TypesOfIssues
 {
     public class TypeOfIssueInTypeOfGroup : EntityBase
     {
-        public TypeOfIssueInTypeOfGroup(TypeOfIssue parent, string statusFlowId, string typeOfGroupOfIssuesId)
+        public TypeOfIssueInTypeOfGroup(TypeOfIssue parent, string statusFlowId, string typeOfGroupOfIssuesId) : this()
         {
             Id = Guid.NewGuid().ToString();
             Parent = parent;
@@ -16,16 +16,16 @@ namespace Issues.Domain.TypesOfIssues
             IsArchived = false;
         }
 
-        public TypeOfIssueInTypeOfGroup()
+        protected TypeOfIssueInTypeOfGroup()
         {
             
         }
-        public virtual TypeOfIssue Parent { get; set; }
-        public virtual StatusFlow Flow { get; set; }
-        public virtual TypeOfGroupOfIssues TypeOfGroup { get; set; }
-        public virtual string StatusFlowId { get; set; }
-        public virtual string TypeOfGroupOfIssuesId { get; set; }
-        public virtual bool IsArchived { get; set; }
+        public TypeOfIssue Parent { get; private set; }
+        public StatusFlow Flow { get; private set; }
+        public TypeOfGroupOfIssues TypeOfGroup { get; private set; }
+        public string StatusFlowId { get; private set; }
+        public string TypeOfGroupOfIssuesId { get; private set; }
+        public bool IsArchived { get; private set; }
 
         public void ChangeStatusFlow(string newStatusFlowId) => ChangeStringProperty("StatusFlowId", newStatusFlowId);
         public void Archive()

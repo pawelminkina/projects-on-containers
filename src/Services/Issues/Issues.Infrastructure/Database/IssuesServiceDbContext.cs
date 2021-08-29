@@ -17,7 +17,6 @@ namespace Issues.Infrastructure.Database
         public DbSet<TypeOfGroupOfIssues> TypesOfGroupsOfIssues { get; set; }
 
         public DbSet<Issue> Issues { get; set; }
-        public DbSet<IssueContent> IssueContents { get; set; }
         
         public DbSet<Status> Statuses { get; set; }
         public DbSet<StatusFlow> StatusFlows { get; set; }

@@ -18,14 +18,14 @@ namespace Issues.Domain.TypesOfIssues
             IsArchived = false;
         }
 
-        public TypeOfIssue()
+        protected TypeOfIssue()
         {
 
         }
-        public virtual string Name { get; set; }
-        public virtual string OrganizationId { get; set; }
-        public virtual bool IsArchived { get; set; }
-        public virtual List<TypeOfIssueInTypeOfGroup> TypesInGroups { get; set; }
+        public string Name { get; private set; }
+        public string OrganizationId { get; private set; }
+        public bool IsArchived { get; private set; }
+        public List<TypeOfIssueInTypeOfGroup> TypesInGroups { get; private set; }
 
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 

@@ -8,25 +8,20 @@ using System.Threading.Tasks;
 
 namespace Issues.Domain.Issues
 {
-    public class IssueContent : EntityBase
+    public class IssueContent : ValueObjectBase
     {
 
-        public IssueContent(string textContent, Issue parentIssue)
+        public IssueContent(string textContent) : this()
         {
-            Id = Guid.NewGuid().ToString();
-            ParentIssue = parentIssue;
-            ParentIssueId = parentIssue.Id;
             TextContent = textContent;
             IsArchived = false;
         }
 
-        public IssueContent()
+        protected IssueContent()
         {
 
         }
         public virtual string TextContent { get; set; }
-        public virtual Issue ParentIssue { get; set; }
-        public virtual string ParentIssueId { get; set; }
         public virtual bool IsArchived { get; set; }
 
         public void ChangeTextContent(string newTextContent)
@@ -42,6 +37,12 @@ namespace Issues.Domain.Issues
         public virtual void UnArchive()
         {
             IsArchived = false;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return TextContent;
+            yield return IsArchived;
         }
     }
 }

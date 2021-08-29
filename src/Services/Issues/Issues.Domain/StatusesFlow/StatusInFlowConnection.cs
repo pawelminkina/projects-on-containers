@@ -5,7 +5,7 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlowConnection : EntityBase
     {
-        public StatusInFlowConnection(Status connectedWithParent, StatusInFlow parent)
+        public StatusInFlowConnection(Status connectedWithParent, StatusInFlow parent) : this()
         {
             Id = Guid.NewGuid().ToString();
             ConnectedWithParent = connectedWithParent;
@@ -15,13 +15,13 @@ namespace Issues.Domain.StatusesFlow
             ConnectedWithParentId = ConnectedWithParent.Id;
         }
 
-        public StatusInFlowConnection()
+        protected StatusInFlowConnection()
         {
                 
         }
-        public virtual string ConnectedWithParentId { get; set; }
-        public virtual Status ConnectedWithParent { get; set; }
-        public virtual string ParentStatusId { get; set; }
-        public virtual StatusInFlow ParentStatus { get; set; }
+        public string ConnectedWithParentId { get; private set; }
+        public Status ConnectedWithParent { get; private set; }
+        public string ParentStatusId { get; private set; }
+        public StatusInFlow ParentStatus { get; private set; }
     }
 }

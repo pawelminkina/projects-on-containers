@@ -9,27 +9,26 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlow : EntityBase
     {
-        public StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow)
+        public StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow) : this()
         {
             Id = Guid.NewGuid().ToString();
             ParentStatus = parentStatus;
             StatusFlow = statusFlow;
             IndexInFlow = indexInFlow;
-            ConnectedStatuses = new List<StatusInFlowConnection>();
             IsArchived = false;
         }
-        public StatusInFlow()
+        protected StatusInFlow()
         {
             ConnectedStatuses = new List<StatusInFlowConnection>();
         }
-        public virtual Status ParentStatus { get; set; }
-        public virtual string ParentStatusId { get; set; }
+        public Status ParentStatus { get; private set; }
+        public string ParentStatusId { get; private set; }
         //one to many
-        public virtual StatusFlow StatusFlow { get; set; }
-        public virtual int IndexInFlow { get; set; }
-        public virtual bool IsArchived { get; set; }
+        public StatusFlow StatusFlow { get; private set; }
+        public int IndexInFlow { get; private set; }
+        public bool IsArchived { get; private set; }
 
-        public virtual List<StatusInFlowConnection> ConnectedStatuses { get; set; } //dunno how i will do this xD, functional tests will show
+        public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
 
         public void AddConnectedStatus(Status status)
         {

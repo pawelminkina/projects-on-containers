@@ -14,7 +14,7 @@ namespace Issues.Domain.GroupsOfIssues
 
     public class TypeOfGroupOfIssues : EntityBase, IAggregateRoot
     {
-        public TypeOfGroupOfIssues(string organizationId, string name)
+        public TypeOfGroupOfIssues(string organizationId, string name) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -22,21 +22,24 @@ namespace Issues.Domain.GroupsOfIssues
             IsArchived = false;
         }
 
-        public TypeOfGroupOfIssues()
+        protected TypeOfGroupOfIssues()
         {
-
+            _groups = new List<GroupOfIssues>();
         }
 
-        public virtual string Name { get; set; }
-        public virtual string OrganizationId { get; set; }
-        public virtual bool IsArchived { get; set; }
-        public virtual List<GroupOfIssues> Groups { get; set; }
+        public string Name { get; private set; }
+        public string OrganizationId { get; private set; }
+        public bool IsArchived { get; private set; }
+
+        protected readonly List<GroupOfIssues> _groups;
+        public IReadOnlyCollection<GroupOfIssues> Groups => _groups;
+
         public void RenameGroup(string newName)=> ChangeStringProperty("Name", newName);
 
         public GroupOfIssues AddNewGroupOfIssues(string name)
         {
             var group = new GroupOfIssues(name, this);
-            Groups.Add(group);
+            _groups.Add(group);
             return group;
         }
         public void Archive(ITypeGroupOfIssuesArchivePolicy policy)
