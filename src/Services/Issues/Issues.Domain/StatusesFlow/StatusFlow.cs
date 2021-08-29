@@ -18,6 +18,8 @@ namespace Issues.Domain.StatusesFlow
             OrganizationId = organizationId;
             StatusesInFlow = new List<StatusInFlow>();
             IsArchived = false;
+            //TODO creating status flow should emit some domain event which will be handled with assigning default statuses to this flow
+            //TODO so i will need default statuses for all organizations
         }
         public StatusFlow()
         {
@@ -28,26 +30,27 @@ namespace Issues.Domain.StatusesFlow
         public virtual List<StatusInFlow> StatusesInFlow { get; set; }
         public virtual bool IsArchived { get; set; }
 
-        public StatusInFlow AddNewStatusToFlow(Status statusToAdd, int indexInFlow)
+        public StatusInFlow AddNewStatusToFlow(Status statusToAdd)
         {
             var statusCurrentlyExistInFlow = StatusesInFlow.Any(s => s.ParentStatus.Id == statusToAdd.Id);
             if (statusCurrentlyExistInFlow)
                 throw new InvalidOperationException(
                     $"Requested status to add with id: {statusToAdd.Id} currently exist in flow with id: {Id}");
 
-            var status = new StatusInFlow(statusToAdd, this, indexInFlow);
+            var highestIndex = StatusesInFlow.Max(s => s.IndexInFlow);
+            var status = new StatusInFlow(statusToAdd, this, highestIndex + 1);
             StatusesInFlow.Add(status);
             return status;
         }
 
-        public void DeleteStatusFromFlow(string statusId, IStatusInFlowDeletePolicy policy)
+        public void DeleteStatusFromFlow(string statusId)
         {
             var statusInFlowToDelete = StatusesInFlow.FirstOrDefault(a => a.ParentStatus.Id == statusId);
             if (statusInFlowToDelete == null)
                 throw new InvalidOperationException(
                     $"Requested status to delete with id: {statusId} doesn't exist in flow with id: {Id}");
             
-            policy.Delete(statusInFlowToDelete.Id);
+            //TODO status from flow delete domain event which will remove it from db and all connections
             StatusesInFlow.Remove(statusInFlowToDelete);
         }
 

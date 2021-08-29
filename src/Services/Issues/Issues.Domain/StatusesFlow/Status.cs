@@ -26,9 +26,8 @@ namespace Issues.Domain.StatusesFlow
         public virtual bool IsArchived { get; set; }
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
-        public void Archive(IStatusArchivePolicy policy)
+        public void Archive()
         {
-            policy.Archive();
             IsArchived = true;
         }
 
