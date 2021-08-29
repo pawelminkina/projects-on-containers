@@ -15,7 +15,7 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
         {
             var mock = new StatusFlow() {StatusesInFlow = new List<StatusInFlow>(){new StatusInFlow(){ParentStatus = new Status(){Id = "123"}}}};
             var statusMock = new Status() {Id = "123"};
-            Assert.Throws<InvalidOperationException>(() => mock.AddNewStatusToFlow(statusMock, 1));
+            Assert.Throws<InvalidOperationException>(() => mock.AddNewStatusToFlow(statusMock));
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
         {
             var mock = new StatusFlow() { StatusesInFlow = new List<StatusInFlow>() { new StatusInFlow() { ParentStatus = new Status() { Id = "123" } } } };
             var statusMock = new Status() { Id = "1234" };
-            var addedStatus = mock.AddNewStatusToFlow(statusMock, 1);
+            var addedStatus = mock.AddNewStatusToFlow(statusMock);
 
             addedStatus.IndexInFlow.Should().Be(1);
             addedStatus.ParentStatus.Id.Should().Be("1234");
@@ -35,7 +35,7 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
             var mock = new StatusFlow() { StatusesInFlow = new List<StatusInFlow>() { new StatusInFlow() { ParentStatus = new Status() { Id = "123" } } } };
             mock.StatusesInFlow.Should().HaveCount(1);
             var statusMock = new Status() { Id = "1234" };
-            mock.AddNewStatusToFlow(statusMock, 1);
+            mock.AddNewStatusToFlow(statusMock);
             mock.StatusesInFlow.Should().HaveCount(2);
         }
 
@@ -43,28 +43,16 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
         public void Delete_Status_From_Flow_Throws_Exception_Because_Requested_Status_Does_Not_Exist()
         {
             var mock = new StatusFlow() { StatusesInFlow = new List<StatusInFlow>() { new StatusInFlow() { ParentStatus = new Status() { Id = "123" } } } };
-            Assert.Throws<InvalidOperationException>(()=> mock.DeleteStatusFromFlow("1234",null));
+            Assert.Throws<InvalidOperationException>(()=> mock.DeleteStatusFromFlow("1234"));
         }
 
-        [Fact]
-        public void Delete_Status_From_Flow_Executes_Status_In_Flow_Delete_Policy()
-        {
-            var mock = new StatusFlow() { StatusesInFlow = new List<StatusInFlow>() { new StatusInFlow() { ParentStatus = new Status() { Id = "123" } } } };
-            var invoked = false;
-            var policyMock = new Mock<IStatusInFlowDeletePolicy>();
-            policyMock.Setup(a => a.Delete(It.IsAny<string>())).Callback(() => invoked = true);
-            mock.DeleteStatusFromFlow("123", policyMock.Object);
-            invoked.Should().Be(true);
-        }
 
         [Fact]
         public void Delete_Status_From_Flow_Removes_Requested_Status_From_Collection()
         {
             var mock = new StatusFlow() { StatusesInFlow = new List<StatusInFlow>() { new StatusInFlow() { ParentStatus = new Status() { Id = "123" }, Id = "1234"} } };
             mock.StatusesInFlow.Should().HaveCount(1);
-            var policyMock = new Mock<IStatusInFlowDeletePolicy>();
-            policyMock.Setup(a => a.Delete(It.IsAny<string>())).Callback(() => { });
-            mock.DeleteStatusFromFlow("123", policyMock.Object);
+            mock.DeleteStatusFromFlow("123");
             mock.StatusesInFlow.Should().HaveCount(0);
         }
 

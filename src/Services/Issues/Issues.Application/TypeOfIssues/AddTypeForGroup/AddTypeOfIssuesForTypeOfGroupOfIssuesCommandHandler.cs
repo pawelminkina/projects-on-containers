@@ -65,7 +65,7 @@ namespace Issues.Application.TypeOfIssues.AddTypeForGroup
                 throw new InvalidOperationException($"Type of group of issue with given id: {request.TypeOfGroupOfIssuesId} is not assigned to organization with id: {request.OrganizationId}");
         }
 
-        private void ValidateStatusFlowWithRequestParameters(StatusFlow flow, AddTypeOfIssuesForTypeOfGroupOfIssuesCommand request)
+        private void ValidateStatusFlowWithRequestParameters(Domain.StatusesFlow.StatusFlow flow, AddTypeOfIssuesForTypeOfGroupOfIssuesCommand request)
         {
             if (flow is null)
                 throw new InvalidOperationException($"Requested status flow with id: {request.StatusFlowId} does not exist");

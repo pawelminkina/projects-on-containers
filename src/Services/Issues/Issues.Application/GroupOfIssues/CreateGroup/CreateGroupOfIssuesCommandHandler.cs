@@ -55,7 +55,7 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
                 throw new InvalidOperationException($"Type of group of issue with id: {request.TypeOfGroupId} is already archived");
         }
 
-        private void ValidateStatusFlowWithRequestParameters(StatusFlow flow, CreateGroupOfIssuesCommand request)
+        private void ValidateStatusFlowWithRequestParameters(Domain.StatusesFlow.StatusFlow flow, CreateGroupOfIssuesCommand request)
         {
             if (flow is null)
                 throw new InvalidOperationException($"Requested status flow with id: {request.StatusFlowId} does not exist");

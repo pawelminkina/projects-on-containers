@@ -37,29 +37,12 @@ namespace Issues.Tests.Unit.DomainLogic.StatusesFlow
         }
 
         [Fact]
-        public void Archive_Triggers_Archive_Method_In_Status_Archive_Policy()
-        {
-            var policyMock = new Mock<IStatusArchivePolicy>();
-            bool hasBeenActivated = false;
-            Func<bool> Activate() => () => true;
-            policyMock.Setup(d => d.Archive()).Callback(() => { hasBeenActivated = Activate().Invoke(); });
-
-            var mock = new Mock<Status>();
-            mock.SetupProperty(d => d.IsArchived, false);
-            mock.Object.Archive(policyMock.Object);
-
-            Assert.True(hasBeenActivated, "Callback was not invoked");
-        }
-
-        [Fact]
         public void Archive_Sets_Is_Archived_Property_Value_To_True()
         {
-            var policyMock = new Mock<IStatusArchivePolicy>();
-            policyMock.Setup(d => d.Archive()).Returns(true);
 
             var mock = new Mock<Status>();
             mock.SetupProperty(d => d.IsArchived, false);
-            mock.Object.Archive(policyMock.Object);
+            mock.Object.Archive();
 
             Assert.True(mock.Object.IsArchived == true, "Archive method does not set IsArchived property to true");
         }
