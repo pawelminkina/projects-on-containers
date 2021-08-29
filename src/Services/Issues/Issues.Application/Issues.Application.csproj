@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="GroupOfIssues\CreateGroup\" />
     <Folder Include="Issues\GetIssuesForGroup\" />
     <Folder Include="Issues\UpdateIssueContent\" />
     <Folder Include="TypeOfGroupOfIssues\ArchiveType\" />

@@ -23,6 +23,8 @@ namespace Issues.Domain.GroupsOfIssues
             IsArchived = false;
         }
 
+        //TODO maybe group of issues could have not unique name, but they should have short name used for url and identification which need to be unique 
+        //if so check application layer and delete all checking that name is the same
         public GroupOfIssues()
         {
 
