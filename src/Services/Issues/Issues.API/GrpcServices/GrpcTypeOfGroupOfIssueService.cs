@@ -10,6 +10,7 @@ using Issues.Application.TypeOfGroupOfIssues.GetType;
 using Issues.Application.TypeOfGroupOfIssues.GetTypes;
 using Issues.Application.TypeOfGroupOfIssues.RenameType;
 using MediatR;
+using Status = Grpc.Core.Status;
 
 namespace Issues.API.GrpcServices
 {
@@ -47,10 +48,10 @@ namespace Issues.API.GrpcServices
             return new CreateTypefOfGroupOfIssuesResponse() {Id = idOfTypeOfGroupOfIssues};
         }
 
-        public override async Task<DeleteTypeOfGroupOfIssuesResponse> DeleteTypeOfGroupOfIssues(DeleteTypeOfGroupOfIssuesRequest request, ServerCallContext context)
+        public override async Task<ArchiveTypeOfGroupOfIssuesResponse> ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
             await _mediator.Send(new ArchiveTypeOfGroupOfIssuesCommand(request.Id, context.GetOrganizationId()));
-            return new DeleteTypeOfGroupOfIssuesResponse();
+            return new ArchiveTypeOfGroupOfIssuesResponse();
         }
 
         public override async Task<RenameTypeOfGroupOfIssuesResponse> RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest request, ServerCallContext context)
@@ -60,6 +61,6 @@ namespace Issues.API.GrpcServices
         }
 
         private Protos.TypeOfGroupOfIssues MapToTypeOfGroupOfIssues(Domain.GroupsOfIssues.TypeOfGroupOfIssues type) =>
-            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name, OrganizationId = type.OrganizationId};
+            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name};
     }
 }

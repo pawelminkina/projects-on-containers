@@ -22,7 +22,7 @@ namespace WebBff.Api.Services.Issues.Issues
 
         public async Task DeleteIssueAsync(string id)
         {
-            var res = await _client.DeleteIssueAsync(new DeleteIssueRequest());
+            var res = await _client.ArchiveIssueAsync(new ArchiveIssueRequest());
         }
 
         public async Task<IEnumerable<IssueDto>> GetIssuesForGroupAsync(string groupId)

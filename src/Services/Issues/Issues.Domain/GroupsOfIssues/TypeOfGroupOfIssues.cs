@@ -33,9 +33,9 @@ namespace Issues.Domain.GroupsOfIssues
         public virtual List<GroupOfIssues> Groups { get; set; }
         public void RenameGroup(string newName)=> ChangeStringProperty("Name", newName);
 
-        public GroupOfIssues AddNewGroupOfIssues(string name, string statusFlowId)
+        public GroupOfIssues AddNewGroupOfIssues(string name)
         {
-            var group = new GroupOfIssues(name, this, statusFlowId);
+            var group = new GroupOfIssues(name, this);
             Groups.Add(group);
             return group;
         }

@@ -34,7 +34,7 @@ namespace WebBff.Api.Services.Issues.Status
 
         public async Task DeleteStatusAsync(string id)
         {
-            var res = await _client.DeleteStatusAsync(new DeleteStatusRequest());
+            var res = await _client.ArchiveStatusAsync(new ArchiveStatusRequest());
         }
 
         public async Task RenameStatusAsync(string id, string newName)

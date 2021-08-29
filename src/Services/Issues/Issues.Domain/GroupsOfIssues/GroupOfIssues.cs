@@ -13,13 +13,12 @@ namespace Issues.Domain.GroupsOfIssues
 {
     public class GroupOfIssues : EntityBase
     {
-        public GroupOfIssues(string name, TypeOfGroupOfIssues typeOfGroupOfIssues, string statusFlowId)
+        public GroupOfIssues(string name, TypeOfGroupOfIssues typeOfGroupOfIssues)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             TypeOfGroupId = typeOfGroupOfIssues.Id;
             TypeOfGroup = typeOfGroupOfIssues;
-            StatusFlowId = statusFlowId;
             IsArchived = false;
         }
 
@@ -31,7 +30,6 @@ namespace Issues.Domain.GroupsOfIssues
         }
         public virtual string Name { get; set; }
         public virtual string TypeOfGroupId { get; set; }
-        public virtual string StatusFlowId { get; set; }
         public virtual List<Issue> Issues { get; set; }
         public virtual StatusFlow Flow { get; set; }
         public virtual TypeOfGroupOfIssues TypeOfGroup { get; set; } 
@@ -75,8 +73,6 @@ namespace Issues.Domain.GroupsOfIssues
         }
 
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
-
-        public void ChangeStatusFlow(string newStatusFlowId) => ChangeStringProperty("StatusFlowId", newStatusFlowId);
 
         public void Archive()
         {

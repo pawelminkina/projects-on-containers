@@ -16,7 +16,7 @@ namespace WebBff.Api.Services.Issues.GroupOfIssue
         }
         public async Task ChangeGroupOfIssueTypeAsync()
         {
-            await _client.ChangeGroupOfIssueTypeAsync(new ChangeGroupOfIssueTypeRequest());
+            await _client.ArchiveGroupOfIssuesAsync(new ArchiveGroupOfIssuesRequest());
         }
 
         public async Task<string> CreateGroupOfIssueAsync(GroupOfIssueDto groupOfIssue)
@@ -27,7 +27,7 @@ namespace WebBff.Api.Services.Issues.GroupOfIssue
 
         public async Task DeleteGroupOfIssueAsync(string id)
         {
-            await _client.DeleteGroupOfIssuesAsync(new DeleteGroupOfIssuesRequest());
+            await _client.ArchiveGroupOfIssuesAsync(new ArchiveGroupOfIssuesRequest());
         }
 
         public async Task<GroupOfIssueDto> GetGroupOfIssueAsync(string id)

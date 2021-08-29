@@ -13,13 +13,11 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
     public class CreateGroupOfIssuesCommandHandler : IRequestHandler<CreateGroupOfIssuesCommand, string>
     {
         private readonly ITypeOfGroupOfIssuesRepository _repository;
-        private readonly IStatusRepository _statusRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateGroupOfIssuesCommandHandler(ITypeOfGroupOfIssuesRepository repository, IStatusRepository statusRepository, IUnitOfWork unitOfWork)
+        public CreateGroupOfIssuesCommandHandler(ITypeOfGroupOfIssuesRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
-            _statusRepository = statusRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task<string> Handle(CreateGroupOfIssuesCommand request, CancellationToken cancellationToken)
@@ -30,10 +28,7 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
             if (await GroupWithSameNameAlreadyExist(request.Name, request.OrganizationId))
                 throw new InvalidOperationException($"Group of issues with name: {request.Name} already exist");
 
-            var flow = await _statusRepository.GetFlowById(request.StatusFlowId);
-            ValidateStatusFlowWithRequestParameters(flow, request);
-
-            var group = type.AddNewGroupOfIssues(request.Name, request.StatusFlowId);
+            var group = type.AddNewGroupOfIssues(request.Name);
             
             await _unitOfWork.CommitAsync(cancellationToken);
             
@@ -53,18 +48,6 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
 
             if (type.IsArchived)
                 throw new InvalidOperationException($"Type of group of issue with id: {request.TypeOfGroupId} is already archived");
-        }
-
-        private void ValidateStatusFlowWithRequestParameters(Domain.StatusesFlow.StatusFlow flow, CreateGroupOfIssuesCommand request)
-        {
-            if (flow is null)
-                throw new InvalidOperationException($"Requested status flow with id: {request.StatusFlowId} does not exist");
-
-            if (flow.IsArchived)
-                throw new InvalidOperationException($"Status flow with given id: {request.StatusFlowId} is archived and cannot be modified and used");
-
-            if (flow.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Status flow with given id: {request.StatusFlowId} is not assigned to organization with id: {request.OrganizationId}");
         }
     }
 }

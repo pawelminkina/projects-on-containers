@@ -39,10 +39,10 @@ namespace Issues.API.GrpcServices
             return new CreateIssueResponse() {Id = id};
         }
 
-        public override async Task<DeleteIssueResponse> DeleteIssue(DeleteIssueRequest request, ServerCallContext context)
+        public override async Task<ArchiveIssueResponse> ArchiveIssue(ArchiveIssueRequest request, ServerCallContext context)
         {
             await _mediator.Send(new ArchiveIssueCommand(request.Id, context.GetOrganizationId()));
-            return new DeleteIssueResponse();
+            return new ArchiveIssueResponse();
         }
 
         public override async Task<GetIssuesForGroupResponse> GetIssuesForGroup(GetIssuesForGroupRequest request, ServerCallContext context)

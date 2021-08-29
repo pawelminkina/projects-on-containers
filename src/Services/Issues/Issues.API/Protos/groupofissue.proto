@@ -6,54 +6,54 @@ service GroupOfIssueService{
 	rpc GetGroupOfIssues(GetGroupOfIssuesRequest) returns (GetGroupOfIssuesResponse);
 	rpc CreateGroupOfIssues(CreateGroupOfIssuesRequest) returns (CreateGroupOfIssuesResponse);
 	rpc RenameGroupOfIssues(RenameGroupOfIssuesRequest) returns (RenameGroupOfIssuesResponse);
-	rpc DeleteGroupOfIssues(DeleteGroupOfIssuesRequest) returns (DeleteGroupOfIssuesResponse);
-	rpc ChangeGroupOfIssueType(ChangeGroupOfIssueTypeRequest) returns (ChangeGroupOfIssueTypeResponse);
+	rpc ArchiveGroupOfIssues(ArchiveGroupOfIssuesRequest) returns (ArchiveGroupOfIssuesResponse);
+	//rpc ChangeGroupOfIssueType(ChangeGroupOfIssueTypeRequest) returns (ChangeGroupOfIssueTypeResponse); //TODO 
 }
 
 message GetGroupsOfIssuesRequest{
-
 }
 
 message GetGroupsOfIssuesResponse{
-
+	repeated GroupOfIssue groups = 1;
 }
 
 message GetGroupOfIssuesRequest{
-
+	string id = 1;
 }
 
 message GetGroupOfIssuesResponse{
-
+	GroupOfIssue group = 1;
 }
 
 message CreateGroupOfIssuesRequest{
-
+	string typeOfGroupId = 1;
+	string name = 2;
 }
 
 message CreateGroupOfIssuesResponse{
-
+	string id = 1;
 }
 
 message RenameGroupOfIssuesRequest{
-
+	string id = 1;
+	string newName = 2;
 }
 
 message RenameGroupOfIssuesResponse{
 
 }
 
-message DeleteGroupOfIssuesRequest{
+message ArchiveGroupOfIssuesRequest{
+	string id = 1;
+}
+
+message ArchiveGroupOfIssuesResponse{
 
 }
 
-message DeleteGroupOfIssuesResponse{
 
-}
-
-message ChangeGroupOfIssueTypeRequest{
-
-}
-
-message ChangeGroupOfIssueTypeResponse{
-
+message GroupOfIssue{
+	string id = 1;
+	string name = 2;
+	string typeOfGroupId = 3;
 }

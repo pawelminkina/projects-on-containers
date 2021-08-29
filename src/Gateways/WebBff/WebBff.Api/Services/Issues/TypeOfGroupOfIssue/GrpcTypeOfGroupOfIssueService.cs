@@ -39,10 +39,10 @@ namespace WebBff.Api.Services.Issues.TypeOfGroupOfIssue
 
         public async Task DeleteTypeOfGroupOfIssuesAsync(string id)
         {
-            await _client.DeleteTypeOfGroupOfIssuesAsync(new DeleteTypeOfGroupOfIssuesRequest(){Id = id});
+            await _client.ArchiveTypeOfGroupOfIssuesAsync(new ArchiveTypeOfGroupOfIssuesRequest(){Id = id});
         }
 
         private TypeOfGroupOfIssueDto MapToDto(TypeOfGroupOfIssues type) 
-            => new TypeOfGroupOfIssueDto() {Id = type.Id, Name = type.Name, OrganizationId = type.OrganizationId};
+            => new TypeOfGroupOfIssueDto() {Id = type.Id, Name = type.Name};
     }
 }

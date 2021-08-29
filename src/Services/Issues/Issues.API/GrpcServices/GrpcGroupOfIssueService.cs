@@ -12,17 +12,12 @@ namespace Issues.API.GrpcServices
             
         }
 
-        public async override Task<ChangeGroupOfIssueTypeResponse> ChangeGroupOfIssueType(ChangeGroupOfIssueTypeRequest request, ServerCallContext context)
+        public override async Task<ArchiveGroupOfIssuesResponse> ArchiveGroupOfIssues(ArchiveGroupOfIssuesRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
         }
 
         public async override Task<CreateGroupOfIssuesResponse> CreateGroupOfIssues(CreateGroupOfIssuesRequest request, ServerCallContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async override Task<DeleteGroupOfIssuesResponse> DeleteGroupOfIssues(DeleteGroupOfIssuesRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
         }

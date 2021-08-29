@@ -33,7 +33,7 @@ namespace WebBff.Api.Services.Issues.TypeOfIssue
 
         public async Task DeleteTypeOfIssuesAsync(string id)
         {
-            var res = await _client.DeleteTypeOfIssueAsync(new DeleteTypeOfIssueRequest());
+            var res = await _client.ArchiveTypeOfIssueAsync(new ArchiveTypeOfIssueRequest());
         }
 
         public async Task RenameTypeOfIssuesAsync(string id, string newName)

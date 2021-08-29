@@ -21,7 +21,7 @@ namespace Issues.API.GrpcServices
             throw new NotImplementedException();
         }
 
-        public override async Task<DeleteStatusResponse> DeleteStatus(DeleteStatusRequest request, ServerCallContext context)
+        public override async Task<ArchiveStatusResponse> ArchiveStatus(ArchiveStatusRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
         }

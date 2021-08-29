@@ -22,11 +22,10 @@ namespace Issues.API.GrpcServices
             throw new NotImplementedException();
         }
 
-        public override async Task<DeleteTypeOfIssueResponse> DeleteTypeOfIssue(DeleteTypeOfIssueRequest request, ServerCallContext context)
+        public override async Task<ArchiveTypeOfIssueResponse> ArchiveTypeOfIssue(ArchiveTypeOfIssueRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
         }
-
         public override async Task<RenameTypeOfIssueResponse> RenameTypeOfIssue(RenameTypeOfIssueRequest request, ServerCallContext context)
         {
             return await base.RenameTypeOfIssue(request, context);

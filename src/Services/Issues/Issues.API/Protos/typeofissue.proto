@@ -7,7 +7,7 @@ service TypeOfIssueService{
 	//rpc GetTypesOfIssuesForGroup(GetTypesOfIssuesForGroupRequest) returns (GetTypesOfIssuesForGroupResponse); //TODO in domain logic
 	rpc GetTypeOfIssue(GetTypeOfIssueRequest) returns (GetTypeOfIssueResponse);
 	rpc CreateTypeOfIssue(CreateTypeOfIssueRequest) returns (CreateTypeOfIssueResponse);
-	rpc DeleteTypeOfIssue(DeleteTypeOfIssueRequest) returns (DeleteTypeOfIssueResponse);
+	rpc ArchiveTypeOfIssue(ArchiveTypeOfIssueRequest) returns (ArchiveTypeOfIssueResponse);
 	rpc RenameTypeOfIssue(RenameTypeOfIssueRequest) returns (RenameTypeOfIssueResponse);
 }
 
@@ -16,37 +16,43 @@ message GetTypesOfIssuesRequest{
 }
 
 message GetTypesOfIssuesResponse{
-
+	repeated TypeOfIssue types = 1;
 }
 
 message GetTypeOfIssueRequest{
-
+	string id = 1;
 }
 
 message GetTypeOfIssueResponse{
-
+	TypeOfIssue type = 1;
 }
 
 message CreateTypeOfIssueRequest{
-
+	string name = 1;
 }
 
 message CreateTypeOfIssueResponse{
-
+	string id = 1;
 }
 
-message DeleteTypeOfIssueRequest{
-
+message ArchiveTypeOfIssueRequest{
+	string id = 1;
 }
 
-message DeleteTypeOfIssueResponse{
+message ArchiveTypeOfIssueResponse{
 
 }
 
 message RenameTypeOfIssueRequest{
-
+	string id = 1;
+	string name = 2;
 }
 
 message RenameTypeOfIssueResponse{
 
+}
+
+message TypeOfIssue{
+	string id = 1;
+	string name = 2;
 }
