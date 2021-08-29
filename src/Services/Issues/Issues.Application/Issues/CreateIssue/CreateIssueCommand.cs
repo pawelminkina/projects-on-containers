@@ -9,16 +9,20 @@ namespace Issues.Application.Issues.CreateIssue
 {
     public class CreateIssueCommand : IRequest<string>
     {
-        public CreateIssueCommand(string name, string groupId, string textContent, string organizationId)
+        public CreateIssueCommand(string name, string groupId, string textContent, string userId, string organizationId, string typeOfIssueId)
         {
             Name = name;
             GroupId = groupId;
             TextContent = textContent;
+            UserId = userId;
             OrganizationId = organizationId;
+            TypeOfIssueId = typeOfIssueId;
         }
         public string Name { get; }
         public string GroupId { get; }
         public string TextContent { get; }
+        public string UserId { get; }
         public string OrganizationId { get; }
+        public string TypeOfIssueId { get; }
     }
 }

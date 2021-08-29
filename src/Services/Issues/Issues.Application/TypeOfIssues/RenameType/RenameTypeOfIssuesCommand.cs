@@ -4,14 +4,14 @@ namespace Issues.Application.TypeOfIssues.RenameType
 {
     public class RenameTypeOfIssuesCommand : IRequest
     {
-        public RenameTypeOfIssuesCommand(string typeIfIssueId, string newName, string organizationId)
+        public RenameTypeOfIssuesCommand(string typeOfIssueId, string newName, string organizationId)
         {
-            TypeIfIssueId = typeIfIssueId;
+            TypeOfIssueId = typeOfIssueId;
             NewName = newName;
             OrganizationId = organizationId;
         }
 
-        public string TypeIfIssueId { get; }
+        public string TypeOfIssueId { get; }
         public string NewName { get; }
         public string OrganizationId { get; }
 

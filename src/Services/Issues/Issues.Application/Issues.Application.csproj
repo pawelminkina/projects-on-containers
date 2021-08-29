@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Issues\GetIssuesForGroup\" />
-    <Folder Include="Issues\UpdateIssueContent\" />
     <Folder Include="TypeOfGroupOfIssues\ArchiveType\" />
     <Folder Include="TypeOfIssues\ArchiveType\" />
     <Folder Include="TypeOfIssues\DeleteTypeInGroup\" />

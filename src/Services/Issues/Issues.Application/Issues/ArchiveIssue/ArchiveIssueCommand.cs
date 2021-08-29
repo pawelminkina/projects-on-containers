@@ -1,10 +1,10 @@
 ﻿using MediatR;
 
-namespace Issues.Application.Issues.DeleteIssue
+namespace Issues.Application.Issues.ArchiveIssue
 {
-    public class DeleteIssueCommand : IRequest
+    public class ArchiveIssueCommand : IRequest
     {
-        public DeleteIssueCommand(string issueId, string organizationId)
+        public ArchiveIssueCommand(string issueId, string organizationId)
         {
             IssueId = issueId;
             OrganizationId = organizationId;

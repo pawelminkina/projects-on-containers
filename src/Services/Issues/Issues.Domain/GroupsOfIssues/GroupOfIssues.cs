@@ -47,6 +47,15 @@ namespace Issues.Domain.GroupsOfIssues
             return issue;
         }
 
+        //public void RemoveIssue(string issueId)
+        //{ 
+        //    var issue = Issues.FirstOrDefault(d => d.Id == issueId);
+        //    if (issue is null)
+        //        throw new InvalidOperationException($"Issue with id: {issueId} not exist in group with id: {Id}");
+
+        //    Issues.Remove(issue);
+        //}
+
 
         public Issue AssignIssueToGroup(Issue existingIssue, string newStatusId)
         {

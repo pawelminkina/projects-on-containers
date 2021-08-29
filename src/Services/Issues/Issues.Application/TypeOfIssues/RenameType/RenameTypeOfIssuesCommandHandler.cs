@@ -19,7 +19,7 @@ namespace Issues.Application.TypeOfIssues.RenameType
         }
         public async Task<Unit> Handle(RenameTypeOfIssuesCommand request, CancellationToken cancellationToken)
         {
-            var type = await _repository.GetTypeOfIssueByIdAsync(request.TypeIfIssueId);
+            var type = await _repository.GetTypeOfIssueByIdAsync(request.TypeOfIssueId);
             
             ValidateTypeWithRequestedParameters(type, request);
 
@@ -32,13 +32,13 @@ namespace Issues.Application.TypeOfIssues.RenameType
         private void ValidateTypeWithRequestedParameters(TypeOfIssue type, RenameTypeOfIssuesCommand request)
         {
             if (type is null)
-                throw new InvalidOperationException($"Type of issues with given id: {request.TypeIfIssueId} does not exist");
+                throw new InvalidOperationException($"Type of issues with given id: {request.TypeOfIssueId} does not exist");
 
             if (type.IsArchived)
-                throw new InvalidOperationException($"Type of issues with given id: {request.TypeIfIssueId} is archived and cannot be modified");
+                throw new InvalidOperationException($"Type of issues with given id: {request.TypeOfIssueId} is archived and cannot be modified");
 
             if (type.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Type of issues with given id: {request.TypeIfIssueId} is not assigned to organization with id: {request.OrganizationId}");
+                throw new InvalidOperationException($"Type of issues with given id: {request.TypeOfIssueId} is not assigned to organization with id: {request.OrganizationId}");
         }
     }
 }

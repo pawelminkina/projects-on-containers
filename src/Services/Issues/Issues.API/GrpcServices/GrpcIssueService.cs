@@ -6,8 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Issues.API.Extensions;
+using Issues.Application.Issues.ArchiveIssue;
 using Issues.Application.Issues.CreateIssue;
-using Issues.Application.Issues.DeleteIssue;
 using Issues.Application.Issues.GetIssuesForGroup;
 using Issues.Application.Issues.GetIssuesForUser;
 using Issues.Application.Issues.GetIssueWithContent;
@@ -35,13 +35,13 @@ namespace Issues.API.GrpcServices
         public override async Task<CreateIssueResponse> CreateIssue(CreateIssueRequest request, ServerCallContext context)
         {
             var id = await _mediator.Send(new CreateIssueCommand(request.Name, request.GroupId, request.TextContent,
-                context.GetOrganizationId()));
+                context.GetUserId(), context.GetOrganizationId(), request.TypeOfIssueId));
             return new CreateIssueResponse() {Id = id};
         }
 
         public override async Task<DeleteIssueResponse> DeleteIssue(DeleteIssueRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new DeleteIssueCommand(request.Id, context.GetOrganizationId()));
+            await _mediator.Send(new ArchiveIssueCommand(request.Id, context.GetOrganizationId()));
             return new DeleteIssueResponse();
         }
 
