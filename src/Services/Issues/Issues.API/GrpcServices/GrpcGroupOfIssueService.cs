@@ -11,7 +11,7 @@ namespace Issues.API.GrpcServices
         {
             
         }
-
+        //I can't code today but i want to keep github green
         public override async Task<ArchiveGroupOfIssuesResponse> ArchiveGroupOfIssues(ArchiveGroupOfIssuesRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
