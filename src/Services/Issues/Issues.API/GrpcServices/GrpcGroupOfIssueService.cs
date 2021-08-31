@@ -11,7 +11,8 @@ namespace Issues.API.GrpcServices
         {
             
         }
-        //I can't code today but i want to keep github green
+        //again, probably i will code at 7.09.2021, but i will push this empty commits co keep github green for the whole year
+        //is it cheating? Please hr tell me
         public override async Task<ArchiveGroupOfIssuesResponse> ArchiveGroupOfIssues(ArchiveGroupOfIssuesRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();
