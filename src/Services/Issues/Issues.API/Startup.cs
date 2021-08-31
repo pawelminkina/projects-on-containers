@@ -77,6 +77,7 @@ namespace Issues.API
             services.AddScoped<ITypeGroupOfIssuesArchivePolicy, CascadeTypeGroupOfIssuesArchivePolicy>();
 
             //Validators
+            //behaviour which will log every cqs request would be nice
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
 
