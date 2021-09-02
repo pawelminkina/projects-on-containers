@@ -80,6 +80,7 @@ namespace Issues.API
             //behaviour which will log every cqs request would be nice
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
+            //I will have time at 6.09/7.09 max 8.09
 
         }
 
