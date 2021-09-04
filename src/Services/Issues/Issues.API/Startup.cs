@@ -82,7 +82,7 @@ namespace Issues.API
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
 
 
-            //ok again i'm making commit for github again
+            //second
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
