@@ -81,6 +81,8 @@ namespace Issues.API
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
 
+
+            //ok again i'm making commit for github again
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
