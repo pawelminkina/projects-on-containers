@@ -82,7 +82,7 @@ namespace Issues.API
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
 
 
-            //again
+            //again and again
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
