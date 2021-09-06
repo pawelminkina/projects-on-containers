@@ -80,9 +80,6 @@ namespace Issues.API
             //behaviour which will log every cqs request would be nice
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
-
-
-            //again and again
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
