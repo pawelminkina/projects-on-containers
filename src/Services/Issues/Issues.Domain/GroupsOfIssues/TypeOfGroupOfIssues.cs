@@ -36,16 +36,22 @@ namespace Issues.Domain.GroupsOfIssues
 
         public void RenameGroup(string newName)=> ChangeStringProperty("Name", newName);
 
-        public GroupOfIssues AddNewGroupOfIssues(string name)
+        public GroupOfIssues AddNewGroupOfIssues(string name, string shortName)
         {
-            var group = new GroupOfIssues(name, this);
+            if (shortName.Length is > GroupOfIssues.MaxShortNameLength or < GroupOfIssues.MinShortNameLength)
+                throw new InvalidOperationException($"Requested new short name: {shortName} have more cases then {GroupOfIssues.MaxShortNameLength} or has less cases then {GroupOfIssues.MinShortNameLength}");
+            
+            if (string.IsNullOrEmpty(name))
+                throw new InvalidOperationException("Requested group of issues name is empty");
+
+            var group = new GroupOfIssues(name, shortName, this);
             _groups.Add(group);
             return group;
         }
-        public void Archive(ITypeGroupOfIssuesArchivePolicy policy)
+        public void Archive()
         {
+            _groups.ForEach(d=>d.Archive());
             IsArchived = true;
-            policy.Archive(this);
         }
 
         public void UnArchive()

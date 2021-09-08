@@ -10,6 +10,7 @@ namespace Issues.Infrastructure.Database.Configuration
         {
             builder.Property(d => d.Id).IsRequired().HasMaxLength(63);
             builder.Property(d => d.Name).IsRequired().HasMaxLength(1023);
+            builder.Property(d => d.ShortName).IsRequired().HasMaxLength(6);
             builder.Property(d => d.TypeOfGroupId).IsRequired().HasMaxLength(63);
             builder.Property(d => d.IsArchived).IsRequired();
             builder.HasMany(d => d.Issues).WithOne(s => s.GroupOfIssue);
