@@ -18,16 +18,14 @@ namespace Issues.Application.TypeOfGroupOfIssues.GetType
         {
             var type = await _repository.GetTypeOfGroupOfIssuesByIdAsync(request.Id);
 
-            ValidateTypeWithRequestParameters(type,request);
+            if (type is not null)
+                ValidateTypeWithRequestParameters(type, request);
 
             return type;
         }
 
         private void ValidateTypeWithRequestParameters(Domain.GroupsOfIssues.TypeOfGroupOfIssues type, GetTypeOfGroupOfIssuesQuery request)
         {
-            if (type is null)
-                throw new InvalidOperationException($"Type of group of issues with id: {request.Id} was not found");
-
             if (type.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Type of group of issues with id: {request.Id} was found and is not accessible for organization with id: {request.OrganizationId}");
 

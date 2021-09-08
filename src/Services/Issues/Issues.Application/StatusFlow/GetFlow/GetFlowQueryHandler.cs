@@ -17,16 +17,14 @@ namespace Issues.Application.StatusFlow.GetFlow
         public async Task<Domain.StatusesFlow.StatusFlow> Handle(GetFlowQuery request, CancellationToken cancellationToken)
         {
             var flow = await _statusRepository.GetFlowById(request.FlowId);
-            ValidateFlowWithRequestedParameters(flow, request);
+            if (flow is not null)
+                ValidateFlowWithRequestedParameters(flow, request);
 
             return flow;
         }
 
         private void ValidateFlowWithRequestedParameters(Domain.StatusesFlow.StatusFlow status, GetFlowQuery request)
         {
-            if (status is null)
-                throw new InvalidOperationException($"Flow with id: {request.FlowId} was not found");
-
             if (status.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Flow with id: {request.FlowId} was found and is not accessible for organization with id: {request.OrganizationId}");
         }

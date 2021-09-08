@@ -4,7 +4,7 @@ option csharp_namespace = "Issues.API.Protos";
 service TypeOfGroupOfIssueService{
 	rpc GetTypesOfGroupsOfIssues(GetTypesOfGroupsOfIssuesRequest) returns (GetTypesOfGroupsOfIssuesResponse);
 	rpc GetTypeOfGroupOfIssues(GetTypeOfGroupOfIssuesRequest) returns (GetTypeOfGroupOfIssuesResponse);
-	rpc CreateTypefOfGroupOfIssues(CreateTypefOfGroupOfIssuesRequest) returns (CreateTypefOfGroupOfIssuesResponse);
+	rpc CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssuesRequest) returns (CreateTypeOfGroupOfIssuesResponse);
 	rpc RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest) returns (RenameTypeOfGroupOfIssuesResponse);
 	rpc ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest) returns (ArchiveTypeOfGroupOfIssuesResponse);
 }
@@ -25,11 +25,11 @@ message GetTypeOfGroupOfIssuesResponse{
 	TypeOfGroupOfIssues type = 1;
 }
 
-message CreateTypefOfGroupOfIssuesRequest{
+message CreateTypeOfGroupOfIssuesRequest{
 	string name = 1;
 }
 
-message CreateTypefOfGroupOfIssuesResponse{
+message CreateTypeOfGroupOfIssuesResponse{
 	string id = 1;
 }
 

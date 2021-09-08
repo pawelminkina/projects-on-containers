@@ -17,16 +17,14 @@ namespace Issues.Application.GroupOfIssues.GetGroup
         public async Task<Domain.GroupsOfIssues.GroupOfIssues> Handle(GetGroupOfIssuesQuery request, CancellationToken cancellationToken)
         {
             var group = await _repository.GetGroupOfIssuesByIdAsync(request.Id);
-            ValidateGroupWithRequestParameters(group, request);
+            if (group is not null)
+                ValidateGroupWithRequestParameters(group, request);
 
             return group;
         }
 
         private void ValidateGroupWithRequestParameters(Domain.GroupsOfIssues.GroupOfIssues group, GetGroupOfIssuesQuery request)
         {
-            if (group is null)
-                throw new InvalidOperationException($"Group of issues with id: {request.Id} was not found");
-
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Group of issues with id: {request.Id} was found and is not accessible for organization with id: {request.OrganizationId}");
 

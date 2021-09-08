@@ -99,8 +99,6 @@ namespace Issues.API.GrpcServices
 
         private Protos.IssueContent MapToIssueContent(Domain.Issues.IssueContent content) => new Protos.IssueContent()
         {
-            Id = content.Id,
-            IssueId = content.ParentIssue.Id,
             TextContent = content.TextContent
         };
     }

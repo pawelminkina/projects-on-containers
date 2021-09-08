@@ -95,10 +95,10 @@ message RemoveConnectionFromStatusInFlowResponse{
 message StatusFlow{
 	string id = 1;
 	string name = 2;
-	repeated StatusInFLow statuses = 3;
+	repeated StatusInFlow statuses = 3;
 }
 
-message StatusInFLow{
+message StatusInFlow{
 	string parentStatusId = 1;
 	int32 indexInFLow = 2;
 	repeated string childStatusesIds = 3;

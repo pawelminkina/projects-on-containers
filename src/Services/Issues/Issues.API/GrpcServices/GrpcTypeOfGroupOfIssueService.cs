@@ -42,10 +42,10 @@ namespace Issues.API.GrpcServices
             return new GetTypeOfGroupOfIssuesResponse() {Type = MapToTypeOfGroupOfIssues(typeOfGroupOfIssues)};
         }
 
-        public override async Task<CreateTypefOfGroupOfIssuesResponse> CreateTypefOfGroupOfIssues(CreateTypefOfGroupOfIssuesRequest request, ServerCallContext context)
+        public override async Task<CreateTypeOfGroupOfIssuesResponse> CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
             var idOfTypeOfGroupOfIssues = await _mediator.Send(new CreateTypeOfGroupOfIssuesCommand(request.Name, context.GetOrganizationId()));
-            return new CreateTypefOfGroupOfIssuesResponse() {Id = idOfTypeOfGroupOfIssues};
+            return new CreateTypeOfGroupOfIssuesResponse() {Id = idOfTypeOfGroupOfIssues};
         }
 
         public override async Task<ArchiveTypeOfGroupOfIssuesResponse> ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest request, ServerCallContext context)
