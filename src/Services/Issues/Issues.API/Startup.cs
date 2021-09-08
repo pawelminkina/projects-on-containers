@@ -81,8 +81,6 @@ namespace Issues.API
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
 
-            //ok at 8.09 is my last day at current job, so for some relax i will come here
-            //i'm just really busy 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
