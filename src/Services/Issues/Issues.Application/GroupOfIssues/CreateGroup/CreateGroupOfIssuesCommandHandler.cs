@@ -25,7 +25,7 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
             var type = await _repository.GetTypeOfGroupOfIssuesByIdAsync(request.TypeOfGroupId);
             ValidateTypeWithRequestedParameters(type, request);
 
-            if (await GroupWithSameNameAlreadyExist(request.Name, request.OrganizationId))
+            if (await GroupWithSameShortNameAlreadyExist(request.ShortName, request.OrganizationId))
                 throw new InvalidOperationException($"Group of issues with name: {request.Name} already exist");
 
             var group = type.AddNewGroupOfIssues(request.Name);
@@ -35,7 +35,7 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
             return group.Id;
         }
 
-        private async Task<bool> GroupWithSameNameAlreadyExist(string name, string organizationId) =>
+        private async Task<bool> GroupWithSameShortNameAlreadyExist(string name, string organizationId) =>
         (await _repository.GetTypeOfGroupOfIssuesForOrganizationAsync(organizationId)).FirstOrDefault(s => s.Name == name) is not null;
 
         private void ValidateTypeWithRequestedParameters(Domain.GroupsOfIssues.TypeOfGroupOfIssues type, CreateGroupOfIssuesCommand request)

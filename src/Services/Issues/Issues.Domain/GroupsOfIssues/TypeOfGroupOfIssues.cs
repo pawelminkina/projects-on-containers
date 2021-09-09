@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
+using Issues.Domain.GroupsOfIssues.DomainEvents;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] //For moq purpose 
 
@@ -30,6 +31,7 @@ namespace Issues.Domain.GroupsOfIssues
         public string Name { get; private set; }
         public string OrganizationId { get; private set; }
         public bool IsArchived { get; private set; }
+        public bool IsDefault { get; private set; }
 
         protected readonly List<GroupOfIssues> _groups;
         public IReadOnlyCollection<GroupOfIssues> Groups => _groups;
@@ -48,10 +50,29 @@ namespace Issues.Domain.GroupsOfIssues
             _groups.Add(group);
             return group;
         }
+
+        public void RemoveGroupAndMoveIssuesToAnotherGroup(string idOfGroupToDelete, string idOfGroupToWhichIssuesShouldBeMoved)
+        {
+            var toDelete = _groups.FirstOrDefault(d => d.Id == idOfGroupToDelete);
+
+            if (toDelete is null)
+                throw new InvalidOperationException($"Requested group to delete is not in type with id: {Id}");
+
+            var toWhichShouldBeMoved = _groups.FirstOrDefault(s => s.Id == idOfGroupToWhichIssuesShouldBeMoved);
+
+            if (toWhichShouldBeMoved is null)
+                throw new InvalidOperationException($"Requested group to which should be moved is not in type with id: {Id}");
+
+            foreach (var issue in toDelete.Issues)
+                issue.ChangeGroupOfIssue(toWhichShouldBeMoved);
+
+            _groups.Remove(toDelete); //TODO question: will it delete it from db, or do i need domain event which will remove it from db
+
+        }
         public void Archive()
         {
-            _groups.ForEach(d=>d.Archive());
             IsArchived = true;
+            AddDomainEvent(new TypeOfGroupOfIssuesArchivedDomainEvent(this)); 
         }
 
         public void UnArchive()

@@ -17,6 +17,7 @@ namespace Issues.Domain.Issues
             TimeOfCreation = timeOfCreation;
             _typeOfIssueId = typeOfIssueId;
             IsArchived = false;
+            IsDeleted = false;
         }
 
         protected Issue()
@@ -31,6 +32,7 @@ namespace Issues.Domain.Issues
         public GroupOfIssues GroupOfIssue { get; private set; }
         public DateTimeOffset TimeOfCreation { get; private set; }
         public bool IsArchived { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         private string _typeOfIssueId; //https://github.com/dotnet-architecture/eShopOnContainers/blob/71994d0ad88d51f758d8124b16bddf944cc7d91b/src/Services/Ordering/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs
         public TypeOfIssue TypeOfIssue { get; private set; }
@@ -53,17 +55,25 @@ namespace Issues.Domain.Issues
         {
             if (newGroup == null)
                 throw new InvalidOperationException("Given group issue to set is null");
+            
+            GroupOfIssue.RemoveIssueFromGroup(Id);
+            
             GroupOfIssue = newGroup;
         }
 
+        internal void Delete()
+        {
+            Content.Delete();
+            IsDeleted = true;
+        }
 
-        public void Archive()
+        internal void Archive()
         {
             Content.Archive();
             IsArchived = true;
         }
 
-        public void UnArchive()
+        internal void UnArchive()
         {
             Content.UnArchive();
             IsArchived = false;

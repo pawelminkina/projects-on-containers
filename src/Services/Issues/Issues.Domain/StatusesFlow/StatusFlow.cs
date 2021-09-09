@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
+using Issues.Domain.StatusesFlow.DomainEvents;
 
 namespace Issues.Domain.StatusesFlow
 {
@@ -18,8 +19,6 @@ namespace Issues.Domain.StatusesFlow
             OrganizationId = organizationId;
             StatusesInFlow = new List<StatusInFlow>();
             IsArchived = false;
-            //TODO creating status flow should emit some domain event which will be handled with assigning default statuses to this flow
-            //TODO so i will need default statuses for all organizations
         }
         protected StatusFlow()
         {
@@ -60,6 +59,7 @@ namespace Issues.Domain.StatusesFlow
         {
             StatusesInFlow.ForEach(s=>s.Archive());
             IsArchived = true;
+            AddDomainEvent(new StatusFlowArchivedDomainEvent(this));
         }
 
         public void UnArchive()

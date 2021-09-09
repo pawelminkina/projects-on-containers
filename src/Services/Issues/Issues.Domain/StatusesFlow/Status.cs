@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
+using Issues.Domain.StatusesFlow.DomainEvents;
 
 namespace Issues.Domain.StatusesFlow
 {
@@ -16,7 +17,7 @@ namespace Issues.Domain.StatusesFlow
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
-            IsArchived = false;
+            IsDeleted = false;
         }
         protected Status()
         {
@@ -24,17 +25,13 @@ namespace Issues.Domain.StatusesFlow
         }
         public string Name { get; private set; }
         public string OrganizationId { get; private set; }
-        public bool IsArchived { get; private set; }
+        public bool IsDeleted { get; private set; }
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
-        public void Archive()
+        public void Delete()
         {
-            IsArchived = true;
-        }
-
-        public void UnArchive()
-        {
-            IsArchived = false;
+            AddDomainEvent(new StatusDeletedDomainEvent(this));
+            IsDeleted = true;
         }
     }
 }

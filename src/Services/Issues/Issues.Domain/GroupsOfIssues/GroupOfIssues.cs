@@ -72,6 +72,15 @@ namespace Issues.Domain.GroupsOfIssues
             return existingIssue;
         }
 
+        internal void RemoveIssueFromGroup(string issueId)
+        {
+            var issueToRemove = _issues.FirstOrDefault(a => a.Id == issueId);
+            if (issueToRemove is null)
+                throw new InvalidOperationException($"Requested issue to remove with id: {issueId} is not added in group with {Id}");
+
+            _issues.Remove(issueToRemove);
+        }
+
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
         public void ChangeShortName(string newShortName)
@@ -84,7 +93,7 @@ namespace Issues.Domain.GroupsOfIssues
 
         public void Archive()
         {
-            _issues.ForEach(s=>s.Archive());
+            _issues.ForEach(s => s.Archive());
             IsArchived = true;
         }
 

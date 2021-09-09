@@ -15,6 +15,7 @@ namespace Issues.Domain.Issues
         {
             TextContent = textContent;
             IsArchived = false;
+            IsDeleted = false;
         }
 
         protected IssueContent()
@@ -23,12 +24,17 @@ namespace Issues.Domain.Issues
         }
         public virtual string TextContent { get; set; }
         public virtual bool IsArchived { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
         public void ChangeTextContent(string newTextContent)
         {
             TextContent = string.IsNullOrWhiteSpace(newTextContent) ? string.Empty : newTextContent;
         }
 
+        internal virtual void Delete()
+        {
+            IsDeleted = true;
+        }
         public virtual void Archive()
         {
             IsArchived = true;
