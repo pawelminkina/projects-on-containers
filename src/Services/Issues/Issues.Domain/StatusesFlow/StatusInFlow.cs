@@ -23,7 +23,6 @@ namespace Issues.Domain.StatusesFlow
         }
         public Status ParentStatus { get; private set; }
         public string ParentStatusId { get; private set; }
-        //one to many
         public StatusFlow StatusFlow { get; private set; }
         public int IndexInFlow { get; private set; }
         public bool IsArchived { get; private set; }
