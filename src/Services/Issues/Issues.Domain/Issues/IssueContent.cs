@@ -22,25 +22,25 @@ namespace Issues.Domain.Issues
         {
 
         }
-        public virtual string TextContent { get; set; }
-        public virtual bool IsArchived { get; set; }
-        public virtual bool IsDeleted { get; set; }
+        public string TextContent { get; private set; }
+        public bool IsArchived { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         public void ChangeTextContent(string newTextContent)
         {
             TextContent = string.IsNullOrWhiteSpace(newTextContent) ? string.Empty : newTextContent;
         }
 
-        internal virtual void Delete()
+        internal void Delete()
         {
             IsDeleted = true;
         }
-        public virtual void Archive()
+        public void Archive()
         {
             IsArchived = true;
         }
 
-        public virtual void UnArchive()
+        public void UnArchive()
         {
             IsArchived = false;
         }

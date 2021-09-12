@@ -17,7 +17,7 @@ namespace Issues.Domain.StatusesFlow
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
-            StatusesInFlow = new List<StatusInFlow>();
+            _statusesInFlow = new List<StatusInFlow>();
             IsArchived = false;
         }
         protected StatusFlow()
@@ -26,7 +26,10 @@ namespace Issues.Domain.StatusesFlow
         }
         public string Name { get; private set; }
         public string OrganizationId { get; private set; }
-        public List<StatusInFlow> StatusesInFlow { get; set; }
+
+        protected readonly List<StatusInFlow> _statusesInFlow;
+        public IReadOnlyCollection<StatusInFlow> StatusesInFlow => _statusesInFlow;
+
         public bool IsArchived { get; private set; }
 
         public StatusInFlow AddNewStatusToFlow(Status statusToAdd)
@@ -38,7 +41,7 @@ namespace Issues.Domain.StatusesFlow
 
             var highestIndex = StatusesInFlow.Max(s => s.IndexInFlow);
             var status = new StatusInFlow(statusToAdd, this, highestIndex + 1);
-            StatusesInFlow.Add(status);
+            _statusesInFlow.Add(status);
             return status;
         }
 
@@ -48,23 +51,23 @@ namespace Issues.Domain.StatusesFlow
             if (statusInFlowToDelete == null)
                 throw new InvalidOperationException(
                     $"Requested status to delete with id: {statusId} doesn't exist in flow with id: {Id}");
-            
+
             //TODO status from flow delete domain event which will remove it from db and all connections
-            StatusesInFlow.Remove(statusInFlowToDelete);
+            _statusesInFlow.Remove(statusInFlowToDelete);
         }
 
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
         public void Archive()
         {
-            StatusesInFlow.ForEach(s=>s.Archive());
+            _statusesInFlow.ForEach(s=>s.Archive());
             IsArchived = true;
             AddDomainEvent(new StatusFlowArchivedDomainEvent(this));
         }
 
         public void UnArchive()
         {
-            StatusesInFlow.ForEach(s => s.UnArchive());
+            _statusesInFlow.ForEach(s => s.UnArchive());
             IsArchived = false;
         }
     }

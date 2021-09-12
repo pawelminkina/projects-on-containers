@@ -61,7 +61,7 @@ namespace Issues.Domain.Issues
             GroupOfIssue = newGroup;
         }
 
-        internal void Delete()
+        public void Delete()
         {
             Content.Delete();
             IsDeleted = true;

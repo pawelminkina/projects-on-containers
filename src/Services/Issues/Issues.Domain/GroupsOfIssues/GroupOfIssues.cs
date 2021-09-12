@@ -37,18 +37,15 @@ namespace Issues.Domain.GroupsOfIssues
         public string Name { get; private set; }
         public string ShortName { get; private set; }
         public string TypeOfGroupId { get; private set; }
-        public StatusFlow Flow { get; private set; }
         public TypeOfGroupOfIssues TypeOfGroup { get; private set; } 
         public bool IsArchived { get; private set; }
 
         protected readonly List<Issue> _issues;
         public IReadOnlyCollection<Issue> Issues => _issues;
 
-        public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId)
+        public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId, string statusId)
         {
-            var defaultStatus = GetDefaultStatusInFlow();
-
-            var issue = new Issue(name, defaultStatus.ParentStatus.Id, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId);
+            var issue = new Issue(name, statusId, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId);
             issue.AddContent(textContent);
             _issues.Add(issue);
             return issue;
@@ -109,7 +106,5 @@ namespace Issues.Domain.GroupsOfIssues
             _issues.ForEach(s => s.UnArchive());
             IsArchived = false;
         }
-
-        private StatusInFlow GetDefaultStatusInFlow() => Flow.StatusesInFlow.FirstOrDefault(d=>d.IndexInFlow == 0) ?? throw new InvalidOperationException($"Default status don't exist in status flow with id: {Flow.Id}");
     }
 }
