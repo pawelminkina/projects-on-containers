@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace Issues.Domain.StatusesFlow
 {
-    //TODO this should be seperated into 2 repositories because there are 2 roots
     public interface IStatusRepository
     {
         Task<Status> AddNewStatusAsync(string name, string organizationId);
