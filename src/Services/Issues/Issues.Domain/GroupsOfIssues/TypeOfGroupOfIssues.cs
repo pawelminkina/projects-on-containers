@@ -21,6 +21,7 @@ namespace Issues.Domain.GroupsOfIssues
             Name = name;
             OrganizationId = organizationId;
             IsArchived = false;
+            IsDefault = false;
         }
 
         protected TypeOfGroupOfIssues()
@@ -51,6 +52,14 @@ namespace Issues.Domain.GroupsOfIssues
             return group;
         }
 
+        public void AddExistingGroupsOfIssues(List<GroupOfIssues> groups)
+        {
+            foreach (var group in groups)
+                group.ChangeTypeOfGroupOfIssues(this);
+
+            _groups.AddRange(groups);
+        }
+
         public void RemoveGroupAndMoveIssuesToAnotherGroup(string idOfGroupToDelete, string idOfGroupToWhichIssuesShouldBeMoved)
         {
             var toDelete = _groups.FirstOrDefault(d => d.Id == idOfGroupToDelete);
@@ -67,12 +76,23 @@ namespace Issues.Domain.GroupsOfIssues
                 issue.ChangeGroupOfIssue(toWhichShouldBeMoved);
 
             _groups.Remove(toDelete); //TODO question: will it delete it from db, or do i need domain event which will remove it from db
-
         }
-        public void Archive()
+
+        public void SetDefault()
         {
+            IsDefault = true;
+            AddDomainEvent(new TypeOfGroupOfIssuesSettedToDefaultDomainEvent(this));
+        }
+        public void ArchiveAndMoveGroups(TypeOfGroupOfIssues typeWhereGroupsWillBeMoved)
+        {
+            if (IsDefault)
+                throw new InvalidOperationException("Default type of group of issues could not be archived");
+
+            if (typeWhereGroupsWillBeMoved is null)
+                throw new InvalidOperationException("Requested type where groups will be moved is null");
+
             IsArchived = true;
-            AddDomainEvent(new TypeOfGroupOfIssuesArchivedDomainEvent(this)); 
+            AddDomainEvent(new TypeOfGroupOfIssuesArchivedDomainEvent(this, typeWhereGroupsWillBeMoved)); 
         }
 
         public void UnArchive()

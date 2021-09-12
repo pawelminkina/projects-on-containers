@@ -72,6 +72,13 @@ namespace Issues.Domain.GroupsOfIssues
             return existingIssue;
         }
 
+        internal void ChangeTypeOfGroupOfIssues(TypeOfGroupOfIssues typeOfGroupOfIssues)
+        {
+            TypeOfGroup = typeOfGroupOfIssues ?? throw new InvalidOperationException("Requested type of group of issues is null");
+            
+            TypeOfGroupId = typeOfGroupOfIssues.Id;
+        }
+
         internal void RemoveIssueFromGroup(string issueId)
         {
             var issueToRemove = _issues.FirstOrDefault(a => a.Id == issueId);
