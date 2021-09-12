@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Issues.Infrastructure.Repositories
 {
-    public class SqlStatusRepository : IStatusRepository
+    public class SqlStatusRepository : IStatusRepository, IStatusFlowRepository
     {
         private readonly IssuesServiceDbContext _dbContext;
 
@@ -48,7 +48,7 @@ namespace Issues.Infrastructure.Repositories
                 .Include(d=>d.StatusesInFlow).ThenInclude(d=>d.ParentStatus).FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganization(string organizationId)
+        public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganizationAsync(string organizationId)
         {
             return _dbContext.StatusFlows
                 .Include(s => s.StatusesInFlow).ThenInclude(s => s.ConnectedStatuses).ThenInclude(d => d.ParentStatus)

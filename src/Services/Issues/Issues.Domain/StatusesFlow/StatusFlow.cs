@@ -19,6 +19,7 @@ namespace Issues.Domain.StatusesFlow
             OrganizationId = organizationId;
             _statusesInFlow = new List<StatusInFlow>();
             IsArchived = false;
+            IsDefault = false;
         }
         protected StatusFlow()
         {
@@ -26,6 +27,7 @@ namespace Issues.Domain.StatusesFlow
         }
         public string Name { get; private set; }
         public string OrganizationId { get; private set; }
+        public bool IsDefault { get; private set; }
 
         protected readonly List<StatusInFlow> _statusesInFlow;
         public IReadOnlyCollection<StatusInFlow> StatusesInFlow => _statusesInFlow;
@@ -52,14 +54,31 @@ namespace Issues.Domain.StatusesFlow
                 throw new InvalidOperationException(
                     $"Requested status to delete with id: {statusId} doesn't exist in flow with id: {Id}");
 
-            //TODO status from flow delete domain event which will remove it from db and all connections
+            AddDomainEvent(new StatusInFlowDeletedDomainEvent(statusInFlowToDelete));
             _statusesInFlow.Remove(statusInFlowToDelete);
+        }
+
+        public void SetIsDefaultToTrue()
+        {
+            IsDefault = true;
+            AddDomainEvent(new StatusFlowSettedToDefaultDomainEvent(this));
+        }
+
+        public void SetIsDefaultToFalse()
+        {
+            IsDefault = true;
+#warning there exist a possibility, that it will don't work because context was not saved, and i will have to delete validation, or make it from application level.
+            AddDomainEvent(new StatusFlowUnsettedFromDefaultDomainEvent(this)); 
         }
 
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
         public void Archive()
         {
+            if (IsDefault)
+                throw new InvalidOperationException("Default status flow could not be archived");
+
+
             _statusesInFlow.ForEach(s=>s.Archive());
             IsArchived = true;
             AddDomainEvent(new StatusFlowArchivedDomainEvent(this));

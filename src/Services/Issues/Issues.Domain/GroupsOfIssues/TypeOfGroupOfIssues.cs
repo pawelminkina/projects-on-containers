@@ -78,11 +78,18 @@ namespace Issues.Domain.GroupsOfIssues
             _groups.Remove(toDelete); //TODO question: will it delete it from db, or do i need domain event which will remove it from db
         }
 
-        public void SetDefault()
+        public void SetIsDefaultToTrue()
         {
             IsDefault = true;
             AddDomainEvent(new TypeOfGroupOfIssuesSettedToDefaultDomainEvent(this));
         }
+
+        public void SetIsDefaultToFalse()
+        {
+            IsDefault = false;
+            AddDomainEvent(new TypeOfGroupOfIssuesUnsettedFromDefaultDomainEvent(this));
+        }
+
         public void ArchiveAndMoveGroups(TypeOfGroupOfIssues typeWhereGroupsWillBeMoved)
         {
             if (IsDefault)

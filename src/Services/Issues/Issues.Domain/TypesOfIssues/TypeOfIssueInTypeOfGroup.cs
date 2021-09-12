@@ -27,7 +27,11 @@ namespace Issues.Domain.TypesOfIssues
         public string TypeOfGroupOfIssuesId { get; private set; }
         public bool IsArchived { get; private set; }
 
-        public void ChangeStatusFlow(string newStatusFlowId) => ChangeStringProperty("StatusFlowId", newStatusFlowId);
+        public void ChangeStatusFlow(StatusFlow newStatusFlow)
+        {
+            ChangeStringProperty("StatusFlowId", newStatusFlow.Id);
+            Flow = newStatusFlow;
+        }
         public void Archive()
         {
             IsArchived = true;
