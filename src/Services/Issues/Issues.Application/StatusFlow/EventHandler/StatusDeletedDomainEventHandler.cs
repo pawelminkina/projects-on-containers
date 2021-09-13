@@ -18,7 +18,6 @@ namespace Issues.Application.StatusFlow.EventHandler
             _repository = repository;
             _statusFlowRepository = statusFlowRepository;
         }
-        //status should not be a part of any flow
         
         public async Task Handle(StatusDeletedDomainEvent notification, CancellationToken cancellationToken)
         {
