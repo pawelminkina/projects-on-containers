@@ -7,7 +7,6 @@ service StatusService{
 	//rpc GetStatusesForGroupOfIssues(GetStatusesForGroupOfIssuesRequest) returns (GetStatusesForGroupOfIssuesResponse) //TODO in domain logic
 	rpc GetStatus(GetStatusRequest) returns (GetStatusResponse);
 	rpc CreateStatus(CreateStatusRequest) returns (CreateStatusResponse);
-	rpc ArchiveStatus(ArchiveStatusRequest) returns (ArchiveStatusResponse);
 	rpc RenameStatus(RenameStatusRequest) returns (RenameStatusResponse);
 }
 
@@ -35,13 +34,6 @@ message CreateStatusResponse{
 	string id = 1;
 }
 
-message ArchiveStatusRequest{
-	string id = 1;
-}
-
-message ArchiveStatusResponse{
-
-}
 
 message RenameStatusRequest{
 	string id = 1;

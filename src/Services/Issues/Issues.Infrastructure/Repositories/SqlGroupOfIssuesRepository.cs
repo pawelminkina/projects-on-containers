@@ -35,7 +35,7 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id)
         {
-            return await _dbContext.GroupsOfIssues.Include(s=>s.Flow).Include(s=>s.Issues).Include(d=>d.TypeOfGroup).FirstOrDefaultAsync(s => s.Id == id);
+            return await _dbContext.GroupsOfIssues.Include(s=>s.Issues).Include(d=>d.TypeOfGroup).FirstOrDefaultAsync(s => s.Id == id);
         }
 
     }

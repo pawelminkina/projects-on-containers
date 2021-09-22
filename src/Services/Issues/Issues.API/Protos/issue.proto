@@ -7,7 +7,6 @@ service IssueService{
 	rpc GetIssuesForGroup(GetIssuesForGroupRequest) returns (GetIssuesForGroupResponse);
 	rpc GetIssuesForUser(GetIssuesForUserRequest) returns (GetIssuesForUserResponse);
 	rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
-	rpc ArchiveIssue(ArchiveIssueRequest) returns (ArchiveIssueResponse);
 	rpc RenameIssue(RenameIssueRequest) returns (RenameIssueResponse);
 	rpc UpdateIssueContent(UpdateIssueContentRequest) returns (UpdateIssueContentResponse);
 	rpc UpdateIssueStatus(UpdateIssueStatusRequest) returns (UpdateIssueStatusResponse); //TODO
@@ -49,11 +48,6 @@ message CreateIssueResponse{
 	string id = 1;
 }
 
-message ArchiveIssueRequest{
-	string id = 1;
-}
-
-message ArchiveIssueResponse {}
 
 message RenameIssueRequest{
 	string id = 1;

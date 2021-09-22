@@ -30,7 +30,7 @@ namespace Issues.API.GrpcServices
 
         public override async Task<CreateGroupOfIssuesResponse> CreateGroupOfIssues(CreateGroupOfIssuesRequest request, ServerCallContext context)
         {
-            var result = await _mediator.Send(new CreateGroupOfIssuesCommand(request.TypeOfGroupId, request.Name, context.GetOrganizationId()));
+            var result = await _mediator.Send(new CreateGroupOfIssuesCommand(request.TypeOfGroupId, request.Name, request.ShortName, context.GetOrganizationId()));
             return new CreateGroupOfIssuesResponse() {Id = result};
         }
 

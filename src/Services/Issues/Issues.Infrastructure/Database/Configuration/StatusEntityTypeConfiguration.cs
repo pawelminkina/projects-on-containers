@@ -11,7 +11,7 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.Id).IsRequired().HasMaxLength(63);
             builder.Property(d => d.Name).IsRequired().HasMaxLength(1023);
             builder.Property(d => d.OrganizationId).IsRequired().HasMaxLength(63);
-            builder.Property(d => d.IsArchived).IsRequired();
+            builder.Property(d => d.IsDeleted).IsRequired();
         }
     }
 }

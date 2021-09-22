@@ -10,6 +10,7 @@ service GroupOfIssueService{
 	//rpc ChangeGroupOfIssueType(ChangeGroupOfIssueTypeRequest) returns (ChangeGroupOfIssueTypeResponse); //TODO 
 }
 
+
 message GetGroupsOfIssuesRequest{
 }
 
@@ -28,6 +29,7 @@ message GetGroupOfIssuesResponse{
 message CreateGroupOfIssuesRequest{
 	string typeOfGroupId = 1;
 	string name = 2;
+	string shortName = 3;
 }
 
 message CreateGroupOfIssuesResponse{

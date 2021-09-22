@@ -36,8 +36,8 @@ namespace Issues.Application.Status.RenameStatus
             if (status.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Status with id: {request.StatusId} was found and is not accessible for organization with id: {request.OrganizationId}");
 
-            if (status.IsArchived)
-                throw new InvalidOperationException($"Status with id: {request.StatusId} is already archived");
+            if (status.IsDeleted)
+                throw new InvalidOperationException($"Status with id: {request.StatusId} is already deleted");
         }
     }
 }

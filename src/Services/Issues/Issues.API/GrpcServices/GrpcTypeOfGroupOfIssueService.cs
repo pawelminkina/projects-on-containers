@@ -50,7 +50,7 @@ namespace Issues.API.GrpcServices
 
         public override async Task<ArchiveTypeOfGroupOfIssuesResponse> ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new ArchiveTypeOfGroupOfIssuesCommand(request.Id, context.GetOrganizationId()));
+            await _mediator.Send(new ArchiveTypeOfGroupOfIssuesCommand(request.Id, request.TypeOfGroupOfIssuesWhereGroupsWillBeMovedId, context.GetOrganizationId()));
             return new ArchiveTypeOfGroupOfIssuesResponse();
         }
 

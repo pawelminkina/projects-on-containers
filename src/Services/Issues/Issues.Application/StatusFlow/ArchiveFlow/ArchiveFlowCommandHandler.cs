@@ -9,10 +9,10 @@ namespace Issues.Application.StatusFlow.ArchiveFlow
 {
     public class ArchiveFlowCommandHandler : IRequestHandler<ArchiveFlowCommand>
     {
-        private readonly IStatusRepository _repository;
+        private readonly IStatusFlowRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ArchiveFlowCommandHandler(IStatusRepository repository, IUnitOfWork unitOfWork)
+        public ArchiveFlowCommandHandler(IStatusFlowRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;

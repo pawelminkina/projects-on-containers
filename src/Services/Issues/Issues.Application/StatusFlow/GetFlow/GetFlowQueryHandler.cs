@@ -8,9 +8,9 @@ namespace Issues.Application.StatusFlow.GetFlow
 {
     public class GetFlowQueryHandler : IRequestHandler<GetFlowQuery, Domain.StatusesFlow.StatusFlow>
     {
-        private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusRepository;
 
-        public GetFlowQueryHandler(IStatusRepository statusRepository)
+        public GetFlowQueryHandler(IStatusFlowRepository statusRepository)
         {
             _statusRepository = statusRepository;
         }

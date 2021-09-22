@@ -8,15 +8,15 @@ namespace Issues.Application.StatusFlow.GetFlowsForOrganization
 {
     public class GetFlowsForOrganizationQueryHandler : IRequestHandler<GetFlowsForOrganizationQuery, IEnumerable<Domain.StatusesFlow.StatusFlow>>
     {
-        private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusFlowRepository;
 
-        public GetFlowsForOrganizationQueryHandler(IStatusRepository statusRepository)
+        public GetFlowsForOrganizationQueryHandler(IStatusFlowRepository statusFlowRepository)
         {
-            _statusRepository = statusRepository;
+            _statusFlowRepository = statusFlowRepository;
         }
         public async Task<IEnumerable<Domain.StatusesFlow.StatusFlow>> Handle(GetFlowsForOrganizationQuery request, CancellationToken cancellationToken)
         {
-            return await _statusRepository.GetFlowsByOrganization(request.OrganizationId);
+            return await _statusFlowRepository.GetFlowsByOrganizationAsync(request.OrganizationId);
         }
     }
 }

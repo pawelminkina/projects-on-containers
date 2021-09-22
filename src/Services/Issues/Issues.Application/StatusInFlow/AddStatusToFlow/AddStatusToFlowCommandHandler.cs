@@ -10,11 +10,13 @@ namespace Issues.Application.StatusInFlow.AddStatusToFlow
     public class AddStatusToFlowCommandHandler : IRequestHandler<AddStatusToFlowCommand>
     {
         private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusFlowRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddStatusToFlowCommandHandler(IStatusRepository statusRepository, IUnitOfWork unitOfWork)
+        public AddStatusToFlowCommandHandler(IStatusRepository statusRepository, IStatusFlowRepository statusFlowRepository, IUnitOfWork unitOfWork)
         {
             _statusRepository = statusRepository;
+            _statusFlowRepository = statusFlowRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task<Unit> Handle(AddStatusToFlowCommand request, CancellationToken cancellationToken)
@@ -22,7 +24,7 @@ namespace Issues.Application.StatusInFlow.AddStatusToFlow
             var status = await _statusRepository.GetStatusById(request.StatusId);
             ValidateStatusWithRequestedParameters(status,request);
 
-            var flow = await _statusRepository.GetFlowById(request.FlowId);
+            var flow = await _statusFlowRepository.GetFlowById(request.FlowId);
             ValidateFlowWithRequestedParameters(flow,request);
 
             flow.AddNewStatusToFlow(status);
@@ -51,8 +53,8 @@ namespace Issues.Application.StatusInFlow.AddStatusToFlow
             if (status.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Status with id: {request.StatusId} was found and is not accessible for organization with id: {request.OrganizationId}");
 
-            if (status.IsArchived)
-                throw new InvalidOperationException($"Status with id: {request.StatusId} is already archived");
+            if (status.IsDeleted)
+                throw new InvalidOperationException($"Status with id: {request.StatusId} is already deleted");
         }
     }
 }

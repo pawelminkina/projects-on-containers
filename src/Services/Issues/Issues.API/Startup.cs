@@ -24,7 +24,6 @@ using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
 using Issues.Domain.TypesOfIssues;
 using Issues.Infrastructure;
-using Issues.Infrastructure.ArchivePolicies;
 using Issues.Infrastructure.Database;
 using Issues.Infrastructure.Processing;
 using Issues.Infrastructure.Repositories;
@@ -73,8 +72,6 @@ namespace Issues.API
             services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
             services.AddControllers();
-
-            services.AddScoped<ITypeGroupOfIssuesArchivePolicy, CascadeTypeGroupOfIssuesArchivePolicy>();
 
             //Validators
             //behaviour which will log every cqs request would be nice

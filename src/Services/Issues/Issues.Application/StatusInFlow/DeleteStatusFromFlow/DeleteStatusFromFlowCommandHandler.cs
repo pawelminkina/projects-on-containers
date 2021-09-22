@@ -9,10 +9,10 @@ namespace Issues.Application.StatusInFlow.DeleteStatusFromFlow
 {
     public class DeleteStatusFromFlowCommandHandler : IRequestHandler<DeleteStatusFromFlowCommand>
     {
-        private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteStatusFromFlowCommandHandler(IStatusRepository statusRepository, IUnitOfWork unitOfWork)
+        public DeleteStatusFromFlowCommandHandler(IStatusFlowRepository statusRepository, IUnitOfWork unitOfWork)
         {
             _statusRepository = statusRepository;
             _unitOfWork = unitOfWork;

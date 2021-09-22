@@ -10,10 +10,10 @@ namespace Issues.Application.StatusInFlow.RemoveConnection
 {
     public class RemoveConnectionCommandHandler : IRequestHandler<RemoveConnectionCommand>
     {
-        private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RemoveConnectionCommandHandler(IStatusRepository statusRepository, IUnitOfWork unitOfWork)
+        public RemoveConnectionCommandHandler(IStatusFlowRepository statusRepository, IUnitOfWork unitOfWork)
         {
             _statusRepository = statusRepository;
             _unitOfWork = unitOfWork;

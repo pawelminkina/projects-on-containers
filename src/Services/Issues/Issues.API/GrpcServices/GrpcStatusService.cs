@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Issues.API.Extensions;
 using Issues.API.Protos;
-using Issues.Application.Status.ArchiveStatus;
 using Issues.Application.Status.CreateStatus;
 using Issues.Application.Status.GetStatus;
 using Issues.Application.Status.GetStatuses;
@@ -48,12 +47,6 @@ namespace Issues.API.GrpcServices
         {
             var id = await _mediator.Send(new CreateStatusCommand(request.Name, context.GetOrganizationId()));
             return new CreateStatusResponse() { Id = id };
-        }
-
-        public override async Task<ArchiveStatusResponse> ArchiveStatus(ArchiveStatusRequest request, ServerCallContext context)
-        {
-            await _mediator.Send(new ArchiveStatusCommand(request.Id, context.GetOrganizationId()));
-            return new ArchiveStatusResponse();
         }
 
         public override async Task<RenameStatusResponse> RenameStatus(RenameStatusRequest request, ServerCallContext context)

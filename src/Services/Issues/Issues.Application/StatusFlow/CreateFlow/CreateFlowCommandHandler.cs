@@ -10,10 +10,10 @@ namespace Issues.Application.StatusFlow.CreateFlow
 {
     public class CreateFlowCommandHandler : IRequestHandler<CreateFlowCommand, string>
     {
-        private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateFlowCommandHandler(IStatusRepository statusRepository, IUnitOfWork unitOfWork)
+        public CreateFlowCommandHandler(IStatusFlowRepository statusRepository, IUnitOfWork unitOfWork)
         {
             _statusRepository = statusRepository;
             _unitOfWork = unitOfWork;
@@ -30,7 +30,7 @@ namespace Issues.Application.StatusFlow.CreateFlow
         }
 
         private async Task<bool> FlowWithSameNameAlreadyExist(string name, string orgId) =>
-            (await _statusRepository.GetFlowsByOrganization(orgId)).FirstOrDefault(s => s.Name == name) is not null;
+            (await _statusRepository.GetFlowsByOrganizationAsync(orgId)).FirstOrDefault(s => s.Name == name) is not null;
 
     }
 }

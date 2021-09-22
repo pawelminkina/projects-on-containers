@@ -11,11 +11,13 @@ namespace Issues.Application.StatusInFlow.AddConnection
     public class AddConnectionCommandHandler : IRequestHandler<AddConnectionCommand>
     {
         private readonly IStatusRepository _repository;
+        private readonly IStatusFlowRepository _statusFlowRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddConnectionCommandHandler(IStatusRepository repository, IUnitOfWork unitOfWork)
+        public AddConnectionCommandHandler(IStatusRepository repository, IStatusFlowRepository statusFlowRepository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _statusFlowRepository = statusFlowRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task<Unit> Handle(AddConnectionCommand request, CancellationToken cancellationToken)
@@ -23,7 +25,7 @@ namespace Issues.Application.StatusInFlow.AddConnection
             var childStatus = await _repository.GetStatusById(request.ChildStatusId);
             ValidateStatusWithRequestedParameters(childStatus, request);
 
-            var flow = await _repository.GetFlowById(request.FlowId);
+            var flow = await _statusFlowRepository.GetFlowById(request.FlowId);
             ValidateFlowWithRequestedParameters(flow, request);
 
             var parentStatusInFlow = flow.StatusesInFlow.FirstOrDefault(d => d.ParentStatusId == request.ParentStatusId);
@@ -56,8 +58,8 @@ namespace Issues.Application.StatusInFlow.AddConnection
             if (status.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Status with id: {request.ChildStatusId} was found and is not accessible for organization with id: {request.OrganizationId}");
 
-            if (status.IsArchived)
-                throw new InvalidOperationException($"Status with id: {request.ChildStatusId} is already archived");
+            if (status.IsDeleted)
+                throw new InvalidOperationException($"Status with id: {request.ChildStatusId} is already deleted");
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
             if (await GroupWithSameShortNameAlreadyExist(request.ShortName, request.OrganizationId))
                 throw new InvalidOperationException($"Group of issues with name: {request.Name} already exist");
 
-            var group = type.AddNewGroupOfIssues(request.Name);
+            var group = type.AddNewGroupOfIssues(request.Name, request.ShortName);
             
             await _unitOfWork.CommitAsync(cancellationToken);
             

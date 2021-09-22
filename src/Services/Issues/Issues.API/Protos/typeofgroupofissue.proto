@@ -7,6 +7,15 @@ service TypeOfGroupOfIssueService{
 	rpc CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssuesRequest) returns (CreateTypeOfGroupOfIssuesResponse);
 	rpc RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest) returns (RenameTypeOfGroupOfIssuesResponse);
 	rpc ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest) returns (ArchiveTypeOfGroupOfIssuesResponse);
+	rpc RemoveGroupAndMoveIssuesToAnotherGroup(RemoveGroupAndMoveIssuesToAnotherGroupRequest) returns (RemoveGroupAndMoveIssuesToAnotherGroupResponse);
+}
+
+message RemoveGroupAndMoveIssuesToAnotherGroupResponse{
+}
+
+message RemoveGroupAndMoveIssuesToAnotherGroupRequest{
+	string idOfGroupToRemove = 1;
+	string idOfGroupToWhichIssuesShouldBeMoved = 2;
 }
 
 message GetTypesOfGroupsOfIssuesRequest{
@@ -43,6 +52,7 @@ message RenameTypeOfGroupOfIssuesResponse{
 
 message ArchiveTypeOfGroupOfIssuesRequest{
 	string id = 1;
+	string typeOfGroupOfIssuesWhereGroupsWillBeMovedId = 2;
 }
 
 message ArchiveTypeOfGroupOfIssuesResponse{

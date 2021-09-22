@@ -41,8 +41,7 @@ namespace Issues.Domain.StatusesFlow
                 throw new InvalidOperationException(
                     $"Requested status to add with id: {statusToAdd.Id} currently exist in flow with id: {Id}");
 
-            var highestIndex = StatusesInFlow.Max(s => s.IndexInFlow);
-            var status = new StatusInFlow(statusToAdd, this, highestIndex + 1);
+            var status = new StatusInFlow(statusToAdd, this, StatusesInFlow.Any() ? StatusesInFlow.Max(s => s.IndexInFlow): 0);
             _statusesInFlow.Add(status);
             return status;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
@@ -29,7 +30,11 @@ namespace Issues.Application.Issues.CreateIssue
             var type = await _typeOfIssueRepository.GetTypeOfIssueByIdAsync(request.TypeOfIssueId);
             ValidateTypeWithRequestedParameters(type,request);
 
-            var issue = group.AddIssue(request.Name, request.UserId, request.TextContent, request.TypeOfIssueId);
+            var typeInGroup = type.TypesInGroups.FirstOrDefault(s => s.TypeOfGroupOfIssuesId == group.Id);
+            if (typeInGroup is null)
+                throw new InvalidOperationException($"Group for type {request.GroupId} was not found in type of issue: {request.TypeOfIssueId}");
+
+            var issue = group.AddIssue(request.Name, request.UserId, request.TextContent, request.TypeOfIssueId, typeInGroup.Flow.StatusesInFlow.FirstOrDefault(d=>d.IndexInFlow == 0).ParentStatusId);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return issue.Id;

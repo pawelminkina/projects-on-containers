@@ -36,24 +36,7 @@ namespace Issues.API.Infrastructure.Database.Seeding
 
         public IEnumerable<TypeOfGroupOfIssues> GetTypesOfGroupsOfIssues()
         {
-            return new List<TypeOfGroupOfIssues>()
-            {
-                new TypeOfGroupOfIssues()
-                {
-                    Id = "51e07f6e-9ac2-4765-8d18-0e4b5c87b475", IsArchived = false, Name = "First group",
-                    OrganizationId = "pocOrgan-70cf-4a4d-bcd8-1241e3bcce0b"
-                },
-                new TypeOfGroupOfIssues()
-                {
-                    Id = "1864d3f4-db57-4c01-a20b-769c9d52cb87", IsArchived = false, Name = "Second group",
-                    OrganizationId = "pocOrgan-70cf-4a4d-bcd8-1241e3bcce0b"
-                },
-                new TypeOfGroupOfIssues()
-                {
-                    Id = "120a6b25-19b1-42a9-ab3e-f0955a510a66", IsArchived = false, Name = "Third group",
-                    OrganizationId = "pocOrgan-70cf-4a4d-bcd8-1241e3bcce0b"
-                }
-            };
+            return new List<TypeOfGroupOfIssues>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
@@ -11,20 +12,31 @@ namespace Issues.Application.TypeOfGroupOfIssues.ArchiveType
     {
         private readonly ITypeOfGroupOfIssuesRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ITypeGroupOfIssuesArchivePolicy _archivePolicy;
 
-        public ArchiveTypeOfGroupOfIssuesCommandHandler(ITypeOfGroupOfIssuesRepository repository, IUnitOfWork unitOfWork, ITypeGroupOfIssuesArchivePolicy archivePolicy)
+        public ArchiveTypeOfGroupOfIssuesCommandHandler(ITypeOfGroupOfIssuesRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
-            _archivePolicy = archivePolicy;
         }
         public async Task<Unit> Handle(ArchiveTypeOfGroupOfIssuesCommand request, CancellationToken cancellationToken)
         {
             var type = await _repository.GetTypeOfGroupOfIssuesByIdAsync(request.Id);
             ValidateTypeWithRequestedParameters(type, request);
 
-            type.Archive(_archivePolicy);
+            Domain.GroupsOfIssues.TypeOfGroupOfIssues typeWhereGroupWillBeMoved = null;
+            if (string.IsNullOrWhiteSpace(request.TypeOfGroupOfIssuesWhereGroupsWillBeMovedId))
+                typeWhereGroupWillBeMoved =
+                    (await _repository.GetTypeOfGroupOfIssuesForOrganizationAsync(request.OrganizationId))
+                    .FirstOrDefault(d => d.IsDefault);
+            else
+                typeWhereGroupWillBeMoved =
+                    await _repository.GetTypeOfGroupOfIssuesByIdAsync(request
+                        .TypeOfGroupOfIssuesWhereGroupsWillBeMovedId);
+
+            if (typeWhereGroupWillBeMoved is null)
+                throw new InvalidOperationException("Type to move groups was not found");
+
+            type.ArchiveAndMoveGroups(typeWhereGroupWillBeMoved);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -38,6 +50,9 @@ namespace Issues.Application.TypeOfGroupOfIssues.ArchiveType
 
             if (type.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Type of group of issues with id: {request.Id} was found and is not accessible for organization with id: {request.OrganizationId}");
+
+            if (type.IsDefault)
+                throw new InvalidOperationException("You can't archive an type which is default");
 
             if (type.IsArchived)
                 throw new InvalidOperationException($"Type of group of issues with id: {request.Id} is already archived");

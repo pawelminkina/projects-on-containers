@@ -13,10 +13,10 @@ namespace Issues.Application.TypeOfIssues.AddTypeForGroup
     {
         private readonly ITypeOfIssueRepository _typeOfIssueRepository;
         private readonly ITypeOfGroupOfIssuesRepository _typeOfGroupOfIssuesRepository;
-        private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddTypeOfIssuesForTypeOfGroupOfIssuesCommandHandler(ITypeOfIssueRepository typeOfIssueRepository, ITypeOfGroupOfIssuesRepository typeOfGroupOfIssuesRepository, IStatusRepository statusRepository, IUnitOfWork unitOfWork)
+        public AddTypeOfIssuesForTypeOfGroupOfIssuesCommandHandler(ITypeOfIssueRepository typeOfIssueRepository, ITypeOfGroupOfIssuesRepository typeOfGroupOfIssuesRepository, IStatusFlowRepository statusRepository, IUnitOfWork unitOfWork)
         {
             _typeOfIssueRepository = typeOfIssueRepository;
             _typeOfGroupOfIssuesRepository = typeOfGroupOfIssuesRepository;

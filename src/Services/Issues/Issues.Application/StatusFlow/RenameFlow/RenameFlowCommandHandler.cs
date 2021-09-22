@@ -9,10 +9,10 @@ namespace Issues.Application.StatusFlow.RenameFlow
 {
     public class RenameFlowCommandHandler : IRequestHandler<RenameFlowCommand>
     {
-        private readonly IStatusRepository _statusRepository;
+        private readonly IStatusFlowRepository _statusRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RenameFlowCommandHandler(IStatusRepository statusRepository, IUnitOfWork unitOfWork)
+        public RenameFlowCommandHandler(IStatusFlowRepository statusRepository, IUnitOfWork unitOfWork)
         {
             _statusRepository = statusRepository;
             _unitOfWork = unitOfWork;

@@ -40,6 +40,12 @@ namespace Issues.Infrastructure.Repositories
             return _dbContext.Statuses.Where(s => s.OrganizationId == organizationId);
         }
 
+        public async Task RemoveStatusById(string id)
+        {
+            var statusToRemove = await GetStatusById(id);
+            _dbContext.Statuses.Remove(statusToRemove);
+        }
+
         public async Task<StatusFlow> GetFlowById(string id)
         {
             return await _dbContext.StatusFlows
@@ -55,6 +61,12 @@ namespace Issues.Infrastructure.Repositories
                 .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedWithParent)
                 .Include(d => d.StatusesInFlow).ThenInclude(d => d.ParentStatus)
                 .Where(s => s.OrganizationId == organizationId);
+        }
+
+        public async Task RemoveStatusInFlow(string statusInFlowId)
+        {
+            var statusInFlow = await _dbContext.StatusesInFlow.FirstOrDefaultAsync(s=>s.Id == statusInFlowId);
+            _dbContext.StatusesInFlow.Remove(statusInFlow);
         }
     }
 }
