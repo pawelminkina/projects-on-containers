@@ -40,9 +40,9 @@ namespace WebBff.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> CreateIssue([FromBody] CreateIssueRequest request)
+        public async Task<ActionResult<string>> CreateIssue([FromBody] Models.Issuses.Issues.CreateIssueRequest request)
         {
-            var res = await _service.CreateIssueAsync(new IssueDto());
+            var res = await _service.CreateIssueAsync(request);
             return Ok(res); //TODO 201 WITH PARAMS
         }
 

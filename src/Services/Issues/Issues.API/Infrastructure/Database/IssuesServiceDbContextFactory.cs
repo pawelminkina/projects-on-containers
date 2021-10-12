@@ -19,7 +19,7 @@ namespace Issues.API.Infrastructure.Database
             var optionsBuilder = new DbContextOptionsBuilder<IssuesServiceDbContext>();
 
             optionsBuilder.UseSqlServer(config["ConnectionString"], sqlServerOptionsAction: o => o.MigrationsAssembly(typeof(IssuesServiceDbContext).Assembly.FullName));
-
+            
             return new IssuesServiceDbContext(optionsBuilder.Options);
         }
     }

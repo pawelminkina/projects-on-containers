@@ -15,15 +15,15 @@ namespace WebBff.Api.Services.Issues.Issues
         {
             _client = client;
         }
-        public async Task<string> CreateIssueAsync(IssueDto issue)
+        public async Task<string> CreateIssueAsync(Models.Issuses.Issues.CreateIssueRequest request)
         {
-            var res = await _client.CreateIssueAsync(new CreateIssueRequest());
-            return string.Empty;
+            var res = await _client.CreateIssueAsync(new CreateIssueRequest() {GroupId = request.GroupId, Name = request.Name, TypeOfIssueId = request.TypeOfIssueId, TextContent = request.TextContent});
+            return res.Id;
         }
 
         public async Task DeleteIssueAsync(string id)
         {
-            throw new InvalidOperationException();
+            
         }
 
         public async Task<IEnumerable<IssueDto>> GetIssuesForGroupAsync(string groupId)

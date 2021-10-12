@@ -7,7 +7,7 @@ namespace WebBff.Api.Services.Issues.Issues
 {
     public interface IIssueService
     {
-        Task<string> CreateIssueAsync(IssueDto issue);
+        Task<string> CreateIssueAsync(CreateIssueRequest request);
         Task DeleteIssueAsync(string id);
         Task<IEnumerable<IssueDto>> GetIssuesForGroupAsync(string groupId);
         Task<IEnumerable<IssueDto>> GetIssuesForUserAsync(string userId);

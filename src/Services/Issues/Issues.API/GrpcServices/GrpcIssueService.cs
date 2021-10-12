@@ -80,6 +80,11 @@ namespace Issues.API.GrpcServices
             throw new NotImplementedException();
         }
 
+        public override async Task<DeleteIssueResponse> DeleteIssue(DeleteIssueRequest request, ServerCallContext context)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private Protos.IssueReference MapToIssueReference(Issue issue) => new IssueReference()
         {
