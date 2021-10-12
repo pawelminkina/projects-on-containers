@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Issues.Domain.GroupsOfIssues;
+using Issues.Domain.StatusesFlow;
+using Issues.Domain.TypesOfIssues;
 using Issues.Infrastructure.Database;
 using Microsoft.Extensions.Logging;
 
@@ -20,23 +22,34 @@ namespace Issues.API.Infrastructure.Database.Seeding
         }
         public async Task SeedAsync()
         {
-            if (_dbContext.TypesOfGroupsOfIssues.Any())
+            if (_dbContext.TypesOfGroupsOfIssues.Any() || _dbContext.Issues.Any() || _dbContext.Statuses.Any() || _dbContext.TypesOfIssues.Any() || _dbContext.GroupsOfIssues.Any())
             {
-                _logger.LogDebug($"There is a type of group of issues in database. Seeder {this.GetType().Name} was not applied.");
+                _logger.LogDebug($"Database has items. Seeder {this.GetType().Name} was not applied.");
             }
             else
             {
                 _logger.LogInformation($"Seeding database with {this.GetType().Name} seeder.");
-
-                _dbContext.TypesOfGroupsOfIssues.AddRange(GetTypesOfGroupsOfIssues());
-
+                await SeedIssuesDb();
                 await _dbContext.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<TypeOfGroupOfIssues> GetTypesOfGroupsOfIssues()
+        private async Task SeedIssuesDb()
         {
-            return new List<TypeOfGroupOfIssues>();
+            var typeOfIssue = new TypeOfIssue("MOCKEDORGANIZATION", "SOMENAME");
+            var firstStatus = new Status("someStatusName", "MOCKEDORGANIZATION");
+            var secondStatus = new Status("someStatusName", "MOCKEDORGANIZATION");
+            var type = new TypeOfGroupOfIssues("MOCKEDORGANIZATION", "SOMENAME");
+            type.SetIsDefaultToTrue();
+            var firstGroup = type.AddNewGroupOfIssues("nameOfGroup", "SHN");
+            var secondGroup = type.AddNewGroupOfIssues("nameOfGroupTwo", "SHN2");
+            var firstIssue = firstGroup.AddIssue("firstIssue", "MOCKEDUSER", "someTextContent", typeOfIssue.Id, firstStatus.Id);
+            var secondIssue = firstGroup.AddIssue("secondIssue", "MOCKEDUSER", "someTextContent2", typeOfIssue.Id, secondStatus.Id);
+            _dbContext.TypesOfGroupsOfIssues.Add(type);
+            _dbContext.TypesOfIssues.Add(typeOfIssue);
+            _dbContext.Statuses.AddRange(new[]{ firstStatus, secondStatus});
+            _dbContext.GroupsOfIssues.AddRange(new []{firstGroup, secondGroup});
+            _dbContext.Issues.AddRange(new []{firstIssue, secondIssue});
         }
     }
 }

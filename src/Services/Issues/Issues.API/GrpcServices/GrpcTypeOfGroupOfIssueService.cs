@@ -50,7 +50,7 @@ namespace Issues.API.GrpcServices
 
         public override async Task<ArchiveTypeOfGroupOfIssuesResponse> ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new ArchiveTypeOfGroupOfIssuesCommand(request.Id, request.TypeOfGroupOfIssuesWhereGroupsWillBeMovedId, context.GetOrganizationId()));
+            await _mediator.Send(new ArchiveTypeOfGroupOfIssuesCommand(request.Id, context.GetOrganizationId(), request.TypeOfGroupOfIssuesWhereGroupsWillBeMovedId));
             return new ArchiveTypeOfGroupOfIssuesResponse();
         }
 
@@ -61,6 +61,6 @@ namespace Issues.API.GrpcServices
         }
 
         private Protos.TypeOfGroupOfIssues MapToTypeOfGroupOfIssues(Domain.GroupsOfIssues.TypeOfGroupOfIssues type) =>
-            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name};
+            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name, IsArchived = type.IsArchived};
     }
 }

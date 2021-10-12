@@ -20,8 +20,6 @@ namespace Issues.Application.TypeOfGroupOfIssues.CreateType
         }
         public async Task<string> Handle(CreateTypeOfGroupOfIssuesCommand request, CancellationToken cancellationToken)
         {
-            if (await TypeWithSameNameAlreadyExist(request.Name, request.OrganizationId))
-                throw new InvalidOperationException($"Type of group of issues with name: {request.Name} already exist");
 
             var type = new Domain.GroupsOfIssues.TypeOfGroupOfIssues(request.OrganizationId, request.Name);
 
@@ -32,7 +30,5 @@ namespace Issues.Application.TypeOfGroupOfIssues.CreateType
             return type.Id;
         }
 
-        private async Task<bool> TypeWithSameNameAlreadyExist(string name, string orgId) =>
-            (await _repository.GetTypeOfGroupOfIssuesForOrganizationAsync(orgId)).FirstOrDefault(s => s.Name == name) is not null;
     }
 }

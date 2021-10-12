@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Issues.API.Protos;
 using WebBff.Api.Models.Issuses.Status;
@@ -34,7 +35,7 @@ namespace WebBff.Api.Services.Issues.Status
 
         public async Task DeleteStatusAsync(string id)
         {
-            var res = await _client.ArchiveStatusAsync(new ArchiveStatusRequest());
+            throw new InvalidOperationException();
         }
 
         public async Task RenameStatusAsync(string id, string newName)

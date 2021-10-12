@@ -17,7 +17,7 @@ namespace WebBff.Api.Services.Issues.TypeOfGroupOfIssue
         public async Task<IEnumerable<TypeOfGroupOfIssueDto>> GetTypesOfGroupsOfIssuesAsync()
         {
             var res = await _client.GetTypesOfGroupsOfIssuesAsync(new GetTypesOfGroupsOfIssuesRequest());
-            return res.Types_.Select(MapToDto);
+            return res.Types_.Where(d=> !d.IsArchived).Select(MapToDto);
         }
 
         public async Task<TypeOfGroupOfIssueDto> GetTypeOfGroupsOfIssuesAsync(string id)
@@ -28,7 +28,7 @@ namespace WebBff.Api.Services.Issues.TypeOfGroupOfIssue
 
         public async Task<string> CreateTypeOfGroupOfIssueAsync(TypeOfGroupOfIssueDto type)
         {
-            var res = await _client.CreateTypefOfGroupOfIssuesAsync(new CreateTypefOfGroupOfIssuesRequest(){Name = type.Name});
+            var res = await _client.CreateTypeOfGroupOfIssuesAsync(new CreateTypeOfGroupOfIssuesRequest(){Name = type.Name});
             return res.Id;
         }
 

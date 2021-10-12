@@ -64,6 +64,6 @@ namespace Issues.API.GrpcServices
         }
 
         private GroupOfIssue MapToGrpcGroup(Domain.GroupsOfIssues.GroupOfIssues group) => new GroupOfIssue()
-            {Id = group.Id, Name = group.Name, TypeOfGroupId = group.TypeOfGroupId};
+            {Id = group.Id, Name = group.Name, TypeOfGroupId = group.TypeOfGroupId, ShortName = group.ShortName, IsArchived = group.IsArchived};
     }
 }

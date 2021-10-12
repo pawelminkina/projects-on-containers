@@ -58,4 +58,6 @@ message GroupOfIssue{
 	string id = 1;
 	string name = 2;
 	string typeOfGroupId = 3;
+	string shortName = 4;
+	bool isArchived = 5;
 }

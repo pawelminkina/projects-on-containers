@@ -9,8 +9,7 @@ namespace WebBff.Api.Services.Issues.GroupOfIssue
     {
         Task<IEnumerable<GroupOfIssueDto>> GetGroupsOfIssuesAsync();
         Task<GroupOfIssueDto> GetGroupOfIssueAsync(string id);
-        Task<string> CreateGroupOfIssueAsync(GroupOfIssueDto groupOfIssue);
-        Task ChangeGroupOfIssueTypeAsync();
+        Task<string> CreateGroupOfIssueAsync(CreateGroupOfIssuesRequest request);
         Task RenameGroupOfIssueAsync(string id, string newName);
         Task DeleteGroupOfIssueAsync(string id);
     }

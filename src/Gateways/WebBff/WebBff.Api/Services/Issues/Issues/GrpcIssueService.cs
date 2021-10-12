@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Issues.API.Protos;
 using WebBff.Api.Models.Issuses.Issues;
@@ -22,7 +23,7 @@ namespace WebBff.Api.Services.Issues.Issues
 
         public async Task DeleteIssueAsync(string id)
         {
-            var res = await _client.ArchiveIssueAsync(new ArchiveIssueRequest());
+            throw new InvalidOperationException();
         }
 
         public async Task<IEnumerable<IssueDto>> GetIssuesForGroupAsync(string groupId)

@@ -36,7 +36,7 @@ namespace WebBff.Api.Controllers
         public async Task<ActionResult> CreateTypeOfGroupOfIssues([FromBody] CreateTypeOfGroupOfIssueRequest request)
         {
             var type = await _service.CreateTypeOfGroupOfIssueAsync(new TypeOfGroupOfIssueDto(){Name = request.Name});
-            return Ok(type);//TODO 201 WITH PARAMS
+            return CreatedAtAction("GetTypeOfGroupsOfIssues", new {typeId = type}, new TypeOfGroupOfIssueDto(){Id = type, Name = request.Name});//TODO 201 WITH PARAMS
         }
 
         [HttpPut("{typeId}/rename")]

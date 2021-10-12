@@ -18,7 +18,7 @@ namespace Issues.Application.TypeOfGroupOfIssues.GetTypes
         public async Task<IEnumerable<Domain.GroupsOfIssues.TypeOfGroupOfIssues>> Handle(GetTypesOfGroupOfIssuesQuery request, CancellationToken cancellationToken)
         {
             var types = await _repository.GetTypeOfGroupOfIssuesForOrganizationAsync(request.OrganizationId);
-            return types.Where(s => !s.IsArchived);
+            return types;
         }
     }
 }

@@ -35,8 +35,8 @@ namespace WebBff.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> CreateGroupOfIssues([FromBody] CreateGroupOfIssuesRequest request)
         {
-            var res = await _groupOfIssueService.CreateGroupOfIssueAsync(new GroupOfIssueDto());
-            return Ok(res);//TODO 201 WITH PARAMS
+            var res = await _groupOfIssueService.CreateGroupOfIssueAsync(request);
+            return CreatedAtAction("GetGroupsOfIssue", new { groupId  = res}, new GroupOfIssueDto(){Id = res, Name = request.Name, ShortName = request.ShortName, TypeOfGroupId = request.TypeOfGroupId});
         }
 
         [HttpDelete("{groupId}")]

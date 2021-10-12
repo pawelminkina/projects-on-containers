@@ -61,4 +61,5 @@ message ArchiveTypeOfGroupOfIssuesResponse{
 message TypeOfGroupOfIssues{
 	string id = 1;
 	string name = 2;
+	bool isArchived = 3;
 }
