@@ -9,7 +9,6 @@ service IssueService{
 	rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
 	rpc RenameIssue(RenameIssueRequest) returns (RenameIssueResponse);
 	rpc UpdateIssueContent(UpdateIssueContentRequest) returns (UpdateIssueContentResponse);
-	rpc UpdateIssueStatus(UpdateIssueStatusRequest) returns (UpdateIssueStatusResponse); //TODO
 	rpc DeleteIssue(DeleteIssueRequest) returns (DeleteIssueResponse); //TODO
 }
 
@@ -72,14 +71,6 @@ message UpdateIssueContentRequest{
 
 message UpdateIssueContentResponse{}
 
-
-message UpdateIssueStatusRequest{
-
-}
-
-message UpdateIssueStatusResponse{
-
-}
 
 //Models
 message IssueReference{

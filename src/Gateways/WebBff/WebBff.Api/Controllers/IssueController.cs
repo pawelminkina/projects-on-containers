@@ -66,12 +66,5 @@ namespace WebBff.Api.Controllers
             await _service.UpdateIssueContentAsync(issueId, content);
             return NoContent();
         }
-
-        [HttpPut("{issueId}/status")]
-        public async Task<ActionResult> UpdateIssueStatus([FromRoute] string issueId, [FromQuery] string statusId)
-        {
-            await _service.UpdateIssueStatusAsync(issueId, statusId);
-            return NoContent();
-        }
     }
 }

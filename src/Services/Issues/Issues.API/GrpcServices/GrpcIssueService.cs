@@ -75,11 +75,6 @@ namespace Issues.API.GrpcServices
             return new UpdateIssueContentResponse();
         }
 
-        public async override Task<UpdateIssueStatusResponse> UpdateIssueStatus(UpdateIssueStatusRequest request, ServerCallContext context)
-        {
-            throw new NotImplementedException();
-        }
-
         public override async Task<DeleteIssueResponse> DeleteIssue(DeleteIssueRequest request, ServerCallContext context)
         {
             throw new NotImplementedException();

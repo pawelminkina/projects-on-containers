@@ -3,6 +3,6 @@
     public class IssueWithContent
     {
         public IssueDto Issue { get; set; }
-        private string TextContent { get; set; }
+        public string TextContent { get; set; }
     }
 }
