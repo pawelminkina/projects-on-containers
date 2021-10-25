@@ -1,4 +1,5 @@
 ﻿using Issues.Domain.Issues;
+using Issues.Domain.TypesOfIssues;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,9 +17,8 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.TimeOfCreation).IsRequired();
 
             builder.OwnsOne(o=>o.Content, a => { a.Property<string>("IssueId"); a.WithOwner(); });
-
+            builder.HasOne(d=>d.TypeOfIssue).WithMany().HasForeignKey("_typeOfIssueId");
             builder.Property<string>("_typeOfIssueId").UsePropertyAccessMode(PropertyAccessMode.Field).HasColumnName("TypeOfIssueId").IsRequired();
-            builder.HasOne(d => d.TypeOfIssue).WithMany().HasForeignKey("_typeOfIssueId");
         }
     }
 }

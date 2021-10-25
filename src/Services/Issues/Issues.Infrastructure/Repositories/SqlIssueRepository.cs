@@ -22,7 +22,7 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<IEnumerable<Issue>> GetIssueReferencesForUserAsync(string userId)
         {
-            return _dbContext.Issues.Where(s => s.CreatingUserId == userId);
+            return _dbContext.Issues.Where(s => s.CreatingUserId == userId).Include(d=>d.TypeOfIssue);
         }
     }
 }

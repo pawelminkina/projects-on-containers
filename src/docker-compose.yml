@@ -13,7 +13,7 @@ services:
       context: .
       dockerfile: Services/Issues/Issues.API/Dockerfile
     depends_on:
-      - sqlserver
+      - sqlserver 
 
   webff.api:
    image: ${DOCKER_REGISTRY-poc}/issues.api:${PLATFORM:-linux}-${TAG:-latest}

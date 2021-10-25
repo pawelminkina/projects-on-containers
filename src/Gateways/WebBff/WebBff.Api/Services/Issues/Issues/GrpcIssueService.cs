@@ -48,11 +48,11 @@ namespace WebBff.Api.Services.Issues.Issues
 
         public async Task<IssueWithContent> GetIssueWithContentAsync(string issueId)
         {
-            var res = await _client.GetIssueWithContentAsync(new GetIssueWithContentRequest());
+            var res = await _client.GetIssueWithContentAsync(new GetIssueWithContentRequest() { IssueId = issueId });
             return MapToIssueWithContent(res.Issue, res.Content);
         }
 
-        public async Task UpdateIssueContentAsync(string textContent, string issueId)
+        public async Task UpdateIssueContentAsync(string issueId, string textContent)
         {
             await _client.UpdateIssueContentAsync(new UpdateIssueContentRequest() {IssueId = issueId, TextContent = textContent});
         }

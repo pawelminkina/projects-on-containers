@@ -18,7 +18,7 @@ namespace Issues.Infrastructure.Repositories
         }
         public async Task<TypeOfIssue> GetTypeOfIssueByIdAsync(string id)
         {
-            return await _dbContext.TypesOfIssues.FirstOrDefaultAsync(s => s.Id == id);
+            return await _dbContext.TypesOfIssues.Include(d => d.TypesInGroups).ThenInclude(d => d.Flow).ThenInclude(d=>d.StatusesInFlow).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string organizationId)

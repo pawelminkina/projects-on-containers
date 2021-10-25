@@ -56,8 +56,7 @@ namespace Issues.API.GrpcServices
 
         public override async Task<GetIssueWithContentResponse> GetIssueWithContent(GetIssueWithContentRequest request, ServerCallContext context)
         {
-            var issue = await _mediator.Send(new GetIssueWithContentQuery(request.IssueId,
-                context.GetOrganizationId()));
+            var issue = await _mediator.Send(new GetIssueWithContentQuery(request.IssueId, context.GetOrganizationId()));
             return new GetIssueWithContentResponse()
                 {Content = MapToIssueContent(issue.Content), Issue = MapToIssueReference(issue)};
         }
@@ -87,7 +86,9 @@ namespace Issues.API.GrpcServices
             Id = issue.Id,
             Name = issue.Name,
             StatusId = issue.StatusId,
-            TimeOfCreation = issue.TimeOfCreation.ToTimestamp()
+            TimeOfCreation = issue.TimeOfCreation.ToTimestamp(),
+            TypeOfIssueId = issue.TypeOfIssue.Id,
+            IsArchived = issue.IsArchived
         };
 
         private Protos.IssueContent MapToIssueContent(Domain.Issues.IssueContent content) => new Protos.IssueContent()
