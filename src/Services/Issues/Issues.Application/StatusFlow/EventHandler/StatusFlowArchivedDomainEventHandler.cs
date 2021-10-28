@@ -36,7 +36,7 @@ namespace Issues.Application.StatusFlow.EventHandler
             var typeOfIssues = await _typeOfIssueRepository.GetTypeOfIssuesForOrganizationAsync(flow.OrganizationId);
             foreach (var type in typeOfIssues)
             {
-                foreach (var typeInGroup in type.TypesInGroups.Where(typeInGroup => typeInGroup.StatusFlowId == flow.Id))
+                foreach (var typeInGroup in type.TypesInGroups.Where(typeInGroup => typeInGroup.Flow.Id == flow.Id))
                 {
                     typeInGroup.ChangeStatusFlow(defaultFlow);
                 }

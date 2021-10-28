@@ -41,6 +41,8 @@ namespace Issues.API.Infrastructure.Database.Seeding
             var secondStatus = new Status("someStatusName", "MOCKEDORGANIZATION");
             var type = new TypeOfGroupOfIssues("MOCKEDORGANIZATION", "SOMENAME");
             var flow = new StatusFlow("SOMENAME", "MOCKEDORGANIZATION");
+            var status = new Status("FirstStatus", "MOCKEDORGANIZATION");
+            var statusInFlow = flow.AddNewStatusToFlow(status);
             type.SetIsDefaultToTrue();
             var firstGroup = type.AddNewGroupOfIssues("nameOfGroup", "SHN");
             var secondGroup = type.AddNewGroupOfIssues("nameOfGroupTwo", "SHN2");
@@ -53,6 +55,9 @@ namespace Issues.API.Infrastructure.Database.Seeding
             _dbContext.GroupsOfIssues.AddRange(new []{firstGroup, secondGroup});
             _dbContext.Issues.AddRange(new []{firstIssue, secondIssue});
             _dbContext.TypesOfIssueInTypeOfGroups.AddRange(new[] { typeInGroup });
+            _dbContext.StatusFlows.AddRange(new[] { flow });
+            _dbContext.StatusesInFlow.AddRange(new[] { statusInFlow });
+            _dbContext.Statuses.AddRange(new[] { status });
         }
     }
 }

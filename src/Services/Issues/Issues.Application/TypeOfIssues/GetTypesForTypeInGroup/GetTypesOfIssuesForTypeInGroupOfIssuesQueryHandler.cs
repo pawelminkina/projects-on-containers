@@ -19,7 +19,7 @@ namespace Issues.Application.TypeOfIssues.GetTypesForTypeInGroup
         {
             var allTypes = await _repository.GetTypeOfIssuesForOrganizationAsync(request.OrganizationId);
 
-            return allTypes.Where(s=>!s.IsArchived && s.TypesInGroups.FirstOrDefault()?.TypeOfGroupOfIssuesId == request.TypeOfGroupOfIssuesId);
+            return allTypes.Where(s=>!s.IsArchived && s.TypesInGroups.FirstOrDefault()?.TypeOfGroup.Id == request.TypeOfGroupOfIssuesId);
         }
     }
 }

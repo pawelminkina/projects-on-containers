@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Issues.Domain.GroupsOfIssues;
@@ -21,7 +22,7 @@ namespace Issues.Application.Issues.GetIssuesForGroup
             var group = await _groupOfIssuesRepository.GetGroupOfIssuesByIdAsync(request.GroupId);
             ValidateGroupWithRequestParameters(group, request);
 
-            return group.Issues;
+            return group.Issues.Where(d=> !d.IsDeleted);
         }
 
         private void ValidateGroupWithRequestParameters(Domain.GroupsOfIssues.GroupOfIssues group, GetIssuesForGroupQuery request)

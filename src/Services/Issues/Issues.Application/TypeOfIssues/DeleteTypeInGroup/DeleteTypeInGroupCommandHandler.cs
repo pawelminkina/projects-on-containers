@@ -24,7 +24,7 @@ namespace Issues.Application.TypeOfIssues.DeleteTypeInGroup
 
             var requestedType = allTypes.FirstOrDefault(s =>
                 s.Id == request.TypeOfIssueId &&
-                s.TypesInGroups.FirstOrDefault()?.TypeOfGroupOfIssuesId == request.TypeOfGroupOfIssuesId);
+                s.TypesInGroups.FirstOrDefault()?.TypeOfGroup.Id == request.TypeOfGroupOfIssuesId);
     
             ValidateTypeWithRequestedParameters(requestedType, request);
 

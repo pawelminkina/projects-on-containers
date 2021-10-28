@@ -23,7 +23,7 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<IEnumerable<TypeOfIssue>> GetTypeOfIssuesForOrganizationAsync(string organizationId)
         {
-            return _dbContext.TypesOfIssues.Where(s => s.OrganizationId == organizationId);
+            return _dbContext.TypesOfIssues.Include(d=>d.TypesInGroups).ThenInclude(d=>d.TypeOfGroup).Include(s=>s.TypesInGroups).ThenInclude(s=>s.Flow).Where(s => s.OrganizationId == organizationId);
         }
 
         public async Task<TypeOfIssue> AddNewTypeOfIssueAsync(TypeOfIssue type)

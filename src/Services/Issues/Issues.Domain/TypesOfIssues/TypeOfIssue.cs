@@ -16,6 +16,7 @@ namespace Issues.Domain.TypesOfIssues
             Name = name;
             OrganizationId = organizationId;
             IsArchived = false;
+            TypesInGroups = new List<TypeOfIssueInTypeOfGroup>();
         }
 
         protected TypeOfIssue()
@@ -37,7 +38,7 @@ namespace Issues.Domain.TypesOfIssues
             if (string.IsNullOrWhiteSpace(statusFlowId))
                 throw new InvalidOperationException("Given status flow id is empty");
 
-            if (TypesInGroups.Any(d => d.TypeOfGroupOfIssuesId == typeOfGroupId))
+            if (TypesInGroups.Any(d => d.TypeOfGroup.Id == typeOfGroupId))
                 throw new InvalidOperationException(
                     $"This type of issue is already added to group with id: {typeOfGroupId}");
 
@@ -48,7 +49,7 @@ namespace Issues.Domain.TypesOfIssues
 
         public void DeleteTypeOfGroup(string typeOfGroupId)
         {
-            var type = TypesInGroups.FirstOrDefault(d => d.TypeOfGroupOfIssuesId == typeOfGroupId);
+            var type = TypesInGroups.FirstOrDefault(d => d.TypeOfGroup.Id == typeOfGroupId);
             if (type is null)
                 throw new InvalidOperationException($"This type of issue is not assigned to given type of group of issues with id: {typeOfGroupId}");
 

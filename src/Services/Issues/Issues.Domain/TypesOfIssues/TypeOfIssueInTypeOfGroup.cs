@@ -11,8 +11,8 @@ namespace Issues.Domain.TypesOfIssues
         {
             Id = Guid.NewGuid().ToString();
             Parent = parent;
-            StatusFlowId = statusFlowId;
-            TypeOfGroupOfIssuesId = typeOfGroupOfIssuesId;
+            _statusFlowId = statusFlowId;
+            _typeOfGroupOfIssuesId = typeOfGroupOfIssuesId;
             IsArchived = false;
         }
 
@@ -23,13 +23,13 @@ namespace Issues.Domain.TypesOfIssues
         public TypeOfIssue Parent { get; private set; }
         public StatusFlow Flow { get; private set; }
         public TypeOfGroupOfIssues TypeOfGroup { get; private set; }
-        public string StatusFlowId { get; private set; }
-        public string TypeOfGroupOfIssuesId { get; private set; }
+        private string _statusFlowId;
+        private string _typeOfGroupOfIssuesId;
         public bool IsArchived { get; private set; }
 
         public void ChangeStatusFlow(StatusFlow newStatusFlow)
         {
-            ChangeStringProperty("StatusFlowId", newStatusFlow.Id);
+            _statusFlowId = newStatusFlow.Id;
             Flow = newStatusFlow;
         }
         public void Archive()

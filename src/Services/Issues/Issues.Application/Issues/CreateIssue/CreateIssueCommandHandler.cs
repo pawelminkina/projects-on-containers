@@ -30,7 +30,7 @@ namespace Issues.Application.Issues.CreateIssue
             var type = await _typeOfIssueRepository.GetTypeOfIssueByIdAsync(request.TypeOfIssueId);
             ValidateTypeWithRequestedParameters(type,request);
 
-            var typeInGroup = type.TypesInGroups.FirstOrDefault(s => s.TypeOfGroupOfIssuesId == group.Id);
+            var typeInGroup = type.TypesInGroups.FirstOrDefault(s => s.TypeOfGroup.Id == group.TypeOfGroupId);
             if (typeInGroup is null)
                 throw new InvalidOperationException($"Group for type {request.GroupId} was not found in type of issue: {request.TypeOfIssueId}");
 

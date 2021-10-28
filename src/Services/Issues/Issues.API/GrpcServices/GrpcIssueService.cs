@@ -14,6 +14,7 @@ using Issues.Application.Issues.RenameIssue;
 using Issues.Application.Issues.UpdateIssueContent;
 using Issues.Domain.Issues;
 using MediatR;
+using Issues.Application.Issues.DeleteIssue;
 
 namespace Issues.API.GrpcServices
 {
@@ -76,7 +77,8 @@ namespace Issues.API.GrpcServices
 
         public override async Task<DeleteIssueResponse> DeleteIssue(DeleteIssueRequest request, ServerCallContext context)
         {
-            throw new NotImplementedException();
+            await _mediator.Send(new DeleteIssueCommand(request.Id, context.GetOrganizationId()));
+            return new DeleteIssueResponse();
         }
 
 
