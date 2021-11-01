@@ -35,7 +35,7 @@ namespace WebBff.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateTypeOfIssues([FromBody] CreateTypeOfIssuesRequest request)
         {
-            var res = await _service.CreateTypeOfIssuesAsync(new TypeOfIssueDto());
+            var res = await _service.CreateTypeOfIssuesAsync(request);
             return Ok(res);//TODO 201 WITH PARAMS
         }
 

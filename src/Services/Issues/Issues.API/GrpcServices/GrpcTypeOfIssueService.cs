@@ -62,7 +62,7 @@ namespace Issues.API.GrpcServices
             return new RenameTypeOfIssueResponse();
         }
 
-        private TypeOfIssue MapToGrpcTypeOfIssue(Domain.TypesOfIssues.TypeOfIssue type) =>
-            new TypeOfIssue() {Id = type.Id, Name = type.Name};
+        private TypeOfIssues MapToGrpcTypeOfIssue(Domain.TypesOfIssues.TypeOfIssue type) =>
+            new TypeOfIssues() {Id = type.Id, Name = type.Name};
     }
 }

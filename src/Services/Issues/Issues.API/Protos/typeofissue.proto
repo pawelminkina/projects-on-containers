@@ -16,7 +16,7 @@ message GetTypesOfIssuesRequest{
 }
 
 message GetTypesOfIssuesResponse{
-	repeated TypeOfIssue types = 1;
+	repeated TypeOfIssues types = 1;
 }
 
 message GetTypeOfIssueRequest{
@@ -24,7 +24,7 @@ message GetTypeOfIssueRequest{
 }
 
 message GetTypeOfIssueResponse{
-	TypeOfIssue type = 1;
+	TypeOfIssues type = 1;
 }
 
 message CreateTypeOfIssueRequest{
@@ -52,7 +52,7 @@ message RenameTypeOfIssueResponse{
 
 }
 
-message TypeOfIssue{
+message TypeOfIssues{
 	string id = 1;
 	string name = 2;
 }

@@ -8,7 +8,7 @@ namespace WebBff.Api.Services.Issues.TypeOfIssue
     {
         Task<IEnumerable<TypeOfIssueDto>> GetTypesOfIssuesAsync();
         Task<TypeOfIssueDto> GetTypeOfIssuesAsync(string id);
-        Task<string> CreateTypeOfIssuesAsync(TypeOfIssueDto type);
+        Task<string> CreateTypeOfIssuesAsync(CreateTypeOfIssuesRequest request);
         Task DeleteTypeOfIssuesAsync(string id);
         Task RenameTypeOfIssuesAsync(string id, string newName);
     }
