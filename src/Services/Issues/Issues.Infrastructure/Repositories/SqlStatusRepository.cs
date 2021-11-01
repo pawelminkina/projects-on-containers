@@ -20,14 +20,14 @@ namespace Issues.Infrastructure.Repositories
         {
             var status = new Status(name, organizationId);
             await _dbContext.Statuses.AddAsync(status);
-            return await GetStatusById(status.Id);
+            return status;
         }
 
         public async Task<StatusFlow> AddNewStatusFlowAsync(string name, string organizationId)
         {
             var status = new StatusFlow(name, organizationId);
             await _dbContext.StatusFlows.AddAsync(status);
-            return await GetFlowById(status.Id);
+            return status;
         }
 
         public async Task<Status> GetStatusById(string id)

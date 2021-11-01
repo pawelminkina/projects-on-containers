@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebBff.Api.Models.Issuses.Status;
-using WebBff.Api.Services.Issues.Status;
+using WebBff.Api.Services.Issues.Statuses;
 
 namespace WebBff.Api.Controllers
 {
@@ -36,16 +36,16 @@ namespace WebBff.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateStatus([FromBody] CreateStatusRequest request)
         {
-            var res = await _service.CreateStatusAsync(new StatusDto());
-            return Ok();//TODO 201 WITH PARAMS
+            var res = await _service.CreateStatusAsync(request);
+            return Ok(res);//TODO 201 WITH PARAMS
         }
 
-        [HttpDelete("{statusId}")]
-        public async Task<ActionResult> DeleteStatus([FromRoute] string statusId)
-        {
-            await _service.DeleteStatusAsync(statusId);
-            return Ok();
-        }
+        //[HttpDelete("{statusId}")]
+        //public async Task<ActionResult> DeleteStatus([FromRoute] string statusId)
+        //{
+        //    await _service.DeleteStatusAsync(statusId);
+        //    return Ok();
+        //}
 
         [HttpPut("{statusId}/rename")]
         public async Task<ActionResult> RenameStatus([FromRoute] string statusId, [FromQuery] string newName)

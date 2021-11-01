@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Issues.API.Protos;
 using WebBff.Api.Services.Issues.GroupOfIssue;
 using WebBff.Api.Services.Issues.Issues;
-using WebBff.Api.Services.Issues.Status;
+using WebBff.Api.Services.Issues.Statuses;
 using WebBff.Api.Services.Issues.StatusFlow;
 using WebBff.Api.Services.Issues.TypeOfGroupOfIssue;
 using WebBff.Api.Services.Issues.TypeOfIssue;
