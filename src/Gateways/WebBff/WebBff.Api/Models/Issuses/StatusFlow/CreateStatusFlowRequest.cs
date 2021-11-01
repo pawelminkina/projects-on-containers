@@ -2,6 +2,6 @@
 {
     public class CreateStatusFlowRequest
     {
-        
+        public string Name { get; set; }
     }
 }

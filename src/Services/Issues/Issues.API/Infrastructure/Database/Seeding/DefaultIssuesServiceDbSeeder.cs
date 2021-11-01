@@ -43,7 +43,9 @@ namespace Issues.API.Infrastructure.Database.Seeding
             var flow = new StatusFlow("SOMENAME", "MOCKEDORGANIZATION");
             var status = new Status("FirstStatus", "MOCKEDORGANIZATION");
             var statusInFlow = flow.AddNewStatusToFlow(status);
+            statusInFlow.AddConnectedStatus(firstStatus);
             type.SetIsDefaultToTrue();
+            flow.SetIsDefaultToTrue();
             var firstGroup = type.AddNewGroupOfIssues("nameOfGroup", "SHN");
             var secondGroup = type.AddNewGroupOfIssues("nameOfGroupTwo", "SHN2");
             var firstIssue = firstGroup.AddIssue("firstIssue", "MOCKEDUSER", "someTextContent", typeOfIssue.Id, firstStatus.Id);
@@ -51,13 +53,12 @@ namespace Issues.API.Infrastructure.Database.Seeding
             var typeInGroup = typeOfIssue.AddNewTypeOfGroupToCollection(type.Id, flow.Id);
             _dbContext.TypesOfGroupsOfIssues.Add(type);
             _dbContext.TypesOfIssues.Add(typeOfIssue);
-            _dbContext.Statuses.AddRange(new[]{ firstStatus, secondStatus});
+            _dbContext.Statuses.AddRange(new[]{ firstStatus, secondStatus, status});
             _dbContext.GroupsOfIssues.AddRange(new []{firstGroup, secondGroup});
             _dbContext.Issues.AddRange(new []{firstIssue, secondIssue});
             _dbContext.TypesOfIssueInTypeOfGroups.AddRange(new[] { typeInGroup });
             _dbContext.StatusFlows.AddRange(new[] { flow });
             _dbContext.StatusesInFlow.AddRange(new[] { statusInFlow });
-            _dbContext.Statuses.AddRange(new[] { status });
         }
     }
 }

@@ -67,6 +67,7 @@ namespace Issues.API
             services.AddScoped<ITypeOfIssueRepository, SqlTypeOfIssueRepository>();
             services.AddScoped<ITypeOfGroupOfIssuesRepository, SqlGroupOfIssuesRepository>();
             services.AddScoped<IStatusRepository, SqlStatusRepository>();
+            services.AddScoped<IStatusFlowRepository, SqlStatusRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
