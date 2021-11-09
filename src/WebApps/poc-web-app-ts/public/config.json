@@ -1,0 +1,5 @@
+{
+  "services": {
+    "bffApi": "http://host.docker.internal:15005"
+  }
+}
