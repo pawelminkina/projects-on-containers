@@ -1,1 +1,0 @@
-export { getAllGroupsOfIssues } from './groupOfIssueServices';
