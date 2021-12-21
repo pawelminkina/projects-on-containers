@@ -15,26 +15,26 @@ namespace Issues.Domain.Issues
             CreatingUserId = creatingUserId;
             GroupOfIssue = groupOfIssue;
             TimeOfCreation = timeOfCreation;
-            _typeOfIssueId = typeOfIssueId;
+            TypeOfIssueId = typeOfIssueId;
             IsArchived = false;
             IsDeleted = false;
         }
 
-        protected Issue()
+        public Issue()
         {
 
         }
 
-        public string Name { get; private set; }
-        public string StatusId { get; private set; }
-        public string CreatingUserId { get; private set; }
-        public IssueContent Content { get; private set; }
-        public GroupOfIssues GroupOfIssue { get; private set; }
-        public DateTimeOffset TimeOfCreation { get; private set; }
-        public bool IsArchived { get; private set; }
-        public bool IsDeleted { get; private set; }
+        public string Name { get; set; }
+        public string StatusId { get; set; }
+        public string CreatingUserId { get; set; }
+        public IssueContent Content { get; set; }
+        public GroupOfIssues GroupOfIssue { get; set; }
+        public DateTimeOffset TimeOfCreation { get; set; }
+        public bool IsArchived { get; set; }
+        public bool IsDeleted { get; set; }
 
-        private string _typeOfIssueId; //https://github.com/dotnet-architecture/eShopOnContainers/blob/71994d0ad88d51f758d8124b16bddf944cc7d91b/src/Services/Ordering/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs
+        private string TypeOfIssueId; //https://github.com/dotnet-architecture/eShopOnContainers/blob/71994d0ad88d51f758d8124b16bddf944cc7d91b/src/Services/Ordering/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs
         public TypeOfIssue TypeOfIssue { get; private set; }
 
         public IssueContent AddContent(string textContent)

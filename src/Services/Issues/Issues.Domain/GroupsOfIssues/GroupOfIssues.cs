@@ -30,15 +30,15 @@ namespace Issues.Domain.GroupsOfIssues
             IsArchived = false;
         }
 
-        protected GroupOfIssues()
+        public GroupOfIssues()
         {
             _issues = new List<Issue>();
         }
-        public string Name { get; private set; }
-        public string ShortName { get; private set; }
-        public string TypeOfGroupId { get; private set; }
-        public TypeOfGroupOfIssues TypeOfGroup { get; private set; } 
-        public bool IsArchived { get; private set; }
+        public string Name { get; set; }
+        public string ShortName { get; set; }
+        public string TypeOfGroupId { get; set; }
+        public TypeOfGroupOfIssues TypeOfGroup { get; set; } 
+        public bool IsArchived { get; set; }
 
         protected readonly List<Issue> _issues;
         public IReadOnlyCollection<Issue> Issues => _issues;

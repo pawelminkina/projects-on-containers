@@ -17,15 +17,15 @@ namespace Issues.Domain.StatusesFlow
             IndexInFlow = indexInFlow;
             IsArchived = false;
         }
-        protected StatusInFlow()
+        public StatusInFlow()
         {
             ConnectedStatuses = new List<StatusInFlowConnection>();
         }
-        public Status ParentStatus { get; private set; }
-        public string ParentStatusId { get; private set; }
-        public StatusFlow StatusFlow { get; private set; }
-        public int IndexInFlow { get; private set; }
-        public bool IsArchived { get; private set; }
+        public Status ParentStatus { get; set; }
+        public string ParentStatusId { get; set; }
+        public StatusFlow StatusFlow { get; set; }
+        public int IndexInFlow { get; set; }
+        public bool IsArchived { get; set; }
 
         public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
 

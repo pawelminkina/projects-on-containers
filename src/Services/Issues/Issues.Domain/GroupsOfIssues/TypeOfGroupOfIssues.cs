@@ -24,15 +24,15 @@ namespace Issues.Domain.GroupsOfIssues
             IsDefault = false;
         }
 
-        protected TypeOfGroupOfIssues()
+        public TypeOfGroupOfIssues()
         {
             _groups = new List<GroupOfIssues>();
         }
 
-        public string Name { get; private set; }
-        public string OrganizationId { get; private set; }
-        public bool IsArchived { get; private set; }
-        public bool IsDefault { get; private set; }
+        public string Name { get; set; }
+        public string OrganizationId { get; set; }
+        public bool IsArchived { get; set; }
+        public bool IsDefault { get; set; }
 
         protected readonly List<GroupOfIssues> _groups;
         public IReadOnlyCollection<GroupOfIssues> Groups => _groups;

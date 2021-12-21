@@ -11,25 +11,27 @@ namespace Issues.Domain.TypesOfIssues
         {
             Id = Guid.NewGuid().ToString();
             Parent = parent;
-            _statusFlowId = statusFlowId;
-            _typeOfGroupOfIssuesId = typeOfGroupOfIssuesId;
+            ParentId = parent.Id;
+            StatusFlowId = statusFlowId;
+            TypeOfGroupOfIssuesId = typeOfGroupOfIssuesId;
             IsArchived = false;
         }
 
-        protected TypeOfIssueInTypeOfGroup()
+        public TypeOfIssueInTypeOfGroup()
         {
             
         }
-        public TypeOfIssue Parent { get; private set; }
+        public TypeOfIssue Parent { get; set; }
+        public string ParentId { get; set;}
         public StatusFlow Flow { get; private set; }
         public TypeOfGroupOfIssues TypeOfGroup { get; private set; }
-        private string _statusFlowId;
-        private string _typeOfGroupOfIssuesId;
+        private string StatusFlowId { get; set; }
+        private string TypeOfGroupOfIssuesId { get; set; }
         public bool IsArchived { get; private set; }
 
         public void ChangeStatusFlow(StatusFlow newStatusFlow)
         {
-            _statusFlowId = newStatusFlow.Id;
+            StatusFlowId = newStatusFlow.Id;
             Flow = newStatusFlow;
         }
         public void Archive()

@@ -13,12 +13,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
 using FluentValidation;
 using Issues.API.Infrastructure.Database.Migration;
 using Issues.API.Infrastructure.Database.Seeding;
 using Issues.API.Infrastructure.Validation;
+using Issues.Application.Services.Files;
 using Issues.Application.TypeOfGroupOfIssues.CreateType;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
@@ -27,6 +29,7 @@ using Issues.Infrastructure;
 using Issues.Infrastructure.Database;
 using Issues.Infrastructure.Processing;
 using Issues.Infrastructure.Repositories;
+using Issues.Infrastructure.Services.Files;
 using Microsoft.EntityFrameworkCore;
 
 namespace Issues.API
@@ -54,13 +57,7 @@ namespace Issues.API
                 typeof(IIssueRepository).Assembly, //Domain
                 typeof(CreateIssueCommand).Assembly); //Application
 
-            //Database
-            services.AddDbContext<IssuesServiceDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration["ConnectionString"]);
-            });
-            services.AddDbMigration<IssuesServiceDbContext>();
-            services.AddDbSeeding<IssuesServiceDbContext, DefaultIssuesServiceDbSeeder>();
+            AddDatabase(services);
 
             services.AddScoped<IGroupOfIssuesRepository, SqlGroupOfIssuesRepository>();
             services.AddScoped<IIssueRepository, SqlIssueRepository>();
@@ -79,6 +76,23 @@ namespace Issues.API
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(CreateTypeOfGroupOfIssuesCommandValidator).Assembly);
 
+            services.AddScoped<ICsvFileReader, CsvFileReader>();
+            services.AddScoped<IIssueSeedItemService, IssueCsvSeedItemService>();
+        }
+
+        public void AddDatabase(IServiceCollection services)
+        {
+            services.AddDbContext<IssuesServiceDbContext>(options =>
+                {
+                    options.UseSqlServer(Configuration["ConnectionString"],
+                        sqlServerOptionsAction: sqlOptions =>
+                        {
+                            sqlOptions.MigrationsAssembly(typeof(IssuesServiceDbContext).GetTypeInfo().Assembly.GetName().Name);
+                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                        });
+                },
+                ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+            );
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

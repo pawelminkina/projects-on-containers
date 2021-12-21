@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31129.286
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architecture", "Architecture", "{EC3D3B19-385F-4ED2-A6D1-40786C938D21}"
 EndProject
@@ -29,7 +29,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{A0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebBff", "WebBff", "{595C6EEA-D967-4317-995E-5BF78F3B2A83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBff.Api", "Gateways\WebBff\WebBff.Api\WebBff.Api.csproj", "{A51E681A-5E78-488A-AE0C-2AC6643E91AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebBff.Api", "Gateways\WebBff\WebBff.Api\WebBff.Api.csproj", "{A51E681A-5E78-488A-AE0C-2AC6643E91AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.AcceptanceTests", "Services\Issues\Tests\Issues.AcceptanceTests\Issues.AcceptanceTests.csproj", "{9E284A0E-3556-4A40-8195-E00251D499B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{60273230-476B-487B-8CB0-AC416EB3AFD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHost.Customization", "BuildingBlocks\WebHost\WebHost.Customization\WebHost.Customization.csproj", "{1F951A3E-66C7-4752-A30A-81E27BC218CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +75,14 @@ Global
 		{A51E681A-5E78-488A-AE0C-2AC6643E91AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A51E681A-5E78-488A-AE0C-2AC6643E91AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A51E681A-5E78-488A-AE0C-2AC6643E91AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E284A0E-3556-4A40-8195-E00251D499B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E284A0E-3556-4A40-8195-E00251D499B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E284A0E-3556-4A40-8195-E00251D499B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E284A0E-3556-4A40-8195-E00251D499B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F951A3E-66C7-4752-A30A-81E27BC218CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F951A3E-66C7-4752-A30A-81E27BC218CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F951A3E-66C7-4752-A30A-81E27BC218CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F951A3E-66C7-4752-A30A-81E27BC218CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +98,8 @@ Global
 		{1706BCEB-40E5-41CA-93D3-844291FDEDCE} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
 		{595C6EEA-D967-4317-995E-5BF78F3B2A83} = {A07D147F-4351-4394-A0D3-277F083EBA15}
 		{A51E681A-5E78-488A-AE0C-2AC6643E91AB} = {595C6EEA-D967-4317-995E-5BF78F3B2A83}
+		{9E284A0E-3556-4A40-8195-E00251D499B0} = {AC589D28-0A75-484F-BFD0-34FB593EFF7B}
+		{1F951A3E-66C7-4752-A30A-81E27BC218CC} = {60273230-476B-487B-8CB0-AC416EB3AFD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE4CC04-3FAE-4D6E-BB1A-B76AD5C8F2E4}

@@ -21,18 +21,18 @@ namespace Issues.Domain.StatusesFlow
             IsArchived = false;
             IsDefault = false;
         }
-        protected StatusFlow()
+        public StatusFlow()
         {
 
         }
-        public string Name { get; private set; }
-        public string OrganizationId { get; private set; }
-        public bool IsDefault { get; private set; }
+        public string Name { get; set; }
+        public string OrganizationId { get; set; }
+        public bool IsDefault { get; set; }
 
         protected readonly List<StatusInFlow> _statusesInFlow;
         public IReadOnlyCollection<StatusInFlow> StatusesInFlow => _statusesInFlow;
 
-        public bool IsArchived { get; private set; }
+        public bool IsArchived { get; set; }
 
         public StatusInFlow AddNewStatusToFlow(Status statusToAdd)
         {

@@ -19,13 +19,13 @@ namespace Issues.Domain.StatusesFlow
             OrganizationId = organizationId;
             IsDeleted = false;
         }
-        protected Status()
+        public Status()
         {
 
         }
-        public string Name { get; private set; }
-        public string OrganizationId { get; private set; }
-        public bool IsDeleted { get; private set; }
+        public string Name { get; set; }
+        public string OrganizationId { get; set; }
+        public bool IsDeleted { get; set; }
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
         public void Delete()

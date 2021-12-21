@@ -19,14 +19,14 @@ namespace Issues.Domain.TypesOfIssues
             TypesInGroups = new List<TypeOfIssueInTypeOfGroup>();
         }
 
-        protected TypeOfIssue()
+        public TypeOfIssue()
         {
 
         }
-        public string Name { get; private set; }
-        public string OrganizationId { get; private set; }
-        public bool IsArchived { get; private set; }
-        public List<TypeOfIssueInTypeOfGroup> TypesInGroups { get; private set; }
+        public string Name { get; set; }
+        public string OrganizationId { get; set; }
+        public bool IsArchived { get; set; }
+        public List<TypeOfIssueInTypeOfGroup> TypesInGroups { get; set; }
 
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
