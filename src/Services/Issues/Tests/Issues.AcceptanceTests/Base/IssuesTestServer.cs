@@ -27,6 +27,9 @@ namespace Issues.AcceptanceTests.Base
                 }).UseStartup<IssuesTestStartup>();
 
             var testServer = new TestServer(hostBuilder);
+
+            //I need to setup DB
+            return testServer;
         }
     }
 }

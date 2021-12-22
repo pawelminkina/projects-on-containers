@@ -14,6 +14,7 @@ namespace Issues.Domain.Issues
             StatusId = statusId;
             CreatingUserId = creatingUserId;
             GroupOfIssue = groupOfIssue;
+            GroupOfIssueId = groupOfIssue.Id;
             TimeOfCreation = timeOfCreation;
             TypeOfIssueId = typeOfIssueId;
             IsArchived = false;
@@ -30,6 +31,7 @@ namespace Issues.Domain.Issues
         public string CreatingUserId { get; set; }
         public IssueContent Content { get; set; }
         public GroupOfIssues GroupOfIssue { get; set; }
+        public string GroupOfIssueId { get; set; }
         public DateTimeOffset TimeOfCreation { get; set; }
         public bool IsArchived { get; set; }
         public bool IsDeleted { get; set; }

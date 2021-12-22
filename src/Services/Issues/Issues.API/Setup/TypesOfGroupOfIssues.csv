@@ -1,1 +1,3 @@
-Id,Name,ShortName,TypeOfGroupId,IsArchived
+Id,Name,OrganizationId,IsArchived,IsDefault
+001-001,Type Of Group Of Issues 1,BaseOrganizationId,false,true,
+001-002,Type Of Group Of Issues 1,BaseOrganizationId,false,true,

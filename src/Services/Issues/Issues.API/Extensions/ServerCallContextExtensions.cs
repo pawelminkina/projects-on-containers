@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Grpc.Core;
+﻿using Grpc.Core;
 
 namespace Issues.API.Extensions
 {
@@ -11,9 +10,9 @@ namespace Issues.API.Extensions
         //    context.GetHttpContext().User.FindFirstValue("sub");
 
         public static string GetOrganizationId(this ServerCallContext context) =>
-            "MOCKEDORGANIZATION";
+            "BaseOrganizationId";
         public static string GetUserId(this ServerCallContext context) =>
-            "MOCKEDUSER";
+            "BaseUserId";
 
     }
 }

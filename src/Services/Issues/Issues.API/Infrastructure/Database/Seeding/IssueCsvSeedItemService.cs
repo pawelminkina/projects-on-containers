@@ -6,6 +6,7 @@ using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.Issues;
 using Issues.Domain.StatusesFlow;
 using Issues.Domain.TypesOfIssues;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
@@ -17,9 +18,9 @@ namespace Issues.API.Infrastructure.Database.Seeding
         private readonly ILogger<IssuesServiceDbSeed> _logger;
         private readonly ICsvFileReader _fileReader;
 
-        public IssueCsvSeedItemService(string contentRootPath, ILogger<IssuesServiceDbSeed> logger, ICsvFileReader fileReader)
+        public IssueCsvSeedItemService(IWebHostEnvironment env, ILogger<IssuesServiceDbSeed> logger, ICsvFileReader fileReader)
         {
-            _contentRootPath = contentRootPath;
+            _contentRootPath = env.ContentRootPath;
             _logger = logger;
             _fileReader = fileReader;
         }
