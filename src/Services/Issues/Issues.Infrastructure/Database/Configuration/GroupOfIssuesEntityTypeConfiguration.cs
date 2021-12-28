@@ -13,7 +13,7 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.ShortName).IsRequired().HasMaxLength(6);
             builder.Property(d => d.TypeOfGroupId).IsRequired().HasMaxLength(63);
             builder.Property(d => d.IsArchived).IsRequired();
-            builder.HasMany(d => d.Issues).WithOne(s => s.GroupOfIssue);
+            builder.HasMany(d => d.Issues).WithOne(s => s.GroupOfIssue).HasForeignKey(s=>s.GroupOfIssueId);
         }
     }
 }

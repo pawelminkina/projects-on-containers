@@ -36,7 +36,7 @@ namespace Issues.Domain.Issues
         public bool IsArchived { get; set; }
         public bool IsDeleted { get; set; }
 
-        private string TypeOfIssueId; //https://github.com/dotnet-architecture/eShopOnContainers/blob/71994d0ad88d51f758d8124b16bddf944cc7d91b/src/Services/Ordering/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs
+        public string TypeOfIssueId {get; set; }//https://github.com/dotnet-architecture/eShopOnContainers/blob/71994d0ad88d51f758d8124b16bddf944cc7d91b/src/Services/Ordering/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs
         public TypeOfIssue TypeOfIssue { get; private set; }
 
         public IssueContent AddContent(string textContent)

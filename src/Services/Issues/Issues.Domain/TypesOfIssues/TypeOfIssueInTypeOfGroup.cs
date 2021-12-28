@@ -25,8 +25,8 @@ namespace Issues.Domain.TypesOfIssues
         public string ParentId { get; set;}
         public StatusFlow Flow { get; private set; }
         public TypeOfGroupOfIssues TypeOfGroup { get; private set; }
-        private string StatusFlowId { get; set; }
-        private string TypeOfGroupOfIssuesId { get; set; }
+        public string StatusFlowId { get; set; }
+        public string TypeOfGroupOfIssuesId { get; set; }
         public bool IsArchived { get; private set; }
 
         public void ChangeStatusFlow(StatusFlow newStatusFlow)

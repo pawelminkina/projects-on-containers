@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Architecture.DDD.Repositories;
+using Issues.Domain.Issues;
 using Issues.Domain.TypesOfIssues.DomainEvents;
 
 namespace Issues.Domain.TypesOfIssues

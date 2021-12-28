@@ -4,6 +4,7 @@ using Issues.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issues.Infrastructure.Migrations
 {
     [DbContext(typeof(IssuesServiceDbContext))]
-    partial class IssuesServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228143325_SomeMigrationaagffkf")]
+    partial class SomeMigrationaagffkf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,7 +117,9 @@ namespace Issues.Infrastructure.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("TypeOfIssueId")
-                        .HasColumnType("nvarchar(63)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(63)")
+                        .HasColumnName("TypeOfIssueId");
 
                     b.HasKey("Id");
 
@@ -303,7 +307,9 @@ namespace Issues.Infrastructure.Migrations
 
                     b.HasOne("Issues.Domain.TypesOfIssues.TypeOfIssue", "TypeOfIssue")
                         .WithMany()
-                        .HasForeignKey("TypeOfIssueId");
+                        .HasForeignKey("TypeOfIssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Issues.Domain.Issues.IssueContent", "Content", b1 =>
                         {

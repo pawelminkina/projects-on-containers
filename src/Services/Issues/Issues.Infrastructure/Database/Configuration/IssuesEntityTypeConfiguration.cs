@@ -15,10 +15,11 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.IsArchived).IsRequired();
             builder.Property(d => d.CreatingUserId).IsRequired().HasMaxLength(63);
             builder.Property(d => d.TimeOfCreation).IsRequired();
+            //builder.Property(d => d.TypeOfIssueId).IsRequired();
+            builder.Property(d => d.GroupOfIssueId).IsRequired();
 
             builder.OwnsOne(o=>o.Content, a => { a.Property<string>("IssueId"); a.WithOwner(); });
-            builder.HasOne(d=>d.TypeOfIssue).WithMany().HasForeignKey("_typeOfIssueId");
-            builder.Property<string>("_typeOfIssueId").UsePropertyAccessMode(PropertyAccessMode.Field).HasColumnName("TypeOfIssueId").IsRequired();
+            builder.HasOne(d=>d.TypeOfIssue).WithMany().HasForeignKey(s=>s.TypeOfIssueId);
         }
     }
 }

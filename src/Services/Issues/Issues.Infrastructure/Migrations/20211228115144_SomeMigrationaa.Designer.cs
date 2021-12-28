@@ -4,6 +4,7 @@ using Issues.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issues.Infrastructure.Migrations
 {
     [DbContext(typeof(IssuesServiceDbContext))]
-    partial class IssuesServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228115144_SomeMigrationaa")]
+    partial class SomeMigrationaa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +94,6 @@ namespace Issues.Infrastructure.Migrations
                         .HasColumnType("nvarchar(63)");
 
                     b.Property<string>("GroupOfIssueId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(63)");
 
                     b.Property<bool>("IsArchived")
@@ -115,6 +116,7 @@ namespace Issues.Infrastructure.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("TypeOfIssueId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(63)");
 
                     b.HasKey("Id");
@@ -264,20 +266,30 @@ namespace Issues.Infrastructure.Migrations
                         .HasColumnType("nvarchar(63)");
 
                     b.Property<string>("StatusFlowId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(63)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("StatusFlowId1");
 
                     b.Property<string>("TypeOfGroupOfIssuesId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("TypeOfGroupOfIssuesId1");
+
+                    b.Property<string>("_statusFlowId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(63)");
+                        .HasColumnType("nvarchar(63)")
+                        .HasColumnName("StatusFlowId");
+
+                    b.Property<string>("_typeOfGroupOfIssuesId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(63)")
+                        .HasColumnName("TypeOfGroupOfIssuesId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
 
-                    b.HasIndex("StatusFlowId");
+                    b.HasIndex("_statusFlowId");
 
-                    b.HasIndex("TypeOfGroupOfIssuesId");
+                    b.HasIndex("_typeOfGroupOfIssuesId");
 
                     b.ToTable("TypesOfIssueInTypeOfGroups");
                 });
@@ -297,13 +309,13 @@ namespace Issues.Infrastructure.Migrations
                 {
                     b.HasOne("Issues.Domain.GroupsOfIssues.GroupOfIssues", "GroupOfIssue")
                         .WithMany("Issues")
-                        .HasForeignKey("GroupOfIssueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupOfIssueId");
 
                     b.HasOne("Issues.Domain.TypesOfIssues.TypeOfIssue", "TypeOfIssue")
                         .WithMany()
-                        .HasForeignKey("TypeOfIssueId");
+                        .HasForeignKey("TypeOfIssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Issues.Domain.Issues.IssueContent", "Content", b1 =>
                         {
@@ -372,13 +384,13 @@ namespace Issues.Infrastructure.Migrations
 
                     b.HasOne("Issues.Domain.StatusesFlow.StatusFlow", "Flow")
                         .WithMany()
-                        .HasForeignKey("StatusFlowId")
+                        .HasForeignKey("_statusFlowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Issues.Domain.GroupsOfIssues.TypeOfGroupOfIssues", "TypeOfGroup")
                         .WithMany()
-                        .HasForeignKey("TypeOfGroupOfIssuesId")
+                        .HasForeignKey("_typeOfGroupOfIssuesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

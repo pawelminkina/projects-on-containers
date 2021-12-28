@@ -41,11 +41,23 @@ namespace Issues.API.Infrastructure.Database.Seeding
                     else
                     {
                         logger.LogInformation($"Seeding database with {this.GetType().Name} seeder.");
-                        SeedIssuesDb(dbContext);
+                        SeedWholeDb(seedService, dbContext);
                         await dbContext.SaveChangesAsync();
                     }
                 }
             });
+        }
+
+        private void SeedWholeDb(IIssueSeedItemService service, IssuesServiceDbContext dbContext)
+        {
+            dbContext.TypesOfGroupsOfIssues.AddRange(service.GetTypeOfGroupOfIssuesFromSeed());
+            dbContext.TypesOfIssues.AddRange(service.GetTypesOfIssuesFromSeed());
+            dbContext.Statuses.AddRange(service.GetStatusesFromSeed());
+            dbContext.GroupsOfIssues.AddRange(service.GetGroupsOfIssuesFromSeed());
+            dbContext.Issues.AddRange(service.GetIssuesFromSeed());
+            dbContext.TypesOfIssueInTypeOfGroups.AddRange(service.GetTypesOfIssueInTypeOfGroupsFromSeed());
+            dbContext.StatusFlows.AddRange(service.GetStatusFlowsFromSeed());
+            dbContext.StatusesInFlow.AddRange(service.GetStatusesInFlowFromSeed());
         }
 
         private void SeedIssuesDb(IssuesServiceDbContext dbContext)

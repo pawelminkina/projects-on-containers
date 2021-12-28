@@ -10,5 +10,10 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
 {
     public class StatusFlowsMaps : ClassMap<StatusFlow>
     {
+        public StatusFlowsMaps()
+        {
+            AutoMap(System.Globalization.CultureInfo.CurrentCulture);
+
+        }
     }
 }

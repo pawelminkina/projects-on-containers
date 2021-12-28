@@ -1,4 +1,4 @@
-Id,Name,OrganizationId,TypeOfGroupId,IsArchived,IsDefault
-002-001,Group Of Issues 1,BaseOrganizationId,001-001,false,true,
-002-002,Group Of Issues 2,BaseOrganizationId,001-001,false,false,
-002-003,Group Of Issues 3,BaseOrganizationId,001-002,false,true,
+Id,Name,ShortName,OrganizationId,TypeOfGroupId,IsArchived,IsDefault
+002-001,Group Of Issues 1,GOF1,BaseOrganizationId,001-001,false,true,
+002-002,Group Of Issues 2,GOF2,BaseOrganizationId,001-001,false,false,
+002-003,Group Of Issues 3,GOF3,BaseOrganizationId,001-002,false,true,

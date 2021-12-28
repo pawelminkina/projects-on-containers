@@ -10,5 +10,9 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
 {
     public class GroupsOfIssuesMap : ClassMap<GroupOfIssues>
     {
+        public GroupsOfIssuesMap()
+        {
+            AutoMap(System.Globalization.CultureInfo.CurrentCulture);
+        }
     }
 }
