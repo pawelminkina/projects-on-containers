@@ -30,12 +30,12 @@
     <ProjectReference Include="..\Issues.Infrastructure\Issues.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="Protos\issue.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\groupofissue.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\typeofgroupofissue.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\status.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\statusflow.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\typeofissue.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\issue.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\groupofissue.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\typeofgroupofissue.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\status.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\statusflow.proto" GrpcServices="Both" />
+    <Protobuf Include="Protos\typeofissue.proto" GrpcServices="Both" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Protos\issue.proto" />

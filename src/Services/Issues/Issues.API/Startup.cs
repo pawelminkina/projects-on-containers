@@ -52,6 +52,7 @@ namespace Issues.API
             {
                 options.EnableDetailedErrors = true;
             });
+            services.AddControllers().AddApplicationPart(typeof(Startup).Assembly);
 
             services.AddMediatR(
                 typeof(IIssueRepository).Assembly, //Domain
@@ -78,6 +79,15 @@ namespace Issues.API
 
             services.AddScoped<ICsvFileReader, CsvFileReader>();
             services.AddScoped<IIssueSeedItemService, IssueCsvSeedItemService>();
+
+            AddCustomConfiguration(services);
+        }
+
+        private void AddCustomConfiguration(IServiceCollection services)
+        {
+            services.AddOptions();
+            services.Configure<IssueServiceSeedingOptions>(Configuration);
+
         }
 
         public void AddDatabase(IServiceCollection services)

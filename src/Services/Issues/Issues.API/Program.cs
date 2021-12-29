@@ -34,9 +34,10 @@ try
         var env = services.GetService<IWebHostEnvironment>();
         var logger = services.GetService<ILogger<IssuesServiceDbSeed>>();
         var seedItemService = services.GetService<IIssueSeedItemService>();
+        var options = services.GetService<IOptions<IssueServiceSeedingOptions>>();
 
         new IssuesServiceDbSeed()
-            .SeedAsync(context, env, logger, seedItemService)
+            .SeedAsync(context, env, logger, seedItemService, options.Value)
             .Wait();
     });
 
@@ -80,6 +81,8 @@ IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
 
 IConfiguration GetConfiguration()
 {
+
+    Console.WriteLine("im rooning");
     var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

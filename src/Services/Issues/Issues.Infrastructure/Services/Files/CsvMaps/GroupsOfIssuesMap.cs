@@ -12,7 +12,13 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
     {
         public GroupsOfIssuesMap()
         {
-            AutoMap(System.Globalization.CultureInfo.CurrentCulture);
+            Map(s => s.Id).Name("Id");
+            Map(s => s.Name).Name("Name");
+            Map(s => s.ShortName).Name("ShortName");
+            Map(s => s.TypeOfGroupId).Name("TypeOfGroupId");
+            Map(s => s.IsArchived).Name("IsArchived");
+            Map(s => s.TypeOfGroup).Ignore();
+            Map(s => s.Issues).Ignore();
         }
     }
 }

@@ -12,8 +12,11 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
     {
         public TypesOfIssuesMap()
         {
-            AutoMap(System.Globalization.CultureInfo.CurrentCulture);
-
+            Map(s => s.Id).Name("Id");
+            Map(s => s.Name).Name("Name");
+            Map(s => s.OrganizationId).Name("OrganizationId");
+            Map(s => s.IsArchived).Name("IsArchived");
+            Map(s => s.TypesInGroups).Ignore();
         }
     }
 }

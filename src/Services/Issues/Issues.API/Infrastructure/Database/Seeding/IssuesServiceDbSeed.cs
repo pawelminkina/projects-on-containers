@@ -21,7 +21,9 @@ namespace Issues.API.Infrastructure.Database.Seeding
     //TODO it should be refactored to seed each entity by one
     public class IssuesServiceDbSeed
     {
-        public async Task SeedAsync(IssuesServiceDbContext dbContext, IWebHostEnvironment env, ILogger<IssuesServiceDbSeed> logger, IIssueSeedItemService seedService)
+        private bool _anyItemSeeded;
+
+        public async Task SeedAsync(IssuesServiceDbContext dbContext, IWebHostEnvironment env, ILogger<IssuesServiceDbSeed> logger, IIssueSeedItemService seedService, IssueServiceSeedingOptions options, bool clearDatabaseFirst = false)
         {
             var policy = CreatePolicy(logger, nameof(IssuesServiceDbSeed));
 
@@ -29,35 +31,89 @@ namespace Issues.API.Infrastructure.Database.Seeding
             {
                 using (dbContext)
                 {
-                    var migs = dbContext.Database.GetMigrations();
                     dbContext.Database.Migrate();
-                    var created = dbContext.Database.EnsureCreated();
 
-                    if (dbContext.TypesOfGroupsOfIssues.Any() || dbContext.Issues.Any() || dbContext.Statuses.Any() ||
-                        dbContext.TypesOfIssues.Any() || dbContext.GroupsOfIssues.Any())
+                    if (clearDatabaseFirst)
                     {
-                        logger.LogDebug($"Database has items. Seeder {this.GetType().Name} was not applied.");
+                        logger.LogInformation("Removing items from Db");
+                        ClearDb(dbContext);
                     }
-                    else
+
+                    if (options.CsvSeed.SeedTypeOfGroupsOfIssues && !dbContext.TypesOfGroupsOfIssues.Any())
                     {
-                        logger.LogInformation($"Seeding database with {this.GetType().Name} seeder.");
-                        SeedWholeDb(seedService, dbContext);
+                        LogSeeding(logger, "TypeOfGroupsOfIssues");
+                        dbContext.TypesOfGroupsOfIssues.AddRange(seedService.GetTypeOfGroupOfIssuesFromSeed());
+                    }
+
+                    if (options.CsvSeed.SeedGroupsOfIssues && !dbContext.GroupsOfIssues.Any())
+                    {
+                        LogSeeding(logger, "GroupsOfIssues");
+                        dbContext.GroupsOfIssues.AddRange(seedService.GetGroupsOfIssuesFromSeed());
+                    }
+
+                    if (options.CsvSeed.SeedIssues && !dbContext.Issues.Any())
+                    {
+                        LogSeeding(logger, "Issues");
+                        dbContext.Issues.AddRange(seedService.GetIssuesFromSeed());
+                    }
+
+                    if (options.CsvSeed.SeedTypesOfIssues && !dbContext.TypesOfIssues.Any())
+                    {
+                        LogSeeding(logger, "TypesOfIssues");
+                        dbContext.TypesOfIssues.AddRange(seedService.GetTypesOfIssuesFromSeed());
+                    }
+
+                    if (options.CsvSeed.SeedTypesOfIssueInTypeOfGroups && !dbContext.TypesOfIssueInTypeOfGroups.Any())
+                    {
+                        LogSeeding(logger, "TypesOfIssueInTypeOfGroups");
+                        dbContext.TypesOfIssueInTypeOfGroups.AddRange(seedService.GetTypesOfIssueInTypeOfGroupsFromSeed());
+                    }
+
+                    if (options.CsvSeed.SeedStatuses && !dbContext.Statuses.Any())
+                    {
+                        LogSeeding(logger, "Statuses");
+                        dbContext.Statuses.AddRange(seedService.GetStatusesFromSeed());
+                    }
+
+                    if (options.CsvSeed.SeedStatusFlows && !dbContext.StatusFlows.Any())
+                    {
+                        LogSeeding(logger, "StatusFlows");
+                        dbContext.StatusFlows.AddRange(seedService.GetStatusFlowsFromSeed());
+                    }
+
+                    if (options.CsvSeed.SeedStatusesInFlow && !dbContext.StatusesInFlow.Any())
+                    {
+                        LogSeeding(logger, "StatusesInFlow");
+                        dbContext.StatusesInFlow.AddRange(seedService.GetStatusesInFlowFromSeed());
+                    }
+                    
+                    if(_anyItemSeeded)
                         await dbContext.SaveChangesAsync();
-                    }
+                    else
+                        logger.LogInformation($"Database has items. Seeder {this.GetType().Name} was not applied.");
+
                 }
             });
         }
 
-        private void SeedWholeDb(IIssueSeedItemService service, IssuesServiceDbContext dbContext)
+        private void LogSeeding(ILogger logger, string nameOfEntity)
         {
-            dbContext.TypesOfGroupsOfIssues.AddRange(service.GetTypeOfGroupOfIssuesFromSeed());
-            dbContext.TypesOfIssues.AddRange(service.GetTypesOfIssuesFromSeed());
-            dbContext.Statuses.AddRange(service.GetStatusesFromSeed());
-            dbContext.GroupsOfIssues.AddRange(service.GetGroupsOfIssuesFromSeed());
-            dbContext.Issues.AddRange(service.GetIssuesFromSeed());
-            dbContext.TypesOfIssueInTypeOfGroups.AddRange(service.GetTypesOfIssueInTypeOfGroupsFromSeed());
-            dbContext.StatusFlows.AddRange(service.GetStatusFlowsFromSeed());
-            dbContext.StatusesInFlow.AddRange(service.GetStatusesInFlowFromSeed());
+            logger.LogInformation($"Seeding database with {this.GetType().Name} seeder on type {nameOfEntity} entity");
+            _anyItemSeeded = true;
+        }
+
+        private void ClearDb(IssuesServiceDbContext dbContext)
+        {
+            dbContext.TypesOfGroupsOfIssues.RemoveRange(dbContext.TypesOfGroupsOfIssues);
+            dbContext.GroupsOfIssues.RemoveRange(dbContext.GroupsOfIssues);
+            dbContext.Issues.RemoveRange(dbContext.Issues);
+            dbContext.TypesOfIssues.RemoveRange(dbContext.TypesOfIssues);
+            dbContext.TypesOfIssueInTypeOfGroups.RemoveRange(dbContext.TypesOfIssueInTypeOfGroups);
+            dbContext.StatusFlows.RemoveRange(dbContext.StatusFlows);
+            dbContext.StatusesInFlow.RemoveRange(dbContext.StatusesInFlow);
+            dbContext.Statuses.RemoveRange(dbContext.Statuses);
+            dbContext.SaveChanges();
+
         }
 
         private void SeedIssuesDb(IssuesServiceDbContext dbContext)
