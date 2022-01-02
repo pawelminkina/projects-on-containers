@@ -6,16 +6,7 @@ service TypeOfGroupOfIssueService{
 	rpc GetTypeOfGroupOfIssues(GetTypeOfGroupOfIssuesRequest) returns (GetTypeOfGroupOfIssuesResponse);
 	rpc CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssuesRequest) returns (CreateTypeOfGroupOfIssuesResponse);
 	rpc RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest) returns (RenameTypeOfGroupOfIssuesResponse);
-	rpc ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest) returns (ArchiveTypeOfGroupOfIssuesResponse);
-	rpc RemoveGroupAndMoveIssuesToAnotherGroup(RemoveGroupAndMoveIssuesToAnotherGroupRequest) returns (RemoveGroupAndMoveIssuesToAnotherGroupResponse);
-}
-
-message RemoveGroupAndMoveIssuesToAnotherGroupResponse{
-}
-
-message RemoveGroupAndMoveIssuesToAnotherGroupRequest{
-	string idOfGroupToRemove = 1;
-	string idOfGroupToWhichIssuesShouldBeMoved = 2;
+	rpc ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest) returns (ArchiveTypeOfGroupOfIssuesResponse); //reassigment in functional tests
 }
 
 message GetTypesOfGroupsOfIssuesRequest{
