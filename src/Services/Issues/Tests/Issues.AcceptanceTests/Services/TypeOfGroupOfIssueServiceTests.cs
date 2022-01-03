@@ -32,7 +32,7 @@ namespace Issues.AcceptanceTests.Services
             //GIVEN expected collection of types of groups
             var expectedTypesOfGroupOfIssues = GetExpectedTypesOfGroupOfIssues();
             
-            //WHEN groups are retrieved from server
+            //WHEN types are retrieved from server
             var request = new GetTypesOfGroupsOfIssuesRequest();
             var response = await _grpcClient.GetTypesOfGroupsOfIssuesAsync(request);
             var actual = response.Types_;
