@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Google.Protobuf.WellKnownTypes;
 using Issues.AcceptanceTests.Base;
 using Issues.API.Protos;
 using Microsoft.AspNetCore.TestHost;
@@ -27,9 +29,27 @@ namespace Issues.AcceptanceTests.Services
         public async Task ShouldReturnIssuesForGroup()
         {
             //GIVEN group for which issues will be returned
+            var groupId = "002-002";
+            
             //AND expected issues
+            var expected = GetExpectedIssues();
+
             //WHEN issues are retrieved from server
+            var getRequest = new GetIssuesForGroupRequest() { GroupId = groupId};
+            var getResponse = await _grpcClient.GetIssuesForGroupAsync(getRequest);
+
             //THEN check equality of actual and expected issues collection
+            getResponse.Issues.Should().BeEquivalentTo(expected);
+
+            #region Local methods
+
+            IEnumerable<IssueReference> GetExpectedIssues() => new[]
+            {
+                new IssueReference() {Id = "005-003", IsArchived = false, Name = "Issue 3", StatusId = "004-002", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002"},
+                new IssueReference() {Id = "005-004", IsArchived = false, Name = "Issue 4", StatusId = "004-002", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002"},
+            };
+
+            #endregion
         }
 
         [Test]
