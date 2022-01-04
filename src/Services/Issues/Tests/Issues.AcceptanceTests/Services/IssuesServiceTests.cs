@@ -26,43 +26,66 @@ namespace Issues.AcceptanceTests.Services
         [Test]
         public async Task ShouldReturnIssuesForGroup()
         {
-
+            //GIVEN group for which issues will be returned
+            //AND expected issues
+            //WHEN issues are retrieved from server
+            //THEN check equality of actual and expected issues collection
         }
 
         [Test]
         public async Task ShouldReturnIssuesForUser()
         {
-
+            //GIVEN user for which issues will be returned
+            //AND expected issues
+            //WHEN issues are retrieved from server
+            //THEN check equality of actual and expected issues collection
         }
 
         [Test]
         public async Task ShouldReturnIssueWithContent()
         {
-
+            //GIVEN expected issue
+            //WHEN issue is retrieved from server
+            //THEN check equality of expected and actual issue
         }
 
         [Test]
         public async Task ShouldCreateIssue()
         {
-
+            //GIVEN expected issue which will be created
+            //WHEN issue is created
+            //AND retrieved from server
+            //THEN assign id of created issue to expected
+            //AND check equality of expected and actual issue
         }
 
         [Test]
         public async Task ShouldRenameIssue()
         {
-
+            //GIVEN issue which will be renamed
+            //AND new name for this issue
+            //WHEN issue has been renamed
+            //AND issue is retrieved from server
+            //THEN check that actual name is the same as expected
         }
 
         [Test]
-        public async Task ShouldUpdateIssueContent()
+        public async Task ShouldUpdateIssueTextContent()
         {
-
+            //GIVEN issue to update
+            //AND new text content for this issue
+            //WHEN issue content is updated
+            //AND issue is retrieved from server
+            //THEN check that current text content is the same as expected
         }
 
         [Test]
         public async Task ShouldSetIssueStatusToDeleted()
         {
-
+            //GIVEN issue to delete
+            //WHEN issue is deleted
+            //AND retrieved from server
+            //THEN check that issue has isDeleted flag set to true
         }
     }
 }
