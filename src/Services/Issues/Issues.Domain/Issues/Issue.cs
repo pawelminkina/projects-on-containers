@@ -7,7 +7,7 @@ namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        public Issue(string name, string statusId, string creatingUserId, GroupOfIssues groupOfIssue, DateTimeOffset timeOfCreation, string typeOfIssueId) : this()
+        public Issue(string name, string statusId, string creatingUserId, GroupOfIssues groupOfIssue, DateTimeOffset timeOfCreation, string typeOfIssueId, string textContent) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -19,6 +19,7 @@ namespace Issues.Domain.Issues
             TypeOfIssueId = typeOfIssueId;
             IsArchived = false;
             IsDeleted = false;
+            AddContent(textContent);
         }
 
         public Issue()
@@ -39,7 +40,7 @@ namespace Issues.Domain.Issues
         public string TypeOfIssueId {get; set; }//https://github.com/dotnet-architecture/eShopOnContainers/blob/71994d0ad88d51f758d8124b16bddf944cc7d91b/src/Services/Ordering/Ordering.Infrastructure/EntityConfigurations/OrderEntityTypeConfiguration.cs
         public TypeOfIssue TypeOfIssue { get; private set; }
 
-        public IssueContent AddContent(string textContent)
+        private IssueContent AddContent(string textContent)
         {
             if (Content != null)
                 throw new InvalidOperationException($"Content to issue with id: {Id} is already added");

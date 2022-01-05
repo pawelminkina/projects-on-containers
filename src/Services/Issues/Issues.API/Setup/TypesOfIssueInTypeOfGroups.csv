@@ -1,4 +1,3 @@
 Id,ParentId,StatusFlowId,TypeOfGroupOfIssuesId,IsArchived
 006-001,003-001,007-001,001-001,false,
-006-002,003-001,007-001,001-001,false,
-006-003,003-001,007-001,001-001,false,
+006-002,003-002,007-001,001-001,false,

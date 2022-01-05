@@ -49,7 +49,7 @@ namespace Issues.API.GrpcServices
 
         public override async Task<GetIssuesForUserResponse> GetIssuesForUser(GetIssuesForUserRequest request, ServerCallContext context)
         {
-            var issues = await _mediator.Send(new GetIssuesForUserQuery(context.GetUserId()));
+            var issues = await _mediator.Send(new GetIssuesForUserQuery(request.UserId));
             var result = new GetIssuesForUserResponse();
             result.Issues.AddRange(issues.Select(MapToIssueReference));
             return result;
@@ -90,7 +90,8 @@ namespace Issues.API.GrpcServices
             StatusId = issue.StatusId,
             TimeOfCreation = issue.TimeOfCreation.ToTimestamp(),
             TypeOfIssueId = issue.TypeOfIssue.Id,
-            IsArchived = issue.IsArchived
+            IsArchived = issue.IsArchived,
+            GroupId = issue.GroupOfIssue.Id
         };
 
         private Protos.IssueContent MapToIssueContent(Domain.Issues.IssueContent content) => new Protos.IssueContent()

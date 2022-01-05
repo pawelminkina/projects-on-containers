@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
 using Issues.Domain.Issues;
+using Issues.Infrastructure.Services.Files.CsvMaps.TypeConverters;
 
 namespace Issues.Infrastructure.Services.Files.CsvMaps
 {
@@ -14,8 +15,8 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
         public IssuesMap()
         {
             Map(s => s.TypeOfIssue).Ignore();
-            Map(s => s.Content).Ignore();
             Map(s => s.GroupOfIssue).Ignore();
+            Map(s => s.Content).Name("IssueTextContent").TypeConverter<IssueContentTypeConverter>();
             Map(s => s.Id).Name("Id");
             Map(s => s.Name).Name("Name");
             Map(s => s.StatusId).Name("StatusId");

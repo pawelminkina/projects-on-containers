@@ -81,11 +81,10 @@ message IssueReference{
 	google.protobuf.Timestamp timeOfCreation = 5;
 	string typeOfIssueId = 6;
 	bool IsArchived = 7;
+	string groupId = 8;
 	//TODO there is no groupId
 }
 
 message IssueContent{
-	string id = 1;
-	string issueId = 2;
-	string textContent = 3;
+	string textContent = 1;
 }

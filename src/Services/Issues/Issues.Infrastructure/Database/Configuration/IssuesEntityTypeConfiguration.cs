@@ -18,7 +18,7 @@ namespace Issues.Infrastructure.Database.Configuration
             //builder.Property(d => d.TypeOfIssueId).IsRequired();
             builder.Property(d => d.GroupOfIssueId).IsRequired();
 
-            builder.OwnsOne(o=>o.Content, a => { a.Property<string>("IssueId"); a.WithOwner(); });
+            builder.OwnsOne(o=>o.Content, a => { a.Property<string>("IssueId").IsRequired(); a.WithOwner(); });
             builder.HasOne(d=>d.TypeOfIssue).WithMany().HasForeignKey(s=>s.TypeOfIssueId);
         }
     }

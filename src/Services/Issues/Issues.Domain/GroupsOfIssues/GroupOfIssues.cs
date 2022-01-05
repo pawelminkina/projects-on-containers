@@ -45,8 +45,7 @@ namespace Issues.Domain.GroupsOfIssues
 
         public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId, string statusId)
         {
-            var issue = new Issue(name, statusId, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId);
-            issue.AddContent(textContent);
+            var issue = new Issue(name, statusId, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId, textContent);
             _issues.Add(issue);
             return issue;
         }

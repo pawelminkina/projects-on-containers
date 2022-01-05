@@ -45,8 +45,8 @@ namespace Issues.AcceptanceTests.Services
 
             IEnumerable<IssueReference> GetExpectedIssues() => new[]
             {
-                new IssueReference() {Id = "005-003", IsArchived = false, Name = "Issue 3", StatusId = "004-002", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002"},
-                new IssueReference() {Id = "005-004", IsArchived = false, Name = "Issue 4", StatusId = "004-002", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002"},
+                new IssueReference() {Id = "005-003", IsArchived = false, Name = "Issue 3", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
+                new IssueReference() {Id = "005-004", IsArchived = false, Name = "Issue 4", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
             };
 
             #endregion
@@ -56,27 +56,115 @@ namespace Issues.AcceptanceTests.Services
         public async Task ShouldReturnIssuesForUser()
         {
             //GIVEN user for which issues will be returned
+            var userId = "BaseUserId2";
+
             //AND expected issues
+            var expected = GetExpectedIssues();
+
             //WHEN issues are retrieved from server
+            var getRequest = new GetIssuesForUserRequest() { UserId = userId };
+            var getResponse = await _grpcClient.GetIssuesForUserAsync(getRequest);
+
             //THEN check equality of actual and expected issues collection
+            getResponse.Issues.Should().BeEquivalentTo(expected);
+
+            #region Local methods
+
+            IEnumerable<IssueReference> GetExpectedIssues() => new[]
+            {
+                new IssueReference() {Id = "005-003", IsArchived = false, Name = "Issue 3", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
+                new IssueReference() {Id = "005-004", IsArchived = false, Name = "Issue 4", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
+            };
+
+            #endregion
         }
 
         [Test]
         public async Task ShouldReturnIssueWithContent()
         {
             //GIVEN expected issue
+            var expected = GetExpectedIssue();
+            var expectedContent = GetExpectedContent();
+
             //WHEN issue is retrieved from server
+            var getRequest = new GetIssueWithContentRequest() { IssueId = expected.Id };
+            var getResponse = await _grpcClient.GetIssueWithContentAsync(getRequest);
+
             //THEN check equality of expected and actual issue
+            getResponse.Issue.Should().BeEquivalentTo(expected);
+
+            //AND issue content
+            getResponse.Content.Should().BeEquivalentTo(expectedContent);
+
+            #region Local methods
+
+            IssueReference GetExpectedIssue() => new IssueReference()
+            {
+                Id = "005-003",
+                IsArchived = false,
+                Name = "Issue 3",
+                StatusId = "004-002",
+                CreatingUserId = "BaseUserId2",
+                TypeOfIssueId = "003-002",
+                GroupId = "002-002",
+                TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp()
+            };
+
+            IssueContent GetExpectedContent() => new IssueContent()
+            {
+                TextContent = "Issue 3 content"
+            };
+
+            #endregion
         }
 
         [Test]
         public async Task ShouldCreateIssue()
         {
             //GIVEN expected issue which will be created
+            var expected = GetExpectedIssue();
+            var expectedContent = GetExpectedContent();
+            
             //WHEN issue is created
-            //AND retrieved from server
-            //THEN assign id of created issue to expected
-            //AND check equality of expected and actual issue
+            var createRequest = new CreateIssueRequest()
+            {
+                GroupId = "002-002", Name = expected.Name, TextContent = expectedContent.TextContent,
+                TypeOfIssueId = expected.TypeOfIssueId
+            };
+            var createResponse = await _grpcClient.CreateIssueAsync(createRequest);
+
+            //AND id of created issue is assigned to expected
+            expected.Id = createResponse.Id;
+
+            //AND issue is retrieved from server
+            var getRequest = new GetIssueWithContentRequest() { IssueId = expected.Id };
+            var getResponse = await _grpcClient.GetIssueWithContentAsync(getRequest);
+
+            //THEN check equality of expected and actual issue
+            expected.TimeOfCreation = getResponse.Issue.TimeOfCreation;
+            getResponse.Issue.Should().BeEquivalentTo(expected);
+
+            //AND issue content
+            getResponse.Content.Should().BeEquivalentTo(expectedContent);
+
+            #region Local methods
+
+            IssueReference GetExpectedIssue() => new IssueReference()
+            {
+                IsArchived = false,
+                Name = "Issue 6",
+                StatusId = "004-001",
+                CreatingUserId = "BaseUserId",
+                TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp(),
+                TypeOfIssueId = "003-002",
+                GroupId = "002-002"
+            };
+
+            IssueContent GetExpectedContent() => new IssueContent()
+            {
+                TextContent = "Issue 6 content"
+            };
+            #endregion
         }
 
         [Test]

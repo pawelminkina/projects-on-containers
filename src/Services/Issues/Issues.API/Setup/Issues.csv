@@ -1,6 +1,6 @@
-Id,Name,StatusId,CreatingUserId,GroupOfIssueId,TimeOfCreation,TypeOfIssueId,IsArchived,IsDeleted
-005-001,Issue 1,004-001,BaseUserId,002-001,12/22/2021,003-001,false,false,
-005-002,Issue 2,004-001,BaseUserId,002-001,12/22/2021,003-001,false,false,
-005-003,Issue 3,004-002,BaseUserId,002-001,12/22/2021,003-002,false,false,
-005-004,Issue 4,004-002,BaseUserId,002-001,12/22/2021,003-002,false,false,
-005-005,Issue 5,004-003,BaseUserId,002-001,12/22/2021,003-001,false,false,
+Id,Name,StatusId,CreatingUserId,GroupOfIssueId,TimeOfCreation,TypeOfIssueId,IsArchived,IsDeleted,IssueTextContent,IssueContentId
+005-001,Issue 1,004-001,BaseUserId,002-001,12/22/2021,003-001,false,false,Issue 1 content
+005-002,Issue 2,004-001,BaseUserId,002-001,12/22/2021,003-001,false,false,Issue 2 content
+005-003,Issue 3,004-002,BaseUserId2,002-002,12/22/2021,003-002,false,false,Issue 3 content
+005-004,Issue 4,004-002,BaseUserId2,002-002,12/22/2021,003-002,false,false,Issue 4 content
+005-005,Issue 5,004-003,BaseUserId,002-001,12/22/2021,003-001,false,false,Issue 5 content
