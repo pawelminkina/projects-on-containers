@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,13 +30,13 @@ namespace Issues.Application.StatusInFlow.RemoveConnection
                 throw new InvalidOperationException(
                     $"Status with id: {request.ParentStatusId} was not found in flow with id: {request.FlowId}");
 
-            var connection = statusInFlow.ConnectedStatuses.FirstOrDefault(d => d.ConnectedWithParentId == request.ChildStatusId);
+            var connection = statusInFlow.ConnectedStatuses.FirstOrDefault(d => d.ConnectedStatusId == request.ConnectedStatusId);
 
             if (connection is null)
                 throw new InvalidOperationException(
-                    $"Connection in flow with id: {request.FlowId} was not found for parentId: {request.ParentStatusId} and child id: {request.ChildStatusId}");
+                    $"Connection in flow with id: {request.FlowId} was not found for parentId: {request.ParentStatusId} and child id: {request.ConnectedStatusId}");
 
-            statusInFlow.DeleteConnectedStatus(connection.Id);
+            statusInFlow.DeleteConnectedStatus(connection.Id, StatusInFlowDirection.Out);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;

@@ -20,7 +20,7 @@ message GetTypesOfIssuesResponse{
 }
 
 message GetTypeOfIssueRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message GetTypeOfIssueResponse{
@@ -32,11 +32,11 @@ message CreateTypeOfIssueRequest{
 }
 
 message CreateTypeOfIssueResponse{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message ArchiveTypeOfIssueRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message ArchiveTypeOfIssueResponse{
@@ -44,7 +44,7 @@ message ArchiveTypeOfIssueResponse{
 }
 
 message RenameTypeOfIssueRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 	string name = 2;
 }
 
@@ -53,7 +53,7 @@ message RenameTypeOfIssueResponse{
 }
 
 message TypeOfIssues{
-	string id = 1;
+	string connectedStatusId = 1;
 	string name = 2;
 	bool isArchived = 3;
 }

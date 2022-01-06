@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Issues.AcceptanceTests.Base;
+using Issues.API.Infrastructure.Factories;
 using Issues.API.Protos;
 using Microsoft.AspNetCore.TestHost;
 using NUnit.Framework;
@@ -27,10 +29,30 @@ namespace Issues.AcceptanceTests.Services
         public async Task ShouldReturnStatusFlows()
         {
             //GIVEN expected status flows
+            var expected = GetExpectedFlows();
 
             //WHEN status flows are retrieved from server
+            var getRequest = new GetStatusFlowsRequest();
+            var getResponse = await _grpcClient.GetStatusFlowsAsync(getRequest);
 
             //THEN check equality of actual and expected items
+            getResponse.Flow.Should().BeEquivalentTo(expected);
+
+            #region Local methods
+
+            IEnumerable<StatusFlow> GetExpectedFlows() => new[]
+            {
+                GrpcStatusFlowFactory.Create("007-001", "Status Flow 1", new []
+                {
+                    new StatusInFlow()
+                }),
+                GrpcStatusFlowFactory.Create("007-002", "Status Flow 2", new []
+                {
+                    new StatusInFlow()
+                }),
+            };
+
+            #endregion
         }
 
         [Test]
@@ -41,6 +63,8 @@ namespace Issues.AcceptanceTests.Services
             //WHEN flow is retrieved from server
 
             //THEN check equality of expected and actual item
+
+            Assert.Fail();
         }
 
         [Test]
@@ -55,6 +79,9 @@ namespace Issues.AcceptanceTests.Services
             //AND flow is retrieved from server
 
             //THEN check equality of expected and actual item
+
+            Assert.Fail();
+
         }
 
         [Test]
@@ -67,6 +94,8 @@ namespace Issues.AcceptanceTests.Services
             //AND is retrieved from server
 
             //THEN returned status flow should be null
+            Assert.Fail();
+
             //TODO should he? Shouldn't he be set to isDeleted or smth?
         }
 
@@ -80,11 +109,12 @@ namespace Issues.AcceptanceTests.Services
 
             //AND retrieved from server
 
+            Assert.Fail();
             //THEN check equality of actual and expected status flow name
         }
 
         //TODO I think it should be another service for this methods
-        
+
         [Test]
         public async Task ShouldAddStatusToFlow()
         {
@@ -95,6 +125,7 @@ namespace Issues.AcceptanceTests.Services
             //WHEN status is added to flow
 
             //AND flow is retrieved from server
+            Assert.Fail();
 
             //THEN check does flow contain added status
         }
@@ -109,6 +140,7 @@ namespace Issues.AcceptanceTests.Services
             //WHEN status is removed from flow
 
             //AND flow is retrieved from server
+            Assert.Fail();
 
             //THEN check does flow contain removed status
         }
@@ -121,6 +153,7 @@ namespace Issues.AcceptanceTests.Services
             //WHEN connection is added to flow
 
             //AND flow is retrieved from server
+            Assert.Fail();
 
             //THEN check does flow contain added connection
         }
@@ -133,6 +166,7 @@ namespace Issues.AcceptanceTests.Services
             //WHEN connection is removed from flow
 
             //AND flow is retrieved from server
+            Assert.Fail();
 
             //THEN check does flow contain removed connection
         }

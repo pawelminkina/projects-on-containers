@@ -1,27 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
 using Architecture.DDD;
 
 namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlowConnection : EntityBase
     {
-        public StatusInFlowConnection(Status connectedWithParent, StatusInFlow parent) : this()
+        public StatusInFlowConnection(StatusInFlow statusInFlow, Status parent, StatusInFlowDirection direction, Status connectedStatus)
         {
             Id = Guid.NewGuid().ToString();
-            ConnectedWithParent = connectedWithParent;
             ParentStatus = parent;
-
-            ParentStatusId = ParentStatus.Id;
-            ConnectedWithParentId = ConnectedWithParent.Id;
+            ParentStatusId = parent.Id;
+            ConnectedStatus = connectedStatus;
+            ConnectedStatusId = connectedStatus.Id;
+            Direction = direction;
+            ParentStatusInFlow = statusInFlow;
         }
 
         protected StatusInFlowConnection()
         {
                 
         }
-        public string ConnectedWithParentId { get; private set; }
-        public Status ConnectedWithParent { get; private set; }
+        public StatusInFlowDirection Direction { get; set; }
+        public Status ParentStatus { get; set; }
+        public Status ConnectedStatus { get; set; }
+        public StatusInFlow ParentStatusInFlow { get; set; }
         public string ParentStatusId { get; private set; }
-        public StatusInFlow ParentStatus { get; private set; }
+        public string ConnectedStatusId { get; private set; }
+    }
+
+    public enum StatusInFlowDirection
+    {
+        In = 0,
+        Out = 1,
     }
 }

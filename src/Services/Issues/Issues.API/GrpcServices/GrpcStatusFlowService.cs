@@ -14,8 +14,11 @@ using Issues.Application.StatusInFlow.AddConnection;
 using Issues.Application.StatusInFlow.AddStatusToFlow;
 using Issues.Application.StatusInFlow.DeleteStatusFromFlow;
 using Issues.Application.StatusInFlow.RemoveConnection;
+using Issues.Domain.StatusesFlow;
 using MediatR;
 using Status = Grpc.Core.Status;
+using StatusFlow = Issues.API.Protos.StatusFlow;
+using StatusInFlow = Issues.API.Protos.StatusInFlow;
 
 namespace Issues.API.GrpcServices
 {
@@ -82,13 +85,13 @@ namespace Issues.API.GrpcServices
 
         public override async Task<AddConnectionToStatusInFlowResponse> AddConnectionToStatusInFlow(AddConnectionToStatusInFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new AddConnectionCommand(request.ParentStatusId, request.ChildStatusId, request.FlowId, context.GetOrganizationId()));
+            await _mediator.Send(new AddConnectionCommand(request.ParentStatusId, request.ConnectedStatusId, request.FlowId, context.GetOrganizationId()));
             return new AddConnectionToStatusInFlowResponse();
         }
 
         public override async Task<RemoveConnectionFromStatusInFlowResponse> RemoveConnectionFromStatusInFlow(RemoveConnectionFromStatusInFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new RemoveConnectionCommand(request.FlowId, request.ParentStatusId, request.ChildStatusId, context.GetOrganizationId()));
+            await _mediator.Send(new RemoveConnectionCommand(request.FlowId, request.ParentStatusId, request.ConnectedStatusId, context.GetOrganizationId()));
             return new RemoveConnectionFromStatusInFlowResponse();
         }
 
@@ -112,8 +115,19 @@ namespace Issues.API.GrpcServices
                 ParentStatusId = statusInFlow.ParentStatusId
             };
             if (statusInFlow.ConnectedStatuses.Any())
-                res.ChildStatusesIds.AddRange(statusInFlow.ConnectedStatuses.Select(d=>d.ConnectedWithParentId));
+                res.ConnectedStatuses.AddRange(statusInFlow.ConnectedStatuses.Select(d => new ConnectedStatuses()
+                {
+                    ConnectedStatusId = d.ConnectedStatus.Id,
+                    ParentStatusId = d.ParentStatus.Id,
+                    DirectionOfStatus = MapToProtoDirection(d.Direction)
+                }));
+                
             return res;
         }
+
+        private ConnectedStatuses.Types.Direction MapToProtoDirection(StatusInFlowDirection direction) =>
+            direction == StatusInFlowDirection.In
+                ? ConnectedStatuses.Types.Direction.In
+                : ConnectedStatuses.Types.Direction.Out;
     }
 }

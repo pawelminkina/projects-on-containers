@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Issues.Domain.StatusesFlow.DomainEvents;
 
 namespace Issues.Domain.StatusesFlow
 {
@@ -30,27 +31,30 @@ namespace Issues.Domain.StatusesFlow
 
         public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
 
-        public void AddConnectedStatus(Status status)
+        public void AddConnectedStatus(Status status, StatusInFlowDirection direction)
         {
             if (status == null)
                 throw new InvalidOperationException("Given status to add is null");
 
-            if (ConnectedStatuses.Any(s=> s.ConnectedWithParent.Id == status.Id))
+            if (ConnectedStatuses.Any(s=> s.ConnectedStatus.Id == status.Id && s.Direction == direction))
                 throw new InvalidOperationException(
-                    $"Status with id: {status.Id} is already added to connected statuses where status in flow has id: {Id}");
+                    $"Status with connectedStatusId: {status.Id} is already added to connected statuses where status in flow has connectedStatusId: {Id} with direction of connection: {direction.ToString()}");
 
-            var connectedStatus = new StatusInFlowConnection(status, this);
+            var connectedStatus = new StatusInFlowConnection(this, ParentStatus, direction, status);
             ConnectedStatuses.Add(connectedStatus);
+            AddDomainEvent(new ConnectedStatusAddedDomainEvent(connectedStatus));
         }
 
-        public void DeleteConnectedStatus(string id)
+        public void DeleteConnectedStatus(string connectedStatusId, params StatusInFlowDirection[] directions)
         {
+            foreach (var connectionToDelete in directions.Select(direction => ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatus.Id == connectedStatusId && s.Direction == direction)))
+            {
+                if (connectionToDelete == null)
+                    throw new InvalidOperationException($"Requested status in flow to delete with connectedStatusId: {connectedStatusId} in parent {Id} doesn't exist");
 
-            var connectionToDelete = ConnectedStatuses.FirstOrDefault(s => s.Id == id);
-            if (connectionToDelete == null)
-                throw new InvalidOperationException($"Requested status in flow to delete with id: {id} in parent {Id} doesn't exist");
-
-            ConnectedStatuses.Remove(connectionToDelete);
+                ConnectedStatuses.Remove(connectionToDelete);
+                AddDomainEvent(new ConnectedStatusRemovedDomainEvent(connectionToDelete));
+            }
         }
 
         public void Archive()

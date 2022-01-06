@@ -20,6 +20,11 @@ namespace Issues.Application.StatusFlow.EventHandler
         public async Task Handle(StatusInFlowDeletedDomainEvent notification, CancellationToken cancellationToken)
         {
             await _statusFlowRepository.RemoveStatusInFlow(notification.StatusInFlow.Id);
+            var statuses = notification.StatusInFlow.StatusFlow.StatusesInFlow;
+            foreach (var status in statuses)
+            {
+                status.DeleteConnectedStatus(notification.StatusInFlow.ParentStatus.Id, StatusInFlowDirection.In);
+            }
         }
     }
 }

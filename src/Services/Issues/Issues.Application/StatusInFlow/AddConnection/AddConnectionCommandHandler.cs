@@ -32,7 +32,7 @@ namespace Issues.Application.StatusInFlow.AddConnection
             if (parentStatusInFlow is null)
                 throw new InvalidOperationException($"Requested parent status with id: {request.ParentStatusId} was not found with flow id: {request.FlowId}");
 
-            parentStatusInFlow.AddConnectedStatus(childStatus);
+            parentStatusInFlow.AddConnectedStatus(childStatus, StatusInFlowDirection.Out);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;

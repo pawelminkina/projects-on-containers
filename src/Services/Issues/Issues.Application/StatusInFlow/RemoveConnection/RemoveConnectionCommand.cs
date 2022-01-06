@@ -4,16 +4,16 @@ namespace Issues.Application.StatusInFlow.RemoveConnection
 {
     public class RemoveConnectionCommand : IRequest
     {
-        public RemoveConnectionCommand(string flowId, string parentStatusId, string childStatusId, string organizationId)
+        public RemoveConnectionCommand(string flowId, string parentStatusId, string connectedStatusId, string organizationId)
         {
             FlowId = flowId;
             ParentStatusId = parentStatusId;
-            ChildStatusId = childStatusId;
+            ConnectedStatusId = connectedStatusId;
             OrganizationId = organizationId;
         }
         public string FlowId { get; }
         public string ParentStatusId { get; }
-        public string ChildStatusId { get; }
+        public string ConnectedStatusId { get; }
         public string OrganizationId { get; }
     }
 }

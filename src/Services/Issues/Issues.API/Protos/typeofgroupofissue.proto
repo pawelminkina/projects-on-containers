@@ -18,7 +18,7 @@ message GetTypesOfGroupsOfIssuesResponse{
 }
 
 message GetTypeOfGroupOfIssuesRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message GetTypeOfGroupOfIssuesResponse{
@@ -30,11 +30,11 @@ message CreateTypeOfGroupOfIssuesRequest{
 }
 
 message CreateTypeOfGroupOfIssuesResponse{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message RenameTypeOfGroupOfIssuesRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 	string newName = 2;
 }
 
@@ -42,7 +42,7 @@ message RenameTypeOfGroupOfIssuesResponse{
 }
 
 message ArchiveTypeOfGroupOfIssuesRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 	string typeOfGroupOfIssuesWhereGroupsWillBeMovedId = 2;
 }
 
@@ -50,7 +50,7 @@ message ArchiveTypeOfGroupOfIssuesResponse{
 }
 
 message TypeOfGroupOfIssues{
-	string id = 1;
+	string connectedStatusId = 1;
 	string name = 2;
 	bool isArchived = 3;
 }

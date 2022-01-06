@@ -22,7 +22,7 @@ message GetStatusFlowsResponse{
 }
 
 message GetStatusFlowRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message GetStatusFlowResponse{
@@ -34,11 +34,11 @@ message AddStatusFlowRequest{
 }
 
 message AddStatusFlowResponse{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message DeleteStatusFlowsRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 }
 
 message DeleteStatusFlowsResponse{
@@ -46,7 +46,7 @@ message DeleteStatusFlowsResponse{
 }
 
 message RenameStatusFlowsRequest{
-	string id = 1;
+	string connectedStatusId = 1;
 	string name = 2;
 }
 
@@ -75,7 +75,7 @@ message DeleteStatusFromFlowResponse{
 message AddConnectionToStatusInFlowRequest{
 	string flowId = 1;
 	string parentStatusId = 2;
-	string childStatusId = 3;
+	string connectedStatusId = 3;
 }
 
 message AddConnectionToStatusInFlowResponse{
@@ -85,7 +85,7 @@ message AddConnectionToStatusInFlowResponse{
 message RemoveConnectionFromStatusInFlowRequest{
 	string flowId = 1;
 	string parentStatusId = 2;
-	string childStatusId = 3;
+	string connectedStatusId = 3;
 }
 
 message RemoveConnectionFromStatusInFlowResponse{
@@ -93,7 +93,7 @@ message RemoveConnectionFromStatusInFlowResponse{
 }
 
 message StatusFlow{
-	string id = 1;
+	string connectedStatusId = 1;
 	string name = 2;
 	repeated StatusInFlow statuses = 3;
 }
@@ -101,6 +101,16 @@ message StatusFlow{
 message StatusInFlow{
 	string parentStatusId = 1;
 	int32 indexInFLow = 2;
-	repeated string childStatusesIds = 3;
+	repeated ConnectedStatuses connectedStatuses = 3;
+}
+
+message ConnectedStatuses{
+	string parentStatusId = 1;
+	string connectedStatusId = 2;
+	enum Direction {
+		In = 0;
+		Out = 1;
+	}
+	Direction directionOfStatus = 3;
 }
 
