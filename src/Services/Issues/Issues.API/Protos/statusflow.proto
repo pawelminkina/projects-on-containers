@@ -22,7 +22,7 @@ message GetStatusFlowsResponse{
 }
 
 message GetStatusFlowRequest{
-	string connectedStatusId = 1;
+	string id = 1;
 }
 
 message GetStatusFlowResponse{
@@ -34,11 +34,11 @@ message AddStatusFlowRequest{
 }
 
 message AddStatusFlowResponse{
-	string connectedStatusId = 1;
+	string id = 1;
 }
 
 message DeleteStatusFlowsRequest{
-	string connectedStatusId = 1;
+	string id = 1;
 }
 
 message DeleteStatusFlowsResponse{
@@ -46,7 +46,7 @@ message DeleteStatusFlowsResponse{
 }
 
 message RenameStatusFlowsRequest{
-	string connectedStatusId = 1;
+	string id = 1;
 	string name = 2;
 }
 
@@ -93,7 +93,7 @@ message RemoveConnectionFromStatusInFlowResponse{
 }
 
 message StatusFlow{
-	string connectedStatusId = 1;
+	string id = 1;
 	string name = 2;
 	repeated StatusInFlow statuses = 3;
 }

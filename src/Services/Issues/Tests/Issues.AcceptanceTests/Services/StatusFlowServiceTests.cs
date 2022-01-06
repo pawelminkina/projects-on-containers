@@ -44,7 +44,7 @@ namespace Issues.AcceptanceTests.Services
             {
                 GrpcStatusFlowFactory.Create("007-001", "Status Flow 1", new []
                 {
-                    new StatusInFlow()
+                    new StatusInFlow() {IndexInFLow = 0, }
                 }),
                 GrpcStatusFlowFactory.Create("007-002", "Status Flow 2", new []
                 {

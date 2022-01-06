@@ -55,7 +55,7 @@ namespace WebBff.Api.Services.Issues.StatusFlows
 
         public async Task AddConnectionToStatusInFlowAsync(string statusId, string statusToConnectId, string flowId)
         {
-            var res = await _client.AddConnectionToStatusInFlowAsync(new AddConnectionToStatusInFlowRequest() { FlowId = flowId, ParentStatusId = statusId, ChildStatusId = statusToConnectId});
+            var res = await _client.AddConnectionToStatusInFlowAsync(new AddConnectionToStatusInFlowRequest() { FlowId = flowId, ParentStatusId = statusId, ConnectedStatusId = statusToConnectId});
         }
 
         public async Task DeleteConnectionToStatusFromFlowAsync(string statusId, string flowId)
@@ -63,6 +63,11 @@ namespace WebBff.Api.Services.Issues.StatusFlows
             var res = await _client.DeleteStatusFromFlowAsync(new DeleteStatusFromFlowRequest() { FlowId = flowId, StatusId = statusId});
         }
 
-        private StatusFlowDto MapToDto(StatusFlow flow) => new StatusFlowDto() { Id = flow.Id, Name = flow.Name, Statuses = flow.Statuses.Select(d => new Models.Issuses.StatusFlow.StatusInFlow() { ChildStatusIds = d.ChildStatusesIds, IndexInFlow = d.IndexInFLow, ParentStatusId = d.ParentStatusId }) };
+        private StatusFlowDto MapToDto(StatusFlow flow) => new StatusFlowDto()
+        {
+            Id = flow.Id,
+            Name = flow.Name,
+            Statuses = flow.Statuses.Select(d => new Models.Issuses.StatusFlow.StatusInFlow() { ChildStatusIds = d.ConnectedStatuses.Select(s=>s.ConnectedStatusId), IndexInFlow = d.IndexInFLow, ParentStatusId = d.ParentStatusId })
+        };
     }
 }

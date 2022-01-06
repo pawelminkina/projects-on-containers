@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Issues.Domain.StatusesFlow;
 using Issues.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Issues.Infrastructure.Repositories
 {
@@ -48,20 +49,23 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<StatusFlow> GetFlowById(string id)
         {
-            return await _dbContext.StatusFlows
-                .Include(s=>s.StatusesInFlow).ThenInclude(s=>s.ConnectedStatuses).ThenInclude(d=>d.ParentStatus)
-                .Include(d=>d.StatusesInFlow).ThenInclude(d=>d.ConnectedStatuses).ThenInclude(d=>d.ConnectedWithParent)
-                .Include(d=>d.StatusesInFlow).ThenInclude(d=>d.ParentStatus).FirstOrDefaultAsync(s => s.Id == id);
+            return await GetFlowsWithInclude().FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganizationAsync(string organizationId)
         {
-            return _dbContext.StatusFlows
-                .Include(s => s.StatusesInFlow).ThenInclude(s => s.ConnectedStatuses).ThenInclude(d => d.ParentStatus)
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedWithParent)
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ParentStatus)
-                .Where(s => s.OrganizationId == organizationId);
+            return GetFlowsWithInclude().Where(s => s.OrganizationId == organizationId);
         }
+
+        private IIncludableQueryable<StatusFlow, Status> GetFlowsWithInclude() =>
+
+            _dbContext.StatusFlows
+                .Include(s => s.StatusesInFlow).ThenInclude(s => s.ConnectedStatuses).ThenInclude(d => d.ParentStatus)
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses)
+                .ThenInclude(d => d.ConnectedStatus)
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses)
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ParentStatus);
+        
 
         public async Task RemoveStatusInFlow(string statusInFlowId)
         {

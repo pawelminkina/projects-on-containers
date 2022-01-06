@@ -19,7 +19,7 @@ message GetStatusesResponse{
 }
 
 message GetStatusRequest{
-	string connectedStatusId = 1;
+	string id = 1;
 }
 
 message GetStatusResponse{
@@ -31,12 +31,12 @@ message CreateStatusRequest{
 }
 
 message CreateStatusResponse{
-	string connectedStatusId = 1;
+	string id = 1;
 }
 
 
 message RenameStatusRequest{
-	string connectedStatusId = 1;
+	string id = 1;
 	string name = 2;
 }
 
@@ -45,6 +45,6 @@ message RenameStatusResponse{
 }
 
 message Status{
-	string connectedStatusId = 1;
+	string id = 1;
 	string name = 2;
 }

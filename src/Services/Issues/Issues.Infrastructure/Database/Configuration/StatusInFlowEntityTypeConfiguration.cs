@@ -13,7 +13,7 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.IsArchived).IsRequired();
             builder.HasOne(d => d.StatusFlow).WithMany(s => s.StatusesInFlow).HasForeignKey(s=>s.StatusFlowId);
             builder.HasOne(d => d.ParentStatus).WithMany().HasForeignKey(s => s.ParentStatusId);
-            builder.HasMany(d => d.ConnectedStatuses).WithOne(d=>d.ParentStatus).HasForeignKey(s=>s.ParentStatusId);
+            builder.HasMany(d => d.ConnectedStatuses).WithOne(d=>d.ParentStatusInFlow).HasForeignKey(s=>s.ParentStatusInFlowId);
         }
     }
 }

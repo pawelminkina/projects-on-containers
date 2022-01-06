@@ -210,19 +210,31 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<string>("ConnectedWithParentId")
+                    b.Property<string>("ConnectedStatusId")
                         .HasColumnType("nvarchar(63)");
+
+                    b.Property<int>("Direction")
+                        .HasColumnType("int");
 
                     b.Property<string>("ParentStatusId")
                         .HasColumnType("nvarchar(63)");
 
+                    b.Property<string>("ParentStatusInFlowId")
+                        .IsRequired()
+                        .HasMaxLength(63)
+                        .HasColumnType("nvarchar(63)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ConnectedWithParentId")
+                    b.HasIndex("ConnectedStatusId")
                         .IsUnique()
-                        .HasFilter("[ConnectedWithParentId] IS NOT NULL");
+                        .HasFilter("[ConnectedStatusId] IS NOT NULL");
 
-                    b.HasIndex("ParentStatusId");
+                    b.HasIndex("ParentStatusId")
+                        .IsUnique()
+                        .HasFilter("[ParentStatusId] IS NOT NULL");
+
+                    b.HasIndex("ParentStatusInFlowId");
 
                     b.ToTable("StatusInFlowConnection");
                 });
@@ -351,17 +363,25 @@ namespace Issues.Infrastructure.Migrations
 
             modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusInFlowConnection", b =>
                 {
-                    b.HasOne("Issues.Domain.StatusesFlow.Status", "ConnectedWithParent")
+                    b.HasOne("Issues.Domain.StatusesFlow.Status", "ConnectedStatus")
                         .WithOne()
-                        .HasForeignKey("Issues.Domain.StatusesFlow.StatusInFlowConnection", "ConnectedWithParentId");
+                        .HasForeignKey("Issues.Domain.StatusesFlow.StatusInFlowConnection", "ConnectedStatusId");
 
-                    b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ParentStatus")
+                    b.HasOne("Issues.Domain.StatusesFlow.Status", "ParentStatus")
+                        .WithOne()
+                        .HasForeignKey("Issues.Domain.StatusesFlow.StatusInFlowConnection", "ParentStatusId");
+
+                    b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ParentStatusInFlow")
                         .WithMany("ConnectedStatuses")
-                        .HasForeignKey("ParentStatusId");
+                        .HasForeignKey("ParentStatusInFlowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("ConnectedWithParent");
+                    b.Navigation("ConnectedStatus");
 
                     b.Navigation("ParentStatus");
+
+                    b.Navigation("ParentStatusInFlow");
                 });
 
             modelBuilder.Entity("Issues.Domain.TypesOfIssues.TypeOfIssueInTypeOfGroup", b =>

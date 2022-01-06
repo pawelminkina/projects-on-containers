@@ -13,7 +13,7 @@ service IssueService{
 }
 
 message DeleteIssueRequest{
-	string connectedStatusId = 1;
+	string id = 1;
 }
 
 message DeleteIssueResponse{
@@ -53,12 +53,12 @@ message CreateIssueRequest{
 }
 
 message CreateIssueResponse{
-	string connectedStatusId = 1;
+	string id = 1;
 }
 
 
 message RenameIssueRequest{
-	string connectedStatusId = 1;
+	string id = 1;
 	string newName = 2;
 }
 
@@ -74,7 +74,7 @@ message UpdateIssueContentResponse{}
 
 //Models
 message IssueReference{
-	string connectedStatusId = 1;
+	string id = 1;
 	string name = 2;
 	string statusId = 3;
 	string creatingUserId = 4;

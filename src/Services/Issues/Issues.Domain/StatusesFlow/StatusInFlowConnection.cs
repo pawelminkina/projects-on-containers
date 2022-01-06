@@ -15,6 +15,7 @@ namespace Issues.Domain.StatusesFlow
             ConnectedStatusId = connectedStatus.Id;
             Direction = direction;
             ParentStatusInFlow = statusInFlow;
+            ParentStatusInFlowId = statusInFlow.Id;
         }
 
         protected StatusInFlowConnection()
@@ -25,6 +26,7 @@ namespace Issues.Domain.StatusesFlow
         public Status ParentStatus { get; set; }
         public Status ConnectedStatus { get; set; }
         public StatusInFlow ParentStatusInFlow { get; set; }
+        public string ParentStatusInFlowId { get; set; }
         public string ParentStatusId { get; private set; }
         public string ConnectedStatusId { get; private set; }
     }

@@ -116,33 +116,7 @@ namespace Issues.API.Infrastructure.Database.Seeding
 
         }
 
-        private void SeedIssuesDb(IssuesServiceDbContext dbContext)
-        {
-            var typeOfIssue = new TypeOfIssue("MOCKEDORGANIZATION", "SOMENAME");
-            var firstStatus = new Status("someStatusName", "MOCKEDORGANIZATION");
-            var secondStatus = new Status("someStatusName", "MOCKEDORGANIZATION");
-            var type = new TypeOfGroupOfIssues("MOCKEDORGANIZATION", "SOMENAME");
-            var flow = new StatusFlow("SOMENAME", "MOCKEDORGANIZATION");
-            var status = new Status("FirstStatus", "MOCKEDORGANIZATION");
-            var statusInFlow = flow.AddNewStatusToFlow(status);
-            statusInFlow.AddConnectedStatus(firstStatus);
-            type.SetIsDefaultToTrue();
-            flow.SetIsDefaultToTrue();
-            var firstGroup = type.AddNewGroupOfIssues("nameOfGroup", "SHN");
-            var secondGroup = type.AddNewGroupOfIssues("nameOfGroupTwo", "SHN2");
-            var firstIssue = firstGroup.AddIssue("firstIssue", "MOCKEDUSER", "someTextContent", typeOfIssue.Id, firstStatus.Id);
-            var secondIssue = firstGroup.AddIssue("secondIssue", "MOCKEDUSER", "someTextContent2", typeOfIssue.Id, secondStatus.Id);
-            var typeInGroup = typeOfIssue.AddNewTypeOfGroupToCollection(type.Id, flow.Id);
-            dbContext.TypesOfGroupsOfIssues.Add(type);
-            dbContext.TypesOfIssues.Add(typeOfIssue);
-            dbContext.Statuses.AddRange(new[]{ firstStatus, secondStatus, status});
-            dbContext.GroupsOfIssues.AddRange(new []{firstGroup, secondGroup});
-            dbContext.Issues.AddRange(new []{firstIssue, secondIssue});
-            dbContext.TypesOfIssueInTypeOfGroups.AddRange(new[] { typeInGroup });
-            dbContext.StatusFlows.AddRange(new[] { flow });
-            dbContext.StatusesInFlow.AddRange(new[] { statusInFlow });
-        }
-
+       
         private AsyncRetryPolicy CreatePolicy(ILogger<IssuesServiceDbSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().

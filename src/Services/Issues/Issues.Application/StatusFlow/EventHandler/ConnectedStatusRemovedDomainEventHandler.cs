@@ -17,19 +17,13 @@ namespace Issues.Application.StatusFlow.EventHandler
 
         }
 
-        public async Task Handle(ConnectedStatusAddedDomainEvent notification, CancellationToken cancellationToken)
-        {
-            var statusFromFlow = notification.Connection.ParentStatusInFlow.StatusFlow.StatusesInFlow.FirstOrDefault(d => d.ParentStatusId == notification.Connection.ConnectedStatusId);
-
-            if (statusFromFlow is null)
-                throw new InvalidOperationException("Connected status has not been found");
-
-            statusFromFlow.AddConnectedStatus(notification.Connection.ParentStatus, StatusInFlowDirection.In);
-        }
-
         public async Task Handle(ConnectedStatusRemovedDomainEvent notification, CancellationToken cancellationToken)
         {
-            var statusFromFlow = notification.Connection.ParentStatusInFlow.StatusFlow.StatusesInFlow.Select(s=>s.ConnectedStatuses).Where(s=>s.Id == notification.Connection.ParentStatusId));
+            var status = notification.Connection.ParentStatusInFlow.StatusFlow.StatusesInFlow.FirstOrDefault(s=>s.ParentStatus.Id == notification.Connection.ConnectedStatus.Id);
+            if (status == null)
+                throw new InvalidOperationException("There was no connected statuses to delete");
+            //im searching for connected status in statusinflow
+            status.DeleteConnectedStatus(notification.Connection.ParentStatus.Id, StatusInFlowDirection.In);
         }
     }
 }

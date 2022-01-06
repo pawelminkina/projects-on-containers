@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31912.275
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architecture", "Architecture", "{EC3D3B19-385F-4ED2-A6D1-40786C938D21}"
 EndProject
@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Domain", "Services\I
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AC589D28-0A75-484F-BFD0-34FB593EFF7B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Tests", "Services\Issues\Tests\Issues.Tests\Issues.Tests.csproj", "{23E4F67F-3E41-4752-B3A1-32D45455975C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Infrastructure", "Services\Issues\Issues.Infrastructure\Issues.Infrastructure.csproj", "{1706BCEB-40E5-41CA-93D3-844291FDEDCE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{A07D147F-4351-4394-A0D3-277F083EBA15}"
@@ -35,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.AcceptanceTests", "S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{60273230-476B-487B-8CB0-AC416EB3AFD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHost.Customization", "BuildingBlocks\WebHost\WebHost.Customization\WebHost.Customization.csproj", "{1F951A3E-66C7-4752-A30A-81E27BC218CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "BuildingBlocks\WebHost\WebHost.Customization\WebHost.Customization.csproj", "{1F951A3E-66C7-4752-A30A-81E27BC218CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +61,6 @@ Global
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23E4F67F-3E41-4752-B3A1-32D45455975C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1706BCEB-40E5-41CA-93D3-844291FDEDCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1706BCEB-40E5-41CA-93D3-844291FDEDCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1706BCEB-40E5-41CA-93D3-844291FDEDCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -94,7 +88,6 @@ Global
 		{956AD57B-51DA-46A9-9405-A66861C70AB3} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
 		{3D01BA5F-CF94-44D6-B6DE-041C72BB9B61} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
 		{AC589D28-0A75-484F-BFD0-34FB593EFF7B} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
-		{23E4F67F-3E41-4752-B3A1-32D45455975C} = {AC589D28-0A75-484F-BFD0-34FB593EFF7B}
 		{1706BCEB-40E5-41CA-93D3-844291FDEDCE} = {E47882A9-10A3-477D-8C06-17A6835C9EE2}
 		{595C6EEA-D967-4317-995E-5BF78F3B2A83} = {A07D147F-4351-4394-A0D3-277F083EBA15}
 		{A51E681A-5E78-488A-AE0C-2AC6643E91AB} = {595C6EEA-D967-4317-995E-5BF78F3B2A83}
