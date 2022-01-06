@@ -164,6 +164,7 @@ namespace Issues.AcceptanceTests.Services
             {
                 TextContent = "Issue 6 content"
             };
+
             #endregion
         }
 
@@ -171,29 +172,61 @@ namespace Issues.AcceptanceTests.Services
         public async Task ShouldRenameIssue()
         {
             //GIVEN issue which will be renamed
+            var issueId = "005-003";
+
             //AND new name for this issue
+            var newName = "new name for issue";
+
             //WHEN issue has been renamed
+            var renameRequest = new RenameIssueRequest() {Id = issueId, NewName = newName};
+            var renameResponse = await _grpcClient.RenameIssueAsync(renameRequest);
+            
             //AND issue is retrieved from server
+            var getRequest = new GetIssueWithContentRequest() { IssueId = issueId };
+            var getResponse = await _grpcClient.GetIssueWithContentAsync(getRequest);
+
             //THEN check that actual name is the same as expected
+            getResponse.Issue.Name.Should().Be(newName);
         }
 
         [Test]
         public async Task ShouldUpdateIssueTextContent()
         {
             //GIVEN issue to update
+            var issueId = "005-003";
+
             //AND new text content for this issue
+            var newContent = "new content for issue";
+
             //WHEN issue content is updated
+            var updateTextContentRequest = new UpdateIssueContentRequest() {IssueId = issueId, TextContent = newContent};
+            var updateTextContentResponse = await _grpcClient.UpdateIssueContentAsync(updateTextContentRequest);
+
             //AND issue is retrieved from server
+            var getRequest = new GetIssueWithContentRequest() { IssueId = issueId };
+            var getResponse = await _grpcClient.GetIssueWithContentAsync(getRequest);
+
             //THEN check that current text content is the same as expected
+            getResponse.Content.TextContent.Should().Be(newContent);
         }
 
         [Test]
         public async Task ShouldSetIssueStatusToDeleted()
         {
             //GIVEN issue to delete
+            var issueId = "005-003";
+
             //WHEN issue is deleted
+            var deleteIssueRequest = new DeleteIssueRequest() {Id = issueId};
+            var deleteIssueResponse = await _grpcClient.DeleteIssueAsync(deleteIssueRequest);
+
             //AND retrieved from server
+            //AND issue is retrieved from server
+            var getRequest = new GetIssueWithContentRequest() { IssueId = issueId };
+            var getResponse = await _grpcClient.GetIssueWithContentAsync(getRequest);
+
             //THEN check that issue has isDeleted flag set to true
+            getResponse.Issue.IsDeleted.Should().BeTrue();
         }
     }
 }

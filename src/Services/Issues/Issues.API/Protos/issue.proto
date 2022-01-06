@@ -82,6 +82,7 @@ message IssueReference{
 	string typeOfIssueId = 6;
 	bool IsArchived = 7;
 	string groupId = 8;
+	bool isDeleted = 9;
 	//TODO there is no groupId
 }
 
