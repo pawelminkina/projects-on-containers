@@ -63,6 +63,6 @@ namespace Issues.API.GrpcServices
         }
 
         private TypeOfIssues MapToGrpcTypeOfIssue(Domain.TypesOfIssues.TypeOfIssue type) =>
-            new TypeOfIssues() {Id = type.Id, Name = type.Name};
+            new TypeOfIssues() {Id = type.Id, Name = type.Name, IsArchived = type.IsArchived};
     }
 }
