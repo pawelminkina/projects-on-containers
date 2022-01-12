@@ -27,7 +27,6 @@ namespace Issues.Application.StatusInFlow.AddConnection
 
             var flow = await _statusFlowRepository.GetFlowById(request.FlowId);
             ValidateFlowWithRequestedParameters(flow, request);
-
             var parentStatusInFlow = flow.StatusesInFlow.FirstOrDefault(d => d.ParentStatusId == request.ParentStatusId);
             if (parentStatusInFlow is null)
                 throw new InvalidOperationException($"Requested parent status with id: {request.ParentStatusId} was not found with flow id: {request.FlowId}");

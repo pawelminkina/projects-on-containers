@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Architecture.DDD;
 using Issues.Application.Services.Files;
 using Issues.Domain.GroupsOfIssues;
@@ -39,6 +40,8 @@ namespace Issues.API.Infrastructure.Database.Seeding
         public IEnumerable<StatusFlow> GetStatusFlowsFromSeed() => GetEntitiesFromFileInSetupFolder<StatusFlow>("StatusFlows.csv");
 
         public IEnumerable<StatusInFlow> GetStatusesInFlowFromSeed() => GetEntitiesFromFileInSetupFolder<StatusInFlow>("StatusesInFlow.csv");
+        
+        public IEnumerable<StatusInFlowConnection> GetStatusesInFlowConnectionFromSeed() => GetEntitiesFromFileInSetupFolder<StatusInFlowConnection>("StatusesInFlowConnection.csv");
 
         private IEnumerable<T> GetEntitiesFromFileInSetupFolder<T>(string fileName) where T : EntityBase => _fileReader.ReadEntity<T>(File.ReadAllBytes(Path.Combine(_contentRootPath, "Setup", fileName)));
     }

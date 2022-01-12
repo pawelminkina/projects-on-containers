@@ -24,7 +24,7 @@ namespace Issues.Application.StatusFlow.EventHandler
             if (statusFromFlow is null)
                 throw new InvalidOperationException("Connected status has not been found");
 
-            statusFromFlow.AddConnectedStatus(notification.Connection.ParentStatus, StatusInFlowDirection.In);
+            statusFromFlow.AddConnectedStatus(notification.Connection.ParentStatusInFlow.ParentStatus, StatusInFlowDirection.In);
         }
     }
 }

@@ -12,7 +12,8 @@ namespace Issues.API.Infrastructure.Factories
                 Id = id,
                 Name = name
             };
-            statusFlow.Statuses.AddRange(statusesInFlow);
+            if (statusesInFlow is not null)
+                statusFlow.Statuses.AddRange(statusesInFlow);
             return statusFlow;
         }
     }

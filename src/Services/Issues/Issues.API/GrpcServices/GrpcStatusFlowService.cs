@@ -114,11 +114,12 @@ namespace Issues.API.GrpcServices
                 IndexInFLow = statusInFlow.IndexInFlow,
                 ParentStatusId = statusInFlow.ParentStatusId
             };
+
             if (statusInFlow.ConnectedStatuses.Any())
                 res.ConnectedStatuses.AddRange(statusInFlow.ConnectedStatuses.Select(d => new ConnectedStatuses()
                 {
                     ConnectedStatusId = d.ConnectedStatus.Id,
-                    ParentStatusId = d.ParentStatus.Id,
+                    ParentStatusId = d.ParentStatusInFlow.ParentStatus.Id,
                     DirectionOfStatus = MapToProtoDirection(d.Direction)
                 }));
                 

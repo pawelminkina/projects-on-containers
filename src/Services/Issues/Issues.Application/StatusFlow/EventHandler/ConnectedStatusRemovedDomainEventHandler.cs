@@ -23,7 +23,7 @@ namespace Issues.Application.StatusFlow.EventHandler
             if (status == null)
                 throw new InvalidOperationException("There was no connected statuses to delete");
             //im searching for connected status in statusinflow
-            status.DeleteConnectedStatus(notification.Connection.ParentStatus.Id, StatusInFlowDirection.In);
+            status.DeleteConnectedStatus(notification.Connection.ParentStatusInFlow.ParentStatus.Id, StatusInFlowDirection.In);
         }
     }
 }

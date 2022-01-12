@@ -4,6 +4,7 @@ using Issues.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issues.Infrastructure.Migrations
 {
     [DbContext(typeof(IssuesServiceDbContext))]
-    partial class IssuesServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220110150336_sssafxg")]
+    partial class sssafxg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,6 +218,9 @@ namespace Issues.Infrastructure.Migrations
                     b.Property<int>("Direction")
                         .HasColumnType("int");
 
+                    b.Property<string>("ParentStatusId")
+                        .HasColumnType("nvarchar(63)");
+
                     b.Property<string>("ParentStatusInFlowId")
                         .IsRequired()
                         .HasMaxLength(63)
@@ -224,6 +229,8 @@ namespace Issues.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ConnectedStatusId");
+
+                    b.HasIndex("ParentStatusId");
 
                     b.HasIndex("ParentStatusInFlowId");
 
@@ -358,6 +365,10 @@ namespace Issues.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ConnectedStatusId");
 
+                    b.HasOne("Issues.Domain.StatusesFlow.Status", "ParentStatus")
+                        .WithMany()
+                        .HasForeignKey("ParentStatusId");
+
                     b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ParentStatusInFlow")
                         .WithMany("ConnectedStatuses")
                         .HasForeignKey("ParentStatusInFlowId")
@@ -365,6 +376,8 @@ namespace Issues.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ConnectedStatus");
+
+                    b.Navigation("ParentStatus");
 
                     b.Navigation("ParentStatusInFlow");
                 });

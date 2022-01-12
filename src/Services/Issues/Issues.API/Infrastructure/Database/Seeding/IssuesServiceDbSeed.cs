@@ -85,9 +85,12 @@ namespace Issues.API.Infrastructure.Database.Seeding
                     {
                         LogSeeding(logger, "StatusesInFlow");
                         dbContext.StatusesInFlow.AddRange(seedService.GetStatusesInFlowFromSeed());
+                        LogSeeding(logger, "StatusesInFlowConnection");
+                        var connections = seedService.GetStatusesInFlowConnectionFromSeed();
+                        dbContext.StatusInFlowConnections.AddRange(seedService.GetStatusesInFlowConnectionFromSeed());
                     }
-                    
-                    if(_anyItemSeeded)
+
+                    if (_anyItemSeeded)
                         await dbContext.SaveChangesAsync();
                     else
                         logger.LogInformation($"Database has items. Seeder {this.GetType().Name} was not applied.");

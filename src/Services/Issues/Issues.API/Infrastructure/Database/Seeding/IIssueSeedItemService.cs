@@ -20,5 +20,6 @@ namespace Issues.API.Infrastructure.Database.Seeding
         IEnumerable<StatusFlow> GetStatusFlowsFromSeed();
 
         IEnumerable<StatusInFlow> GetStatusesInFlowFromSeed();
+        IEnumerable<StatusInFlowConnection> GetStatusesInFlowConnectionFromSeed();
     }
 }

@@ -40,7 +40,7 @@ namespace Issues.Domain.StatusesFlow
                 throw new InvalidOperationException(
                     $"Status with connectedStatusId: {status.Id} is already added to connected statuses where status in flow has connectedStatusId: {Id} with direction of connection: {direction.ToString()}");
 
-            var connectedStatus = new StatusInFlowConnection(this, ParentStatus, direction, status);
+            var connectedStatus = new StatusInFlowConnection(this, direction, status);
             ConnectedStatuses.Add(connectedStatus);
             AddDomainEvent(new ConnectedStatusAddedDomainEvent(connectedStatus));
         }

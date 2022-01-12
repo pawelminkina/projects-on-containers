@@ -13,6 +13,7 @@
     <None Remove="Setup\Issues.csv" />
     <None Remove="Setup\Statuses.csv" />
     <None Remove="Setup\StatusesInFlow.csv" />
+    <None Remove="Setup\StatusesInFlowConnection.csv" />
     <None Remove="Setup\StatusFlows.csv" />
     <None Remove="Setup\TypesOfGroupOfIssues.csv" />
     <None Remove="Setup\TypesOfIssueInTypeOfGroups.csv" />
@@ -33,6 +34,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Setup\StatusesInFlow.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\StatusesInFlowConnection.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Setup\StatusFlows.csv">

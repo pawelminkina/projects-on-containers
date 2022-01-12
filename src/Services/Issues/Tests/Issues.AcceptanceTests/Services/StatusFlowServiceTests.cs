@@ -44,12 +44,11 @@ namespace Issues.AcceptanceTests.Services
             {
                 GrpcStatusFlowFactory.Create("007-001", "Status Flow 1", new []
                 {
-                    new StatusInFlow() {IndexInFLow = 0, }
+                    new StatusInFlow() {IndexInFLow = 0, ParentStatusId = "004-001"},
+                    new StatusInFlow() {IndexInFLow = 1, ParentStatusId = "004-002"},
+                    new StatusInFlow() {IndexInFLow = 2, ParentStatusId = "004-003"},
                 }),
-                GrpcStatusFlowFactory.Create("007-002", "Status Flow 2", new []
-                {
-                    new StatusInFlow()
-                }),
+                GrpcStatusFlowFactory.Create("007-002", "Status Flow 2", null),
             };
 
             #endregion
