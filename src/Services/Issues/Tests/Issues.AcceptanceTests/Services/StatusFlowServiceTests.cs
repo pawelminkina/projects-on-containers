@@ -44,9 +44,25 @@ namespace Issues.AcceptanceTests.Services
             {
                 GrpcStatusFlowFactory.Create("007-001", "Status Flow 1", new []
                 {
-                    new StatusInFlow() {IndexInFLow = 0, ParentStatusId = "004-001"},
-                    new StatusInFlow() {IndexInFLow = 1, ParentStatusId = "004-002"},
-                    new StatusInFlow() {IndexInFLow = 2, ParentStatusId = "004-003"},
+                    GrpcStatusInFlowFactory.Create("004-001", 0, new List<ConnectedStatuses>()
+                    {
+                        new ConnectedStatuses() {ConnectedStatusId = "004-002", ParentStatusId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+                        new ConnectedStatuses() {ConnectedStatusId = "004-002", ParentStatusId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusId = "004-003", ParentStatusId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                    }),
+                    GrpcStatusInFlowFactory.Create("004-002", 1, new List<ConnectedStatuses>()
+                    {
+                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+                        new ConnectedStatuses() {ConnectedStatusId = "004-003", ParentStatusId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                    }),
+                    GrpcStatusInFlowFactory.Create("004-003", 2, new List<ConnectedStatuses>()
+                    {
+                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusId = "004-002", ParentStatusId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+
+                    }),
                 }),
                 GrpcStatusFlowFactory.Create("007-002", "Status Flow 2", null),
             };

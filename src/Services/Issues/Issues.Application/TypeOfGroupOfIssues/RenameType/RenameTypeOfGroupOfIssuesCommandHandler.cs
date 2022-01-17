@@ -22,7 +22,7 @@ namespace Issues.Application.TypeOfGroupOfIssues.RenameType
             var type = await _repository.GetTypeOfGroupOfIssuesByIdAsync(request.Id);
             ValidateTypeWithRequestedParameters(type,request);
 
-            type.RenameGroup(request.NewName);
+            type.RenameTypeOfGroup(request.NewName);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 

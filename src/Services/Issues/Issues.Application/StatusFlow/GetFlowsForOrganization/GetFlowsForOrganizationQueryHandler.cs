@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Issues.Domain.StatusesFlow;
@@ -16,7 +17,8 @@ namespace Issues.Application.StatusFlow.GetFlowsForOrganization
         }
         public async Task<IEnumerable<Domain.StatusesFlow.StatusFlow>> Handle(GetFlowsForOrganizationQuery request, CancellationToken cancellationToken)
         {
-            return await _statusFlowRepository.GetFlowsByOrganizationAsync(request.OrganizationId);
+            var flows = await _statusFlowRepository.GetFlowsByOrganizationAsync(request.OrganizationId);
+            return flows.Where(s => !s.IsArchived);
         }
     }
 }

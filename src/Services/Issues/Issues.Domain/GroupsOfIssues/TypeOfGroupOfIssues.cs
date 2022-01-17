@@ -20,7 +20,6 @@ namespace Issues.Domain.GroupsOfIssues
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
-            IsArchived = false;
             IsDefault = false;
         }
 
@@ -31,13 +30,18 @@ namespace Issues.Domain.GroupsOfIssues
 
         public string Name { get; set; }
         public string OrganizationId { get; set; }
-        public bool IsArchived { get; set; }
         public bool IsDefault { get; set; }
 
         protected readonly List<GroupOfIssues> _groups;
         public IReadOnlyCollection<GroupOfIssues> Groups => _groups;
 
-        public void RenameGroup(string newName)=> ChangeStringProperty("Name", newName);
+        public void RenameTypeOfGroup(string newName)
+        {
+            if (IsDefault)
+                throw new InvalidOperationException("You can't change name of default type of group of issues");
+            
+            ChangeStringProperty("Name", newName);
+        }
 
         public GroupOfIssues AddNewGroupOfIssues(string name, string shortName)
         {
@@ -49,6 +53,8 @@ namespace Issues.Domain.GroupsOfIssues
 
             var group = new GroupOfIssues(name, shortName, this);
             _groups.Add(group);
+
+            AddDomainEvent(new GroupOfIssuesCreatedDomainEvent(group));
             return group;
         }
 
@@ -60,51 +66,15 @@ namespace Issues.Domain.GroupsOfIssues
             _groups.AddRange(groups);
         }
 
-        public void RemoveGroupAndMoveIssuesToAnotherGroup(string idOfGroupToDelete, string idOfGroupToWhichIssuesShouldBeMoved)
-        {
-            var toDelete = _groups.FirstOrDefault(d => d.Id == idOfGroupToDelete);
-
-            if (toDelete is null)
-                throw new InvalidOperationException($"Requested group to delete is not in type with id: {Id}");
-
-            var toWhichShouldBeMoved = _groups.FirstOrDefault(s => s.Id == idOfGroupToWhichIssuesShouldBeMoved);
-
-            if (toWhichShouldBeMoved is null)
-                throw new InvalidOperationException($"Requested group to which should be moved is not in type with id: {Id}");
-
-            foreach (var issue in toDelete.Issues)
-                issue.ChangeGroupOfIssue(toWhichShouldBeMoved);
-
-            _groups.Remove(toDelete); //TODO question: will it delete it from db, or do i need domain event which will remove it from db
-        }
-
-        public void SetIsDefaultToTrue()
-        {
-            IsDefault = true;
-            AddDomainEvent(new TypeOfGroupOfIssuesSettedToDefaultDomainEvent(this));
-        }
-
-        public void SetIsDefaultToFalse()
-        {
-            IsDefault = false;
-            AddDomainEvent(new TypeOfGroupOfIssuesUnsettedFromDefaultDomainEvent(this));
-        }
-
-        public void ArchiveAndMoveGroups(TypeOfGroupOfIssues typeWhereGroupsWillBeMoved)
+        public bool CanBeDeleted()
         {
             if (IsDefault)
-                throw new InvalidOperationException("Default type of group of issues could not be archived");
+                return false;
 
-            if (typeWhereGroupsWillBeMoved is null)
-                throw new InvalidOperationException("Requested type where groups will be moved is null");
+            if (Groups.Any())
+                return false;
 
-            IsArchived = true;
-            AddDomainEvent(new TypeOfGroupOfIssuesArchivedDomainEvent(this, typeWhereGroupsWillBeMoved)); 
-        }
-
-        public void UnArchive()
-        {
-            IsArchived = false;
+            return true;
         }
     }
 }

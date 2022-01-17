@@ -7,18 +7,16 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Issues.Domain.StatusesFlow;
+ using Issues.Domain.GroupsOfIssues.DomainEvents;
+ using Issues.Domain.StatusesFlow;
 
 namespace Issues.Domain.GroupsOfIssues
 {
-    //TODO archive and delete policy:
-    //type of group of issue could be archived if not default, so it will need default property (or not, maybe smth which will hold all default values? = nameoftable, orgid, id), and if archived all groups will be assigne to default/ chosen
-    //group of issues: could be archived, and all issues will be archived too, or all issues will be moved to another group, and group will be deleted permanently
-    //issue: could be deleted by setting isDeletedProperty, so it will never disappear from db, also could be set archived but only from groupOfIssues
-    public class GroupOfIssues : EntityBase
+    public class GroupOfIssues : EntityBase, IDeletableEntity
     {
         internal const int MinShortNameLength = 3;
         internal const int MaxShortNameLength = 5;
+        internal const int TimeInDaysKeptInThrash = 60;
         
         public GroupOfIssues(string name, string shortName, TypeOfGroupOfIssues typeOfGroupOfIssues) : this()
         {
@@ -27,7 +25,6 @@ namespace Issues.Domain.GroupsOfIssues
             ShortName = shortName;
             TypeOfGroupId = typeOfGroupOfIssues.Id;
             TypeOfGroup = typeOfGroupOfIssues;
-            IsArchived = false;
         }
 
         public GroupOfIssues()
@@ -38,34 +35,15 @@ namespace Issues.Domain.GroupsOfIssues
         public string ShortName { get; set; }
         public string TypeOfGroupId { get; set; }
         public TypeOfGroupOfIssues TypeOfGroup { get; set; } 
-        public bool IsArchived { get; set; }
 
         protected readonly List<Issue> _issues;
         public IReadOnlyCollection<Issue> Issues => _issues;
 
-        public Issue AddIssue(string name, string creatingUserId, string textContent, string typeOfIssueId, string statusId)
+        public Issue AddIssue(string name, string creatingUserId, string textContent)
         {
-            var issue = new Issue(name, statusId, creatingUserId, this, DateTimeOffset.UtcNow, typeOfIssueId, textContent);
+            var issue = new Issue(name, creatingUserId, this, DateTimeOffset.UtcNow, textContent);
             _issues.Add(issue);
             return issue;
-        }
-
-
-        public Issue AssignIssueToGroup(Issue existingIssue, string newStatusId)
-        {
-
-            if (string.IsNullOrWhiteSpace(newStatusId))
-                throw new InvalidOperationException("Given new statusId is empty string");
-
-            var issueToAdd = _issues.FirstOrDefault(a => a.Id == existingIssue.Id);
-            if (issueToAdd != null)
-                throw new InvalidOperationException(
-                    $"Requested issue to assign with id: {existingIssue.Id} is already added in group with {Id}");
-
-            existingIssue.ChangeStatus(newStatusId);
-            existingIssue.ChangeGroupOfIssue(this);
-            _issues.Add(existingIssue);
-            return existingIssue;
         }
 
         internal void ChangeTypeOfGroupOfIssues(TypeOfGroupOfIssues typeOfGroupOfIssues)
@@ -84,7 +62,13 @@ namespace Issues.Domain.GroupsOfIssues
             _issues.Remove(issueToRemove);
         }
 
-        public void Rename(string newName) => ChangeStringProperty("Name", newName);
+        public void Rename(string newName)
+        {
+            ChangeStringProperty("Name", newName);
+            //TODO group of issue name changed changes name of status flow, and checking that name is unique in db
+
+            AddDomainEvent(new GroupOfIssuesNameChangedDomainEvent(this));
+        } 
 
         public void ChangeShortName(string newShortName)
         {
@@ -92,18 +76,34 @@ namespace Issues.Domain.GroupsOfIssues
                 throw new InvalidOperationException($"Requested new short name: {newShortName} have more cases then {MaxShortNameLength} or has less cases then {MinShortNameLength}");
 
             ChangeStringProperty("ShortName", newShortName);
+            AddDomainEvent(new GroupOfIssuesShortNameChangedDomainEvent(this));
+            //TODO shortname changed event domain, and check that any of those already exist in db
         }
 
-        public void Archive()
+        #region Delete
+
+        public bool IsDeleted { get; set; }
+        public DateTimeOffset? TimeOfDeleteUtc { get; set; }
+
+        public void Delete()
         {
-            _issues.ForEach(s => s.Archive());
-            IsArchived = true;
+            IsDeleted = true;
+            TimeOfDeleteUtc = DateTimeOffset.UtcNow;
+            AddDomainEvent(new GroupOfIssuesDeletedDomainEvent(this));
         }
 
-        public void UnArchive()
+        public void UndoDelete()
         {
-            _issues.ForEach(s => s.UnArchive());
-            IsArchived = false;
+            IsDeleted = false;
+            TimeOfDeleteUtc = null;
+            AddDomainEvent(new GroupOfIssuesUndoDeletedDomainEvent(this));
         }
+
+        public bool IsInThrash() => TimeOfDeleteUtc?.AddDays(TimeInDaysKeptInThrash) > DateTimeOffset.UtcNow;
+
+
+        #endregion
+
+
     }
 }

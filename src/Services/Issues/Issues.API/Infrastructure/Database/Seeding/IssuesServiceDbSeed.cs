@@ -86,7 +86,6 @@ namespace Issues.API.Infrastructure.Database.Seeding
                         LogSeeding(logger, "StatusesInFlow");
                         dbContext.StatusesInFlow.AddRange(seedService.GetStatusesInFlowFromSeed());
                         LogSeeding(logger, "StatusesInFlowConnection");
-                        var connections = seedService.GetStatusesInFlowConnectionFromSeed();
                         dbContext.StatusInFlowConnections.AddRange(seedService.GetStatusesInFlowConnectionFromSeed());
                     }
 

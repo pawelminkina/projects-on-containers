@@ -10,28 +10,23 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlow : EntityBase
     {
-        public StatusInFlow(Status parentStatus, StatusFlow statusFlow, int indexInFlow) : this()
+        public StatusInFlow(StatusFlow statusFlow, string name) : this()
         {
             Id = Guid.NewGuid().ToString();
-            ParentStatus = parentStatus;
             StatusFlow = statusFlow;
-            IndexInFlow = indexInFlow;
-            IsArchived = false;
+            Name = name;
         }
         public StatusInFlow()
         {
             ConnectedStatuses = new List<StatusInFlowConnection>();
         }
-        public Status ParentStatus { get; set; }
-        public string ParentStatusId { get; set; }
         public StatusFlow StatusFlow { get; set; }
         public string StatusFlowId { get; set; }
-        public int IndexInFlow { get; set; }
-        public bool IsArchived { get; set; }
+        public string Name { get; set; }
 
         public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
 
-        public void AddConnectedStatus(Status status, StatusInFlowDirection direction)
+        public void AddConnectedStatus(StatusInFlow status, StatusInFlowDirection direction)
         {
             if (status == null)
                 throw new InvalidOperationException("Given status to add is null");
@@ -55,16 +50,6 @@ namespace Issues.Domain.StatusesFlow
                 ConnectedStatuses.Remove(connectionToDelete);
                 AddDomainEvent(new ConnectedStatusRemovedDomainEvent(connectionToDelete));
             }
-        }
-
-        public void Archive()
-        {
-            IsArchived = true;
-        }
-
-        public void UnArchive()
-        {
-            IsArchived = false;
         }
     }
 }

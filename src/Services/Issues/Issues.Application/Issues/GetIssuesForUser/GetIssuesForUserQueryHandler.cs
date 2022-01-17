@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Issues.Domain.Issues;
@@ -16,7 +17,8 @@ namespace Issues.Application.Issues.GetIssuesForUser
         }
         public async Task<IEnumerable<Issue>> Handle(GetIssuesForUserQuery request, CancellationToken cancellationToken)
         {
-            return await _issueRepository.GetIssueReferencesForUserAsync(request.UserId);
+            var issues = await _issueRepository.GetIssueReferencesForUserAsync(request.UserId);
+            return issues.Where(s => !s.IsDeleted && !s.GroupOfIssue.IsDeleted);
         }
     }
 }

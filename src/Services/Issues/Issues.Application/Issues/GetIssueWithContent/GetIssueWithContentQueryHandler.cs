@@ -27,9 +27,11 @@ namespace Issues.Application.Issues.GetIssueWithContent
             if (issue is null)
                 throw new InvalidOperationException($"Issue with id: {request.IssueId} was not found");
 
-            if (issue.TypeOfIssue.OrganizationId != request.OrganizationId)
+            if (issue.GroupOfIssue.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Issue with id: {request.IssueId} was found and is not accessible for organization with id: {request.OrganizationId}");
 
+            if (issue.GroupOfIssue.IsDeleted)
+                throw new InvalidOperationException($"Issue with id: {request.IssueId} is in deleted group with id: {issue.GroupOfIssue.Id}");
         }
     }
 }

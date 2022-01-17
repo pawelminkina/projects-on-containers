@@ -14,8 +14,6 @@ namespace Issues.Domain.Issues
         public IssueContent(string textContent) : this()
         {
             TextContent = textContent;
-            IsArchived = false;
-            IsDeleted = false;
         }
 
         protected IssueContent()
@@ -23,32 +21,14 @@ namespace Issues.Domain.Issues
 
         }
         public string TextContent { get; private set; }
-        public bool IsArchived { get; private set; }
-        public bool IsDeleted { get; private set; }
 
         public void ChangeTextContent(string newTextContent)
         {
             TextContent = string.IsNullOrWhiteSpace(newTextContent) ? string.Empty : newTextContent;
         }
-
-        internal void Delete()
-        {
-            IsDeleted = true;
-        }
-        public void Archive()
-        {
-            IsArchived = true;
-        }
-
-        public void UnArchive()
-        {
-            IsArchived = false;
-        }
-
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return TextContent;
-            yield return IsArchived;
         }
     }
 }

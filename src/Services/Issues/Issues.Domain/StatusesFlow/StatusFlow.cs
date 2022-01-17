@@ -12,18 +12,17 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusFlow : EntityBase, IAggregateRoot
     {
-        public StatusFlow(string name, string organizationId)
+        public StatusFlow(string name, string organizationId) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             OrganizationId = organizationId;
-            _statusesInFlow = new List<StatusInFlow>();
-            IsArchived = false;
+            IsDeleted = false;
             IsDefault = false;
         }
         public StatusFlow()
         {
-
+            _statusesInFlow = new List<StatusInFlow>();
         }
         public string Name { get; set; }
         public string OrganizationId { get; set; }
@@ -32,61 +31,44 @@ namespace Issues.Domain.StatusesFlow
         protected readonly List<StatusInFlow> _statusesInFlow;
         public IReadOnlyCollection<StatusInFlow> StatusesInFlow => _statusesInFlow;
 
-        public bool IsArchived { get; set; }
+        public bool IsDeleted { get; set; }
 
-        public StatusInFlow AddNewStatusToFlow(Status statusToAdd)
+        public StatusInFlow AddNewStatusToFlow(string statusName)
         {
-            var statusCurrentlyExistInFlow = StatusesInFlow.Any(s => s.ParentStatus.Id == statusToAdd.Id);
+            var statusCurrentlyExistInFlow = StatusesInFlow.Any(s => string.Equals(s.Name, statusName, StringComparison.CurrentCultureIgnoreCase));
             if (statusCurrentlyExistInFlow)
                 throw new InvalidOperationException(
-                    $"Requested status to add with id: {statusToAdd.Id} currently exist in flow with id: {Id}");
+                    $"Requested status to add with name: {statusName} currently exist in flow with id: {Id}");
 
-            var status = new StatusInFlow(statusToAdd, this, StatusesInFlow.Any() ? StatusesInFlow.Max(s => s.IndexInFlow): 0);
+            var status = new StatusInFlow(this, statusName);
             _statusesInFlow.Add(status);
             return status;
         }
 
-        public void DeleteStatusFromFlow(string statusId)
+        public void DeleteStatusFromFlow(string statusName)
         {
-            var statusInFlowToDelete = StatusesInFlow.FirstOrDefault(a => a.ParentStatus.Id == statusId);
+            var statusInFlowToDelete = StatusesInFlow.FirstOrDefault(a => string.Equals(a.Name, statusName, StringComparison.CurrentCultureIgnoreCase));
             if (statusInFlowToDelete == null)
                 throw new InvalidOperationException(
-                    $"Requested status to delete with id: {statusId} doesn't exist in flow with id: {Id}");
+                    $"Requested status to delete with name: {statusName} doesn't exist in flow with id: {Id}");
 
             AddDomainEvent(new StatusInFlowDeletedDomainEvent(statusInFlowToDelete));
             _statusesInFlow.Remove(statusInFlowToDelete);
         }
 
-        public void SetIsDefaultToTrue()
-        {
-            IsDefault = true;
-            AddDomainEvent(new StatusFlowSettedToDefaultDomainEvent(this));
-        }
-
-        public void SetIsDefaultToFalse()
-        {
-            IsDefault = true;
-#warning there exist a possibility, that it will don't work because context was not saved, and i will have to delete validation, or make it from application level.
-            AddDomainEvent(new StatusFlowUnsettedFromDefaultDomainEvent(this)); 
-        }
-
         public void Rename(string newName) => ChangeStringProperty("Name", newName);
 
-        public void Archive()
+        public void Delete()
         {
             if (IsDefault)
-                throw new InvalidOperationException("Default status flow could not be archived");
+                throw new InvalidOperationException("Default status flow could not be deleted");
 
-
-            _statusesInFlow.ForEach(s=>s.Archive());
-            IsArchived = true;
-            AddDomainEvent(new StatusFlowArchivedDomainEvent(this));
+            IsDeleted = true;
         }
 
-        public void UnArchive()
+        public void UnDelete()
         {
-            _statusesInFlow.ForEach(s => s.UnArchive());
-            IsArchived = false;
+            IsDeleted = false;
         }
     }
 }

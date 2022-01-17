@@ -6,7 +6,7 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlowConnection : EntityBase
     {
-        public StatusInFlowConnection(StatusInFlow statusInFlow, StatusInFlowDirection direction, Status connectedStatus)
+        public StatusInFlowConnection(StatusInFlow statusInFlow, StatusInFlowDirection direction, StatusInFlow connectedStatus)
         {
             Id = Guid.NewGuid().ToString();
             ConnectedStatus = connectedStatus;
@@ -21,7 +21,7 @@ namespace Issues.Domain.StatusesFlow
                 
         }
         public StatusInFlowDirection Direction { get; set; }
-        public Status ConnectedStatus { get; set; }
+        public StatusInFlow ConnectedStatus { get; set; }
         public StatusInFlow ParentStatusInFlow { get; set; }
         public string ParentStatusInFlowId { get; set; }
         public string ConnectedStatusId { get; set; }
