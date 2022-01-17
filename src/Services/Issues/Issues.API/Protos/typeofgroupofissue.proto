@@ -6,7 +6,7 @@ service TypeOfGroupOfIssueService{
 	rpc GetTypeOfGroupOfIssues(GetTypeOfGroupOfIssuesRequest) returns (GetTypeOfGroupOfIssuesResponse);
 	rpc CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssuesRequest) returns (CreateTypeOfGroupOfIssuesResponse);
 	rpc RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest) returns (RenameTypeOfGroupOfIssuesResponse);
-	rpc ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest) returns (ArchiveTypeOfGroupOfIssuesResponse); //reassigment in functional tests
+	rpc DeleteTypeOfGroupOfIssues(DeleteTypeOfGroupOfIssuesRequest) returns (DeleteTypeOfGroupOfIssuesResponse); //reassigment in functional tests
 }
 
 message GetTypesOfGroupsOfIssuesRequest{
@@ -14,7 +14,7 @@ message GetTypesOfGroupsOfIssuesRequest{
 }
 
 message GetTypesOfGroupsOfIssuesResponse{
-	repeated TypeOfGroupOfIssues types = 1;
+	repeated TypeOfGroupOfIssues typesOfGroups = 1;
 }
 
 message GetTypeOfGroupOfIssuesRequest{
@@ -22,7 +22,7 @@ message GetTypeOfGroupOfIssuesRequest{
 }
 
 message GetTypeOfGroupOfIssuesResponse{
-	TypeOfGroupOfIssues type = 1;
+	TypeOfGroupOfIssues typeOfGroup = 1;
 }
 
 message CreateTypeOfGroupOfIssuesRequest{
@@ -41,16 +41,15 @@ message RenameTypeOfGroupOfIssuesRequest{
 message RenameTypeOfGroupOfIssuesResponse{
 }
 
-message ArchiveTypeOfGroupOfIssuesRequest{
+message DeleteTypeOfGroupOfIssuesRequest{
 	string id = 1;
-	string typeOfGroupOfIssuesWhereGroupsWillBeMovedId = 2;
 }
 
-message ArchiveTypeOfGroupOfIssuesResponse{
+message DeleteTypeOfGroupOfIssuesResponse{
 }
+
 
 message TypeOfGroupOfIssues{
 	string id = 1;
 	string name = 2;
-	bool isArchived = 3;
 }

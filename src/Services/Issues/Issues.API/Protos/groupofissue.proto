@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/timestamp.proto";
 option csharp_namespace = "Issues.API.Protos";
 
 service GroupOfIssueService{
@@ -6,8 +7,8 @@ service GroupOfIssueService{
 	rpc GetGroupOfIssues(GetGroupOfIssuesRequest) returns (GetGroupOfIssuesResponse);
 	rpc CreateGroupOfIssues(CreateGroupOfIssuesRequest) returns (CreateGroupOfIssuesResponse);
 	rpc RenameGroupOfIssues(RenameGroupOfIssuesRequest) returns (RenameGroupOfIssuesResponse);
-	rpc ArchiveGroupOfIssues(ArchiveGroupOfIssuesRequest) returns (ArchiveGroupOfIssuesResponse);
-	//rpc ChangeGroupOfIssueType(ChangeGroupOfIssueTypeRequest) returns (ChangeGroupOfIssueTypeResponse); //TODO 
+	rpc ChangeShortNameForGroupOfIssues(ChangeShortNameForGroupOfIssuesRequest) returns (ChangeShortNameForGroupOfIssuesResponse);
+	rpc DeleteGroupOfIssues(DeleteGroupOfIssuesRequest) returns (DeleteGroupOfIssuesResponse);
 }
 
 
@@ -45,11 +46,20 @@ message RenameGroupOfIssuesResponse{
 
 }
 
-message ArchiveGroupOfIssuesRequest{
+message DeleteGroupOfIssuesRequest{
 	string id = 1;
 }
 
-message ArchiveGroupOfIssuesResponse{
+message DeleteGroupOfIssuesResponse{
+
+}
+
+message ChangeShortNameForGroupOfIssuesRequest{
+	string id = 1;
+	string newShortName = 2;
+}
+
+message ChangeShortNameForGroupOfIssuesResponse{
 
 }
 
@@ -59,5 +69,6 @@ message GroupOfIssue{
 	string name = 2;
 	string typeOfGroupId = 3;
 	string shortName = 4;
-	bool isArchived = 5;
+	bool isInThrash = 5;
+	google.protobuf.Timestamp timeOfDelete = 6;
 }

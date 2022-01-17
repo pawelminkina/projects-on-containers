@@ -33,17 +33,13 @@
     <Protobuf Include="Protos\issue.proto" GrpcServices="Both" />
     <Protobuf Include="Protos\groupofissue.proto" GrpcServices="Both" />
     <Protobuf Include="Protos\typeofgroupofissue.proto" GrpcServices="Both" />
-    <Protobuf Include="Protos\status.proto" GrpcServices="Both" />
     <Protobuf Include="Protos\statusflow.proto" GrpcServices="Both" />
-    <Protobuf Include="Protos\typeofissue.proto" GrpcServices="Both" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Protos\issue.proto" />
     <None Remove="Protos\groupofissue.proto" />
-    <None Remove="Protos\status.proto" />
     <None Remove="Protos\statusflow.proto" />
     <None Remove="Protos\typeofgroupofissue.proto" />
-    <None Remove="Protos\typeofissue.proto" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infrastructure\Validation\" />

@@ -4,8 +4,7 @@ option csharp_namespace = "Issues.API.Protos";
 service StatusFlowService{
 	rpc GetStatusFlows(GetStatusFlowsRequest) returns (GetStatusFlowsResponse);
 	rpc GetStatusFlow(GetStatusFlowRequest) returns (GetStatusFlowResponse);
-	rpc AddStatusFlow(AddStatusFlowRequest) returns (AddStatusFlowResponse);
-	rpc DeleteStatusFlow(DeleteStatusFlowsRequest) returns (DeleteStatusFlowsResponse);
+	rpc GetStatusFlowForGroupOfIssues(GetStatusFlowForGroupOfIssuesRequest) returns (GetStatusFlowForGroupOfIssuesResponse);
 	rpc RenameStatusFlow(RenameStatusFlowsRequest) returns (RenameStatusFlowsResponse);
 	rpc AddStatusToFlow(AddStatusToFlowRequest) returns (AddStatusToFlowResponse);
 	rpc DeleteStatusFromFlow(DeleteStatusFromFlowRequest) returns (DeleteStatusFromFlowResponse);
@@ -26,6 +25,14 @@ message GetStatusFlowRequest{
 }
 
 message GetStatusFlowResponse{
+	StatusFlow flow = 1;
+}
+
+message GetStatusFlowForGroupOfIssuesRequest{
+	string groupOfIssuesId = 1;
+}
+
+message GetStatusFlowForGroupOfIssuesResponse{
 	StatusFlow flow = 1;
 }
 
@@ -56,7 +63,7 @@ message RenameStatusFlowsResponse{
 
 message AddStatusToFlowRequest{
 	string flowId = 1;
-	string statusId = 2;
+	string statusName = 2;
 }
 
 message AddStatusToFlowResponse{
@@ -65,7 +72,7 @@ message AddStatusToFlowResponse{
 
 message DeleteStatusFromFlowRequest{
 	string flowId = 1;
-	string statusId = 2;
+	string statusInFlowId = 2;
 }
 
 message DeleteStatusFromFlowResponse{
@@ -74,8 +81,8 @@ message DeleteStatusFromFlowResponse{
 
 message AddConnectionToStatusInFlowRequest{
 	string flowId = 1;
-	string parentStatusId = 2;
-	string connectedStatusId = 3;
+	string parentStatusinFlowId = 2;
+	string connectedStatusInFlowId = 3;
 }
 
 message AddConnectionToStatusInFlowResponse{
@@ -84,8 +91,8 @@ message AddConnectionToStatusInFlowResponse{
 
 message RemoveConnectionFromStatusInFlowRequest{
 	string flowId = 1;
-	string parentStatusId = 2;
-	string connectedStatusId = 3;
+	string parentStatusinFlowId = 2;
+	string connectedStatusInFlowId = 3;
 }
 
 message RemoveConnectionFromStatusInFlowResponse{
@@ -99,14 +106,14 @@ message StatusFlow{
 }
 
 message StatusInFlow{
-	string parentStatusId = 1;
-	int32 indexInFLow = 2;
+	string id = 1;
+	string Name = 2;
 	repeated ConnectedStatuses connectedStatuses = 3;
 }
 
 message ConnectedStatuses{
-	string parentStatusId = 1;
-	string connectedStatusId = 2;
+	string parentStatusInFlowIdId = 1;
+	string connectedStatusInFlowId = 2;
 	enum Direction {
 		In = 0;
 		Out = 1;

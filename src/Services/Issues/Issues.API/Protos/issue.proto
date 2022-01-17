@@ -8,8 +8,8 @@ service IssueService{
 	rpc GetIssuesForUser(GetIssuesForUserRequest) returns (GetIssuesForUserResponse);
 	rpc CreateIssue(CreateIssueRequest) returns (CreateIssueResponse);
 	rpc RenameIssue(RenameIssueRequest) returns (RenameIssueResponse);
-	rpc UpdateIssueContent(UpdateIssueContentRequest) returns (UpdateIssueContentResponse);
-	rpc DeleteIssue(DeleteIssueRequest) returns (DeleteIssueResponse); //TODO
+	rpc UpdateIssueTextContent(UpdateIssueTextContentRequest) returns (UpdateIssueTextContentResponse);
+	rpc DeleteIssue(DeleteIssueRequest) returns (DeleteIssueResponse);
 }
 
 message DeleteIssueRequest{
@@ -64,26 +64,22 @@ message RenameIssueRequest{
 
 message RenameIssueResponse{}
 
-message UpdateIssueContentRequest{
+message UpdateIssueTextContentRequest{
 	string issueId = 1;
 	string textContent = 2;
 }
 
-message UpdateIssueContentResponse{}
+message UpdateIssueTextContentResponse{}
 
 
 //Models
 message IssueReference{
 	string id = 1;
 	string name = 2;
-	string statusId = 3;
-	string creatingUserId = 4;
-	google.protobuf.Timestamp timeOfCreation = 5;
-	string typeOfIssueId = 6;
-	bool IsArchived = 7;
-	string groupId = 8;
-	bool isDeleted = 9;
-	//TODO there is no groupId
+	string creatingUserId = 3;
+	google.protobuf.Timestamp timeOfCreation = 4;
+	string groupId = 5;
+	bool isDeleted = 6;
 }
 
 message IssueContent{
