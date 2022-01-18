@@ -71,8 +71,7 @@ message AddStatusToFlowResponse{
 }
 
 message DeleteStatusFromFlowRequest{
-	string flowId = 1;
-	string statusInFlowId = 2;
+	string statusInFlowId = 1;
 }
 
 message DeleteStatusFromFlowResponse{

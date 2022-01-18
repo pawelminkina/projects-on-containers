@@ -53,18 +53,6 @@ namespace Issues.API.GrpcServices
             return new GetStatusFlowResponse() {Flow = MapToGrpcFlow(flow)};
         }
 
-        public override async Task<AddStatusFlowResponse> AddStatusFlow(AddStatusFlowRequest request, ServerCallContext context)
-        {
-            var res = await _mediator.Send(new CreateFlowCommand(request.Name, context.GetOrganizationId()));
-            return new AddStatusFlowResponse() {Id = res};
-        }
-
-        public override async Task<DeleteStatusFlowsResponse> DeleteStatusFlow(DeleteStatusFlowsRequest request, ServerCallContext context)
-        {
-            await _mediator.Send(new ArchiveFlowCommand(request.Id, context.GetOrganizationId()));
-            return new DeleteStatusFlowsResponse();
-        }
-
         public override async Task<RenameStatusFlowsResponse> RenameStatusFlow(RenameStatusFlowsRequest request, ServerCallContext context)
         {
             await _mediator.Send(new RenameFlowCommand(request.Id, request.Name, context.GetOrganizationId()));
@@ -73,13 +61,13 @@ namespace Issues.API.GrpcServices
 
         public override async Task<AddStatusToFlowResponse> AddStatusToFlow(AddStatusToFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new AddStatusToFlowCommand(request.StatusId, request.FlowId, context.GetOrganizationId()));
+            await _mediator.Send(new AddStatusToFlowCommand(request.StatusName, request.FlowId, context.GetOrganizationId()));
             return new AddStatusToFlowResponse();
         }
 
         public override async Task<DeleteStatusFromFlowResponse> DeleteStatusFromFlow(DeleteStatusFromFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new DeleteStatusFromFlowCommand(request.StatusId, request.FlowId, context.GetOrganizationId()));
+            await _mediator.Send(new DeleteStatusFromFlowCommand(request.StatusInFlowId, context.GetOrganizationId()));
             return new DeleteStatusFromFlowResponse();
         }
 
@@ -93,6 +81,11 @@ namespace Issues.API.GrpcServices
         {
             await _mediator.Send(new RemoveConnectionCommand(request.FlowId, request.ParentStatusId, request.ConnectedStatusId, context.GetOrganizationId()));
             return new RemoveConnectionFromStatusInFlowResponse();
+        }
+
+        public override async Task<GetStatusFlowForGroupOfIssuesResponse> GetStatusFlowForGroupOfIssues(GetStatusFlowForGroupOfIssuesRequest request, ServerCallContext context)
+        {
+            return await base.GetStatusFlowForGroupOfIssues(request, context);
         }
 
         private StatusFlow MapToGrpcFlow(Domain.StatusesFlow.StatusFlow flow)

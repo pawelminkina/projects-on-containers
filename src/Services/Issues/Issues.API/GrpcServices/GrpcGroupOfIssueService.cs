@@ -10,6 +10,7 @@ using Issues.Application.GroupOfIssues.GetGroup;
 using Issues.Application.GroupOfIssues.GetGroupsForOrganization;
 using Issues.Application.GroupOfIssues.RenameGroup;
 using MediatR;
+using Google.Protobuf.WellKnownTypes;
 using Status = Grpc.Core.Status;
 
 namespace Issues.API.GrpcServices
@@ -22,12 +23,6 @@ namespace Issues.API.GrpcServices
         {
             _mediator = mediator;
         }
-        public override async Task<ArchiveGroupOfIssuesResponse> ArchiveGroupOfIssues(ArchiveGroupOfIssuesRequest request, ServerCallContext context)
-        {
-            await _mediator.Send(new ArchiveGroupOfIssuesCommand(request.Id, context.GetOrganizationId()));
-            return new ArchiveGroupOfIssuesResponse();
-        }
-
         public override async Task<CreateGroupOfIssuesResponse> CreateGroupOfIssues(CreateGroupOfIssuesRequest request, ServerCallContext context)
         {
             var result = await _mediator.Send(new CreateGroupOfIssuesCommand(request.TypeOfGroupId, request.Name, request.ShortName, context.GetOrganizationId()));
@@ -63,7 +58,17 @@ namespace Issues.API.GrpcServices
             return new RenameGroupOfIssuesResponse();
         }
 
+        public override async Task<ChangeShortNameForGroupOfIssuesResponse> ChangeShortNameForGroupOfIssues(ChangeShortNameForGroupOfIssuesRequest request, ServerCallContext context)
+        {
+            return await base.ChangeShortNameForGroupOfIssues(request, context);
+        }
+
+        public override async Task<DeleteGroupOfIssuesResponse> DeleteGroupOfIssues(DeleteGroupOfIssuesRequest request, ServerCallContext context)
+        {
+            return await base.DeleteGroupOfIssues(request, context);
+        }
+
         private GroupOfIssue MapToGrpcGroup(Domain.GroupsOfIssues.GroupOfIssues group) => new GroupOfIssue()
-            {Id = group.Id, Name = group.Name, TypeOfGroupId = group.TypeOfGroupId, ShortName = group.ShortName, IsArchived = group.IsArchived};
+            {Id = group.Id, Name = group.Name, TypeOfGroupId = group.TypeOfGroupId, ShortName = group.ShortName, IsInThrash = group.IsInThrash(), TimeOfDelete = group.TimeOfDeleteUtc?.ToTimestamp()};
     }
 }

@@ -6,13 +6,6 @@
 
   <ItemGroup>
     <Folder Include="TypeOfGroupOfIssues\ArchiveType\" />
-    <Folder Include="TypeOfIssues\ArchiveType\" />
-    <Folder Include="TypeOfIssues\DeleteTypeInGroup\" />
-    <Folder Include="TypeOfIssues\GetType\" />
-    <Folder Include="TypeOfIssues\GetTypes\" />
-    <Folder Include="TypeOfIssues\GetTypesForTypeInGroup\" />
-    <Folder Include="TypeOfIssues\AddTypeForGroup\" />
-    <Folder Include="TypeOfIssues\RenameType\" />
   </ItemGroup>
 
   <ItemGroup>

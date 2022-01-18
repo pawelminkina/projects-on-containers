@@ -46,13 +46,6 @@ namespace Issues.Domain.GroupsOfIssues
             return issue;
         }
 
-        internal void ChangeTypeOfGroupOfIssues(TypeOfGroupOfIssues typeOfGroupOfIssues)
-        {
-            TypeOfGroup = typeOfGroupOfIssues ?? throw new InvalidOperationException("Requested type of group of issues is null");
-            
-            TypeOfGroupId = typeOfGroupOfIssues.Id;
-        }
-
         internal void RemoveIssueFromGroup(string issueId)
         {
             var issueToRemove = _issues.FirstOrDefault(a => a.Id == issueId);
@@ -85,18 +78,20 @@ namespace Issues.Domain.GroupsOfIssues
         public bool IsDeleted { get; set; }
         public DateTimeOffset? TimeOfDeleteUtc { get; set; }
 
-        public void Delete()
+        internal void Delete()
         {
             IsDeleted = true;
             TimeOfDeleteUtc = DateTimeOffset.UtcNow;
             AddDomainEvent(new GroupOfIssuesDeletedDomainEvent(this));
+            //TODO archive status flow
         }
 
-        public void UndoDelete()
+        internal void UndoDelete()
         {
             IsDeleted = false;
             TimeOfDeleteUtc = null;
             AddDomainEvent(new GroupOfIssuesUndoDeletedDomainEvent(this));
+            //TODO undo archive status flow
         }
 
         public bool IsInThrash() => TimeOfDeleteUtc?.AddDays(TimeInDaysKeptInThrash) > DateTimeOffset.UtcNow;

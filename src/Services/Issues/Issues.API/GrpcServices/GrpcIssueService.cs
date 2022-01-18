@@ -18,12 +18,6 @@ using Issues.Application.Issues.DeleteIssue;
 
 namespace Issues.API.GrpcServices
 {
-    //TODO Proto services
-    //TODO create commands and queries with fluent validators, if validator exist add unit test for him
-    //TODO webBff
-    //TODO Acceptance tests for queries and commands
-    //TODO User service
-    //TODO Auth service
     public class GrpcIssueService : Protos.IssueService.IssueServiceBase
     {
         private readonly IMediator _mediator;
@@ -68,17 +62,15 @@ namespace Issues.API.GrpcServices
             return new RenameIssueResponse();
         }
 
-        public override async Task<UpdateIssueContentResponse> UpdateIssueContent(UpdateIssueContentRequest request, ServerCallContext context)
-        {
-            await _mediator.Send(new UpdateIssueContentCommand(request.IssueId, request.TextContent,
-                context.GetOrganizationId()));
-            return new UpdateIssueContentResponse();
-        }
-
         public override async Task<DeleteIssueResponse> DeleteIssue(DeleteIssueRequest request, ServerCallContext context)
         {
             await _mediator.Send(new DeleteIssueCommand(request.Id, context.GetOrganizationId()));
             return new DeleteIssueResponse();
+        }
+
+        public override async Task<UpdateIssueTextContentResponse> UpdateIssueTextContent(UpdateIssueTextContentRequest request, ServerCallContext context)
+        {
+            return await base.UpdateIssueTextContent(request, context);
         }
 
 
@@ -87,10 +79,7 @@ namespace Issues.API.GrpcServices
             CreatingUserId = issue.CreatingUserId,
             Id = issue.Id,
             Name = issue.Name,
-            StatusId = issue.StatusId,
             TimeOfCreation = issue.TimeOfCreation.ToTimestamp(),
-            TypeOfIssueId = issue.TypeOfIssue.Id,
-            IsArchived = issue.IsArchived,
             GroupId = issue.GroupOfIssue.Id,
             IsDeleted = issue.IsDeleted
         };

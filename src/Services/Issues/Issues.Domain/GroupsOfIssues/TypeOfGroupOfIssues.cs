@@ -58,12 +58,16 @@ namespace Issues.Domain.GroupsOfIssues
             return group;
         }
 
-        public void AddExistingGroupsOfIssues(List<GroupOfIssues> groups)
+        public void DeleteGroupOfIssues(string id)
         {
-            foreach (var group in groups)
-                group.ChangeTypeOfGroupOfIssues(this);
+            var groupToDelete = _groups.FirstOrDefault(s => s.Id == id);
+            if (groupToDelete is null)
+                throw new InvalidOperationException($"Requested group with id: {id} don't exist in type of group of issues with id: {Id}");
 
-            _groups.AddRange(groups);
+            if (groupToDelete.IsDeleted)
+                throw new InvalidOperationException("Cannot delete group which is already deleted");
+
+            groupToDelete.Delete();
         }
 
         public bool CanBeDeleted()
