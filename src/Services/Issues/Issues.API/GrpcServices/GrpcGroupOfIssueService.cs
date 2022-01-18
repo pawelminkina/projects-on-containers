@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Issues.API.Extensions;
 using Issues.API.Protos;
-using Issues.Application.GroupOfIssues.ArchiveGroup;
 using Issues.Application.GroupOfIssues.CreateGroup;
 using Issues.Application.GroupOfIssues.GetGroup;
 using Issues.Application.GroupOfIssues.GetGroupsForOrganization;
 using Issues.Application.GroupOfIssues.RenameGroup;
 using MediatR;
 using Google.Protobuf.WellKnownTypes;
+using Issues.Application.GroupOfIssues.ChangeShortNameInGroup;
+using Issues.Application.GroupOfIssues.DeleteGroup;
 using Status = Grpc.Core.Status;
 
 namespace Issues.API.GrpcServices
@@ -32,9 +33,6 @@ namespace Issues.API.GrpcServices
         public override async Task<GetGroupOfIssuesResponse> GetGroupOfIssues(GetGroupOfIssuesRequest request, ServerCallContext context)
         {
             var group = await _mediator.Send(new GetGroupOfIssuesQuery(request.Id, context.GetOrganizationId()));
-            if (group is null)
-                throw new RpcException(new Status(StatusCode.NotFound, $"Group of issues with id: {request.Id} was not found"));
-            
             return new GetGroupOfIssuesResponse() {Group = MapToGrpcGroup(group)};
         }
 
@@ -60,12 +58,14 @@ namespace Issues.API.GrpcServices
 
         public override async Task<ChangeShortNameForGroupOfIssuesResponse> ChangeShortNameForGroupOfIssues(ChangeShortNameForGroupOfIssuesRequest request, ServerCallContext context)
         {
-            return await base.ChangeShortNameForGroupOfIssues(request, context);
+            await _mediator.Send(new ChangeShortNameInGroupOfIssuesCommand(request.Id, request.NewShortName, context.GetOrganizationId()));
+            return new ChangeShortNameForGroupOfIssuesResponse();
         }
 
         public override async Task<DeleteGroupOfIssuesResponse> DeleteGroupOfIssues(DeleteGroupOfIssuesRequest request, ServerCallContext context)
         {
-            return await base.DeleteGroupOfIssues(request, context);
+            await _mediator.Send(new DeleteGroupOfIssueCommand(request.Id, context.GetOrganizationId()));
+            return new DeleteGroupOfIssuesResponse();
         }
 
         private GroupOfIssue MapToGrpcGroup(Domain.GroupsOfIssues.GroupOfIssues group) => new GroupOfIssue()

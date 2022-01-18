@@ -6,7 +6,7 @@ service TypeOfGroupOfIssueService{
 	rpc GetTypeOfGroupOfIssues(GetTypeOfGroupOfIssuesRequest) returns (GetTypeOfGroupOfIssuesResponse);
 	rpc CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssuesRequest) returns (CreateTypeOfGroupOfIssuesResponse);
 	rpc RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest) returns (RenameTypeOfGroupOfIssuesResponse);
-	rpc DeleteTypeOfGroupOfIssues(DeleteTypeOfGroupOfIssuesRequest) returns (DeleteTypeOfGroupOfIssuesResponse); //reassigment in functional tests
+	rpc DeleteTypeOfGroupOfIssues(DeleteTypeOfGroupOfIssuesRequest) returns (DeleteTypeOfGroupOfIssuesResponse); 
 }
 
 message GetTypesOfGroupsOfIssuesRequest{
