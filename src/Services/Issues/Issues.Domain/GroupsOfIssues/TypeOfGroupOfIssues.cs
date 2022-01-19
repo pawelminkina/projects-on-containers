@@ -65,7 +65,7 @@ namespace Issues.Domain.GroupsOfIssues
                 throw new InvalidOperationException($"Requested group with id: {id} don't exist in type of group of issues with id: {Id}");
 
             if (groupToDelete.IsDeleted)
-                throw new InvalidOperationException("Cannot delete group which is already deleted");
+                throw new InvalidOperationException($"Cannot delete group with id: {id} which is already deleted");
 
             groupToDelete.Delete();
         }

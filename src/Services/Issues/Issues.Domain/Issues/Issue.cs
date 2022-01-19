@@ -42,11 +42,32 @@ namespace Issues.Domain.Issues
             return Content;
         }
 
-        public void Rename(string newName) => ChangeStringProperty("Name", newName);
+        public void ChangeTextContent(string newTextContent)
+        {
+            ValidateModifyOperation();
+            Content.ChangeTextContent(newTextContent);
+        }
 
-        public void Delete()
+        public void Rename(string newName)
+        {
+            ValidateModifyOperation();
+            ChangeStringProperty("Name", newName);
+
+        }
+
+        internal void SetIsDeletedToTrue()
         {
             IsDeleted = true;
+        }
+
+        private void ValidateModifyOperation()
+        {
+            if (IsDeleted)
+                throw new InvalidOperationException($"Issue with id: {Id} is already deleted so it could not be modified");
+
+            if (GroupOfIssue.IsDeleted)
+                throw new InvalidOperationException($"Issue with id: {Id} is in group which is deleted, so it could not be modified");
+
         }
     }
 }

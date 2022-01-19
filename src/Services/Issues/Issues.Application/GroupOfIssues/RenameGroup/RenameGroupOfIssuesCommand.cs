@@ -39,9 +39,6 @@ namespace Issues.Application.GroupOfIssues.RenameGroup
             var group = await _groupRepository.GetGroupOfIssuesByIdAsync(request.GroupId);
             ValidateTypeWithRequestedParameters(group, request);
 
-            if (await _groupRepository.AnyOfGroupHasGivenNameAsync(request.NewName, request.OrganizationId))
-                throw new InvalidOperationException($"Group of issues with name: {request.NewName} already exist");
-
             group.Rename(request.NewName);
             await _unitOfWork.CommitAsync(cancellationToken);
             return Unit.Value;
@@ -55,9 +52,6 @@ namespace Issues.Application.GroupOfIssues.RenameGroup
 
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Group of issue with id: {request.GroupId} was found and is not accessible for organization with id: {request.OrganizationId}");
-
-            if (group.IsDeleted)
-                throw new InvalidOperationException($"Group of issue with id: {request.GroupId} is deleted, that's why modify operation is not possible");
         }
     }
 }

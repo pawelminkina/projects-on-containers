@@ -48,9 +48,6 @@ namespace Issues.Application.GroupOfIssues.DeleteGroup
             if (group is null)
                 throw new InvalidOperationException("Requested group was not found");
 
-            if (group.IsDeleted)
-                throw new InvalidOperationException($"Cannot delete group with id: {request.Id} which is deleted");
-
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Group of issue with id: {request.OrganizationId} was found and is not accessible for organization with id: {request.OrganizationId}");
         }

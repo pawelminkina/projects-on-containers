@@ -43,9 +43,29 @@ namespace Issues.Domain.GroupsOfIssues
 
         public Issue AddIssue(string name, string creatingUserId, string textContent)
         {
+
+            if (IsDeleted)
+                throw new InvalidOperationException($"Add issue operation failed because group of issues with Id: {Id} is deleted");
+
             var issue = new Issue(name, creatingUserId, this, DateTimeOffset.UtcNow, textContent);
             _issues.Add(issue);
             return issue;
+        }
+
+        public void DeleteIssue(string issueId)
+        {
+            var issueToRemove = _issues.FirstOrDefault(a => a.Id == issueId);
+            if (issueToRemove is null)
+                throw new InvalidOperationException($"Requested issue to remove with id: {issueId} is not added in group with {Id}");
+
+            if (IsDeleted)
+                throw new InvalidOperationException($"Delete operation failed because group of issues with Id: {Id} is deleted");
+
+            if (issueToRemove.IsDeleted)
+                throw new InvalidOperationException($"Delete operation failed because issue with Id: {Id} is already deleted");
+
+
+            issueToRemove.SetIsDeletedToTrue();
         }
 
         internal void RemoveIssueFromGroup(string issueId)
@@ -59,20 +79,25 @@ namespace Issues.Domain.GroupsOfIssues
 
         public void Rename(string newName)
         {
+            if (IsDeleted)
+                throw new InvalidOperationException($"Group of issue with id: {Id} is deleted, that's why modify operation is not possible");
+
             ChangeStringProperty("Name", newName);
-            //TODO group of issue name changed changes name of status flow, and checking that name is unique in db
 
             AddDomainEvent(new GroupOfIssuesNameChangedDomainEvent(this));
         } 
 
         public void ChangeShortName(string newShortName)
         {
+            if (IsDeleted)
+                throw new InvalidOperationException($"Cannot change short name of group with id: {Id} which is deleted");
+
             if (newShortName.Length is > MaxShortNameLength or < MinShortNameLength)
                 throw new InvalidOperationException($"Requested new short name: {newShortName} have more cases then {MaxShortNameLength} or has less cases then {MinShortNameLength}");
 
             ChangeStringProperty("ShortName", newShortName);
             AddDomainEvent(new GroupOfIssuesShortNameChangedDomainEvent(this));
-            //TODO shortname changed event domain, and check that any of those already exist in db
+            //TODO shortname changed event domain, and check that any of those already exist in db _groupOfIssuesRepository.AnyOfGroupHasGivenShortNameAsync
         }
 
         #region Delete

@@ -44,12 +44,6 @@ namespace Issues.Application.GroupOfIssues.CreateGroup
             var type = await _repository.GetTypeOfGroupOfIssuesByIdAsync(request.TypeOfGroupId);
             ValidateTypeWithRequestedParameters(type, request);
 
-            if (await _groupOfIssuesRepository.AnyOfGroupHasGivenShortNameAsync(request.ShortName, request.OrganizationId))
-                throw new InvalidOperationException($"Group of issues with short name: {request.ShortName} already exist");
-
-            if (await _groupOfIssuesRepository.AnyOfGroupHasGivenNameAsync(request.Name, request.OrganizationId))
-                throw new InvalidOperationException($"Group of issues with name: {request.Name} already exist");
-
             var group = type.AddNewGroupOfIssues(request.Name, request.ShortName);
             
             await _unitOfWork.CommitAsync(cancellationToken);

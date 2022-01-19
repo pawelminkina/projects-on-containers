@@ -22,7 +22,7 @@ namespace Issues.Domain.Issues
         }
         public string TextContent { get; private set; }
 
-        public void ChangeTextContent(string newTextContent)
+        internal void ChangeTextContent(string newTextContent)
         {
             TextContent = string.IsNullOrWhiteSpace(newTextContent) ? string.Empty : newTextContent;
         }

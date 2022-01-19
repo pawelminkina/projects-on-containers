@@ -13,6 +13,7 @@ namespace Issues.Domain.GroupsOfIssues.DomainEvents
 
         public GroupOfIssuesNameChangedDomainEvent(GroupOfIssues changedGroupOfIssues)
         {
+            //TODO group of issue name changed changes name of status flow, and checking that name is unique in db _groupRepository.AnyOfGroupHasGivenNameAsync
             ChangedGroupOfIssues = changedGroupOfIssues;
         }
     }

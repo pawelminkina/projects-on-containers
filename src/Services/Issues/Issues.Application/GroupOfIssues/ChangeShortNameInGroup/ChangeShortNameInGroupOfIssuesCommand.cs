@@ -39,9 +39,6 @@ namespace Issues.Application.GroupOfIssues.ChangeShortNameInGroup
             var requestedGroup = await _groupOfIssuesRepository.GetGroupOfIssuesByIdAsync(request.Id);
             ValidateTypeWithRequestedParameters(requestedGroup, request);
 
-            if (await _groupOfIssuesRepository.AnyOfGroupHasGivenShortNameAsync(request.NewShortName, request.OrganizationId))
-                throw new InvalidOperationException("Group with requested short name already exist");
-
             requestedGroup.ChangeShortName(requestedGroup.ShortName);
             await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -53,9 +50,6 @@ namespace Issues.Application.GroupOfIssues.ChangeShortNameInGroup
             //TODO custom exceptions which return status codes for example there 404
             if (group is null)
                 throw new InvalidOperationException("Requested group was not found");
-
-            if (group.IsDeleted)
-                throw new InvalidOperationException($"Cannot change short name of group with id: {request.Id} which is deleted");
 
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw new InvalidOperationException($"Group of issue with id: {request.OrganizationId} was found and is not accessible for organization with id: {request.OrganizationId}");
