@@ -1,5 +1,6 @@
 ﻿using Architecture.DDD;
 using System;
+using System.Linq;
 using Issues.Domain.GroupsOfIssues;
 
 namespace Issues.Domain.Issues
@@ -16,6 +17,7 @@ namespace Issues.Domain.Issues
             TimeOfCreation = timeOfCreation;
             IsDeleted = false;
             AddContent(textContent);
+            StatusInFlowId = groupOfIssue.ConnectedStatusFlow.StatusesInFlow.First(s => s.IsDefault).Id;
         }
 
         public Issue()
@@ -30,7 +32,7 @@ namespace Issues.Domain.Issues
         public string GroupOfIssueId { get; set; }
         public DateTimeOffset TimeOfCreation { get; set; }
         public bool IsDeleted { get; set; }
-
+        public string StatusInFlowId { get; set; }
         private IssueContent AddContent(string textContent)
         {
             if (Content != null)

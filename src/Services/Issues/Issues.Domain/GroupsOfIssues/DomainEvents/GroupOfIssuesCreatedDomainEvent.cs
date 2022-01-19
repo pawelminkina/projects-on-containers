@@ -10,7 +10,7 @@ namespace Issues.Domain.GroupsOfIssues.DomainEvents
     public class GroupOfIssuesCreatedDomainEvent : DomainEventBase
     {
         public GroupOfIssues Created { get; }
-
+        //TODO this event should create statusflow and assign it to group of issues
         public GroupOfIssuesCreatedDomainEvent(GroupOfIssues created)
         {
             Created = created;

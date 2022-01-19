@@ -34,7 +34,9 @@ namespace Issues.Domain.GroupsOfIssues
         public string Name { get; set; }
         public string ShortName { get; set; }
         public string TypeOfGroupId { get; set; }
-        public TypeOfGroupOfIssues TypeOfGroup { get; set; } 
+        public TypeOfGroupOfIssues TypeOfGroup { get; set; }
+        public string ConnectedStatusFlowId { get; set; }
+        public StatusFlow ConnectedStatusFlow { get; set; }
 
         protected readonly List<Issue> _issues;
         public IReadOnlyCollection<Issue> Issues => _issues;

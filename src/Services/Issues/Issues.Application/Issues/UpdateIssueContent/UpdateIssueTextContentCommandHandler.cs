@@ -7,17 +7,17 @@ using MediatR;
 
 namespace Issues.Application.Issues.UpdateIssueContent
 {
-    public class UpdateIssueContentCommandHandler : IRequestHandler<UpdateIssueContentCommand>
+    public class UpdateIssueTextContentCommandHandler : IRequestHandler<UpdateIssueTextContentCommand>
     {
         private readonly IIssueRepository _issueRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateIssueContentCommandHandler(IIssueRepository issueRepository, IUnitOfWork unitOfWork)
+        public UpdateIssueTextContentCommandHandler(IIssueRepository issueRepository, IUnitOfWork unitOfWork)
         {
             _issueRepository = issueRepository;
             _unitOfWork = unitOfWork;
         }
-        public async Task<Unit> Handle(UpdateIssueContentCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateIssueTextContentCommand request, CancellationToken cancellationToken)
         {
             var issue = await _issueRepository.GetIssueByIdAsync(request.IssueId);
             ValidateIssueWithRequestedParameters(issue, request);
@@ -28,7 +28,7 @@ namespace Issues.Application.Issues.UpdateIssueContent
             return Unit.Value;
         }
 
-        private void ValidateIssueWithRequestedParameters(Domain.Issues.Issue issue, UpdateIssueContentCommand request)
+        private void ValidateIssueWithRequestedParameters(Domain.Issues.Issue issue, UpdateIssueTextContentCommand request)
         {
             if (issue is null)
                 throw new InvalidOperationException($"Issue with id: {request.IssueId} was not found");

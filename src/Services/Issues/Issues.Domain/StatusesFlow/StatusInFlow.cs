@@ -10,7 +10,7 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlow : EntityBase
     {
-        public StatusInFlow(StatusFlow statusFlow, string name) : this()
+        public StatusInFlow(StatusFlow statusFlow, string name, bool isDefault) : this()
         {
             Id = Guid.NewGuid().ToString();
             StatusFlow = statusFlow;
@@ -23,6 +23,7 @@ namespace Issues.Domain.StatusesFlow
         public StatusFlow StatusFlow { get; set; }
         public string StatusFlowId { get; set; }
         public string Name { get; set; }
+        public bool IsDefault { get; set; }
 
         public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
 
@@ -50,6 +51,18 @@ namespace Issues.Domain.StatusesFlow
                 ConnectedStatuses.Remove(connectionToDelete);
                 AddDomainEvent(new ConnectedStatusRemovedDomainEvent(connectionToDelete));
             }
+        }
+
+        public void SetDefaultToTrue()
+        {
+            IsDefault = true;
+            AddDomainEvent(new StatusInFlowDefaultPropertyChangedToTrueDomainEvent(this));
+        }
+
+        public void SetDefaultToFalse()
+        {
+            IsDefault = false;
+            AddDomainEvent(new StatusInFlowDefaultPropertyChangedToFalseDomainEvent(this));
         }
     }
 }

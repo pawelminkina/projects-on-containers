@@ -2,9 +2,9 @@
 
 namespace Issues.Application.Issues.UpdateIssueContent
 {
-    public class UpdateIssueContentCommand : IRequest
+    public class UpdateIssueTextContentCommand : IRequest
     {
-        public UpdateIssueContentCommand(string issueId, string textContent, string organizationId)
+        public UpdateIssueTextContentCommand(string issueId, string textContent, string organizationId)
         {
             IssueId = issueId;
             TextContent = textContent;
