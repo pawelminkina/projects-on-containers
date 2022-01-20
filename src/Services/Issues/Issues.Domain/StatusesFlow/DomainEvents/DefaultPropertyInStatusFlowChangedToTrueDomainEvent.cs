@@ -10,7 +10,7 @@ namespace Issues.Domain.StatusesFlow.DomainEvents
     public class DefaultPropertyInStatusFlowChangedToTrueDomainEvent : DomainEventBase
     {
         public StatusFlow TargetedStatusFlow { get; }
-
+        //TODO check that is it the only one status flow with default property within organization
         public DefaultPropertyInStatusFlowChangedToTrueDomainEvent(StatusFlow targetedStatusFlow)
         {
             TargetedStatusFlow = targetedStatusFlow;

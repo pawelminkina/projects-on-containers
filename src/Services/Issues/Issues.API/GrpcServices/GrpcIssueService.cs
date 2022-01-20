@@ -70,7 +70,8 @@ namespace Issues.API.GrpcServices
 
         public override async Task<UpdateIssueTextContentResponse> UpdateIssueTextContent(UpdateIssueTextContentRequest request, ServerCallContext context)
         {
-            return await base.UpdateIssueTextContent(request, context);
+            await _mediator.Send(new UpdateIssueTextContentCommand(request.IssueId, request.TextContent, context.GetOrganizationId()));
+            return new UpdateIssueTextContentResponse();
         }
 
 

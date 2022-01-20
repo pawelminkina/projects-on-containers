@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Issues.API.Extensions;
 using Issues.API.Protos;
-using Issues.Application.TypeOfGroupOfIssues.ArchiveType;
 using Issues.Application.TypeOfGroupOfIssues.CreateType;
+using Issues.Application.TypeOfGroupOfIssues.DeleteType;
 using Issues.Application.TypeOfGroupOfIssues.GetType;
 using Issues.Application.TypeOfGroupOfIssues.GetTypes;
 using Issues.Application.TypeOfGroupOfIssues.RenameType;
@@ -29,7 +29,7 @@ namespace Issues.API.GrpcServices
                 return new GetTypesOfGroupsOfIssuesResponse();
 
             var resToReturn = new GetTypesOfGroupsOfIssuesResponse();
-            resToReturn.Types_.AddRange(typesOfGroupsOfIssues.Select(MapToTypeOfGroupOfIssues));
+            resToReturn.TypesOfGroups.AddRange(typesOfGroupsOfIssues.Select(MapToTypeOfGroupOfIssues));
             return resToReturn;
         }
 
@@ -39,7 +39,7 @@ namespace Issues.API.GrpcServices
             if (typeOfGroupOfIssues is null)
                 throw new RpcException(new Status(StatusCode.NotFound, $"Type of group of issues with id: {request.Id} was not found"));
 
-            return new GetTypeOfGroupOfIssuesResponse() {Type = MapToTypeOfGroupOfIssues(typeOfGroupOfIssues)};
+            return new GetTypeOfGroupOfIssuesResponse() {TypeOfGroup = MapToTypeOfGroupOfIssues(typeOfGroupOfIssues)};
         }
 
         public override async Task<CreateTypeOfGroupOfIssuesResponse> CreateTypeOfGroupOfIssues(CreateTypeOfGroupOfIssuesRequest request, ServerCallContext context)
@@ -48,19 +48,21 @@ namespace Issues.API.GrpcServices
             return new CreateTypeOfGroupOfIssuesResponse() {Id = idOfTypeOfGroupOfIssues};
         }
 
-        public override async Task<ArchiveTypeOfGroupOfIssuesResponse> ArchiveTypeOfGroupOfIssues(ArchiveTypeOfGroupOfIssuesRequest request, ServerCallContext context)
-        {
-            await _mediator.Send(new ArchiveTypeOfGroupOfIssuesCommand(request.Id, context.GetOrganizationId(), request.TypeOfGroupOfIssuesWhereGroupsWillBeMovedId));
-            return new ArchiveTypeOfGroupOfIssuesResponse();
-        }
-
         public override async Task<RenameTypeOfGroupOfIssuesResponse> RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
             await _mediator.Send(new RenameTypeOfGroupOfIssuesCommand(request.Id, context.GetOrganizationId(), request.NewName));
             return new RenameTypeOfGroupOfIssuesResponse();
         }
 
+        public override async Task<DeleteTypeOfGroupOfIssuesResponse> DeleteTypeOfGroupOfIssues(DeleteTypeOfGroupOfIssuesRequest request, ServerCallContext context)
+        {
+            await _mediator.Send(new DeleteTypeOfGroupOfIssuesCommand(request.Id, context.GetOrganizationId()));
+            return new DeleteTypeOfGroupOfIssuesResponse();
+        }
+
+
+
         private Protos.TypeOfGroupOfIssues MapToTypeOfGroupOfIssues(Domain.GroupsOfIssues.TypeOfGroupOfIssues type) =>
-            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name, IsArchived = type.IsArchived};
+            new TypeOfGroupOfIssues() {Id = type.Id, Name = type.Name};
     }
 }

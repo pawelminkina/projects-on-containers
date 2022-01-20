@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
+using Issues.Domain.StatusesFlow.DomainEvents;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] //For moq purpose 
 
@@ -23,9 +24,23 @@ namespace Issues.Domain.GroupsOfIssues
             IsDefault = false;
         }
 
+        public static TypeOfGroupOfIssues CreateDefault(string name, string organizationId)
+        {
+            var typeOfGroupOfIssues = new TypeOfGroupOfIssues()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                OrganizationId = organizationId,
+            };
+            typeOfGroupOfIssues.SetDefaultToTrue();
+            return typeOfGroupOfIssues;
+        }
+
+
         public TypeOfGroupOfIssues()
         {
             _groups = new List<GroupOfIssues>();
+            AddDomainEvent(new TypeOfGroupOfIssuesCreatedDomainEvent(this));
         }
 
         public string Name { get; set; }
@@ -39,8 +54,10 @@ namespace Issues.Domain.GroupsOfIssues
         {
             if (IsDefault)
                 throw new InvalidOperationException("You can't change name of default type of group of issues");
-            
+
             ChangeStringProperty("Name", newName);
+
+            AddDomainEvent(new TypeOfGroupOfIssuesRenamedDomainEvent(this));
         }
 
         public GroupOfIssues AddNewGroupOfIssues(string name, string shortName)
@@ -70,13 +87,27 @@ namespace Issues.Domain.GroupsOfIssues
             groupToDelete.Delete();
         }
 
-        public bool CanBeDeleted()
+        private void SetDefaultToTrue()
         {
+            IsDefault = true;
+            AddDomainEvent(new DefaultPropertyInTypeOfGroupOfIssuesChangedToTrueDomainEvent(this));
+        }
+
+        public bool CanBeDeleted(out string reason)
+        {
+            reason = string.Empty;
+            
             if (IsDefault)
+            {
+                reason = $"Type of group of issues with id: {Id} could not be deleted because it is default";
                 return false;
+            }
 
             if (Groups.Any())
+            {
+                reason = $"Type of group of issues with id: {Id} could not be deleted because it has groups assigned to it";
                 return false;
+            }
 
             return true;
         }

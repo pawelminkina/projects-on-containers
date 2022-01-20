@@ -113,7 +113,7 @@ namespace Issues.Domain.StatusesFlow
             IsDeleted = false;
         }
 
-        public void SetDefaultToTrue()
+        private void SetDefaultToTrue()
         {
             IsDefault = true;
             AddDomainEvent(new DefaultPropertyInStatusFlowChangedToTrueDomainEvent(this));
