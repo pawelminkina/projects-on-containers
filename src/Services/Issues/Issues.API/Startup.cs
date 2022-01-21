@@ -1,5 +1,4 @@
 using Issues.API.GrpcServices;
-using Issues.Application.Issues.CreateIssue;
 using Issues.Domain.Issues;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -20,11 +19,11 @@ using FluentValidation;
 using Issues.API.Infrastructure.Database.Migration;
 using Issues.API.Infrastructure.Database.Seeding;
 using Issues.API.Infrastructure.Validation;
-using Issues.Application.Services.Files;
-using Issues.Application.TypeOfGroupOfIssues.CreateType;
+using Issues.Application.Common.Services.Files;
+using Issues.Application.CQRS.Issues.Commands.CreateIssue;
+using Issues.Application.CQRS.TypeOfGroupOfIssues.Commands.CreateType;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
-using Issues.Domain.TypesOfIssues;
 using Issues.Infrastructure;
 using Issues.Infrastructure.Database;
 using Issues.Infrastructure.Processing;
@@ -62,9 +61,7 @@ namespace Issues.API
 
             services.AddScoped<IGroupOfIssuesRepository, SqlGroupOfIssuesRepository>();
             services.AddScoped<IIssueRepository, SqlIssueRepository>();
-            services.AddScoped<ITypeOfIssueRepository, SqlTypeOfIssueRepository>();
             services.AddScoped<ITypeOfGroupOfIssuesRepository, SqlGroupOfIssuesRepository>();
-            services.AddScoped<IStatusRepository, SqlStatusRepository>();
             services.AddScoped<IStatusFlowRepository, SqlStatusRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -119,9 +116,7 @@ namespace Issues.API
                 endpoints.MapGrpcService<GrpcIssueService>();
                 endpoints.MapGrpcService<GrpcGroupOfIssueService>();
                 endpoints.MapGrpcService<GrpcStatusFlowService>();
-                endpoints.MapGrpcService<GrpcStatusService>();
                 endpoints.MapGrpcService<GrpcTypeOfGroupOfIssueService>();
-                endpoints.MapGrpcService<GrpcTypeOfIssueService>();
             });
         }
     }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Issues.Infrastructure.Repositories
 {
-    public class SqlStatusRepository : IStatusRepository, IStatusFlowRepository
+    public class SqlStatusRepository : IStatusFlowRepository
     {
         private readonly IssuesServiceDbContext _dbContext;
 
@@ -17,28 +17,11 @@ namespace Issues.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<Status> AddNewStatusAsync(string name, string organizationId)
-        {
-            var status = new Status(name, organizationId);
-            await _dbContext.Statuses.AddAsync(status);
-            return status;
-        }
-
         public async Task<StatusFlow> AddNewStatusFlowAsync(string name, string organizationId)
         {
             var status = new StatusFlow(name, organizationId);
             await _dbContext.StatusFlows.AddAsync(status);
             return status;
-        }
-
-        public async Task<Status> GetStatusById(string id)
-        {
-            return await _dbContext.Statuses.FirstOrDefaultAsync(s => s.Id == id);
-        }
-
-        public async Task<IEnumerable<Status>> GetStatusesForOrganization(string organizationId)
-        {
-            return _dbContext.Statuses.Where(s => s.OrganizationId == organizationId);
         }
 
         public async Task RemoveStatusById(string id)
@@ -50,6 +33,11 @@ namespace Issues.Infrastructure.Repositories
         public async Task<StatusFlow> GetFlowById(string id)
         {
             return await GetFlowsWithInclude().FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public async Task<StatusInFlow> GetStatusInFlowById(string id)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganizationAsync(string organizationId)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Architecture.DDD;
 using CsvHelper;
 using CsvHelper.Configuration;
-using Issues.Application.Services.Files;
+using Issues.Application.Common.Services.Files;
 using Microsoft.Extensions.Logging;
 
 namespace Issues.Infrastructure.Services.Files

@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Issues.API.Extensions;
 using Issues.API.Protos;
-using Issues.Application.TypeOfGroupOfIssues.CreateType;
-using Issues.Application.TypeOfGroupOfIssues.DeleteType;
-using Issues.Application.TypeOfGroupOfIssues.GetType;
-using Issues.Application.TypeOfGroupOfIssues.GetTypes;
-using Issues.Application.TypeOfGroupOfIssues.RenameType;
+using Issues.Application.CQRS.TypeOfGroupOfIssues.Commands.CreateType;
+using Issues.Application.CQRS.TypeOfGroupOfIssues.Commands.DeleteType;
+using Issues.Application.CQRS.TypeOfGroupOfIssues.Commands.RenameType;
+using Issues.Application.CQRS.TypeOfGroupOfIssues.Queries.GetType;
+using Issues.Application.CQRS.TypeOfGroupOfIssues.Queries.GetTypes;
 using MediatR;
 using Status = Grpc.Core.Status;
 

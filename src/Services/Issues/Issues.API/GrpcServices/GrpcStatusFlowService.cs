@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Issues.API.Extensions;
 using Issues.API.Protos;
-using Issues.Application.StatusFlow.AddConnection;
-using Issues.Application.StatusFlow.AddStatusToFlow;
-using Issues.Application.StatusFlow.DeleteStatus;
-using Issues.Application.StatusFlow.GetFlow;
-using Issues.Application.StatusFlow.GetFlowsForOrganization;
-using Issues.Application.StatusFlow.RemoveConnection;
+using Issues.Application.CQRS.StatusFlow.Commands.AddConnection;
+using Issues.Application.CQRS.StatusFlow.Commands.AddStatusToFlow;
+using Issues.Application.CQRS.StatusFlow.Commands.DeleteStatus;
+using Issues.Application.CQRS.StatusFlow.Commands.RemoveConnection;
+using Issues.Application.CQRS.StatusFlow.Queries.GetFlow;
+using Issues.Application.CQRS.StatusFlow.Queries.GetFlowsForOrganization;
+using Issues.Application.CQRS.StatusFlow.Queries.GetStatusFlowForGroup;
 using Issues.Domain.StatusesFlow;
 using MediatR;
 using Status = Grpc.Core.Status;
@@ -52,7 +53,8 @@ namespace Issues.API.GrpcServices
 
         public override async Task<GetStatusFlowForGroupOfIssuesResponse> GetStatusFlowForGroupOfIssues(GetStatusFlowForGroupOfIssuesRequest request, ServerCallContext context)
         {
-            return await base.GetStatusFlowForGroupOfIssues(request, context);
+            var flow = await _mediator.Send(new GetStatusFlowForGroupOfIssuesQuery(request.GroupOfIssuesId, context.GetOrganizationId()));
+            return new GetStatusFlowForGroupOfIssuesResponse() { Flow = MapToGrpcFlow(flow) };
         }
 
         public override async Task<AddStatusToFlowResponse> AddStatusToFlow(AddStatusToFlowRequest request, ServerCallContext context)

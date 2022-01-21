@@ -6,15 +6,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Issues.API.Extensions;
-using Issues.Application.Issues.CreateIssue;
-using Issues.Application.Issues.GetIssuesForGroup;
-using Issues.Application.Issues.GetIssuesForUser;
-using Issues.Application.Issues.GetIssueWithContent;
-using Issues.Application.Issues.RenameIssue;
-using Issues.Application.Issues.UpdateIssueContent;
+using Issues.Application.CQRS.Issues.Commands.CreateIssue;
+using Issues.Application.CQRS.Issues.Commands.DeleteIssue;
+using Issues.Application.CQRS.Issues.Commands.RenameIssue;
+using Issues.Application.CQRS.Issues.Commands.UpdateIssueContent;
+using Issues.Application.CQRS.Issues.Queries.GetIssuesForGroup;
+using Issues.Application.CQRS.Issues.Queries.GetIssuesForUser;
+using Issues.Application.CQRS.Issues.Queries.GetIssueWithContent;
 using Issues.Domain.Issues;
 using MediatR;
-using Issues.Application.Issues.DeleteIssue;
 
 namespace Issues.API.GrpcServices
 {

@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Issues.API.Extensions;
 using Issues.API.Protos;
-using Issues.Application.GroupOfIssues.CreateGroup;
-using Issues.Application.GroupOfIssues.GetGroup;
-using Issues.Application.GroupOfIssues.GetGroupsForOrganization;
-using Issues.Application.GroupOfIssues.RenameGroup;
 using MediatR;
 using Google.Protobuf.WellKnownTypes;
-using Issues.Application.GroupOfIssues.ChangeShortNameInGroup;
-using Issues.Application.GroupOfIssues.DeleteGroup;
+using Issues.Application.CQRS.GroupOfIssues.Commands.ChangeShortNameInGroup;
+using Issues.Application.CQRS.GroupOfIssues.Commands.CreateGroup;
+using Issues.Application.CQRS.GroupOfIssues.Commands.DeleteGroup;
+using Issues.Application.CQRS.GroupOfIssues.Commands.RenameGroup;
+using Issues.Application.CQRS.GroupOfIssues.Queries.GetGroup;
+using Issues.Application.CQRS.GroupOfIssues.Queries.GetGroupsForOrganization;
 using Status = Grpc.Core.Status;
 
 namespace Issues.API.GrpcServices
