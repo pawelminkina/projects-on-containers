@@ -5,7 +5,6 @@ service StatusFlowService{
 	rpc GetStatusFlows(GetStatusFlowsRequest) returns (GetStatusFlowsResponse);
 	rpc GetStatusFlow(GetStatusFlowRequest) returns (GetStatusFlowResponse);
 	rpc GetStatusFlowForGroupOfIssues(GetStatusFlowForGroupOfIssuesRequest) returns (GetStatusFlowForGroupOfIssuesResponse);
-	rpc RenameStatusFlow(RenameStatusFlowsRequest) returns (RenameStatusFlowsResponse);
 	rpc AddStatusToFlow(AddStatusToFlowRequest) returns (AddStatusToFlowResponse);
 	rpc DeleteStatusFromFlow(DeleteStatusFromFlowRequest) returns (DeleteStatusFromFlowResponse);
 	rpc AddConnectionToStatusInFlow(AddConnectionToStatusInFlowRequest) returns (AddConnectionToStatusInFlowResponse);
@@ -52,15 +51,6 @@ message DeleteStatusFlowsResponse{
 
 }
 
-message RenameStatusFlowsRequest{
-	string id = 1;
-	string name = 2;
-}
-
-message RenameStatusFlowsResponse{
-
-}
-
 message AddStatusToFlowRequest{
 	string flowId = 1;
 	string statusName = 2;
@@ -79,9 +69,8 @@ message DeleteStatusFromFlowResponse{
 }
 
 message AddConnectionToStatusInFlowRequest{
-	string flowId = 1;
-	string parentStatusinFlowId = 2;
-	string connectedStatusInFlowId = 3;
+	string parentStatusinFlowId = 1;
+	string connectedStatusInFlowId = 2;
 }
 
 message AddConnectionToStatusInFlowResponse{
@@ -89,9 +78,8 @@ message AddConnectionToStatusInFlowResponse{
 }
 
 message RemoveConnectionFromStatusInFlowRequest{
-	string flowId = 1;
-	string parentStatusinFlowId = 2;
-	string connectedStatusInFlowId = 3;
+	string parentStatusinFlowId = 1;
+	string connectedStatusInFlowId = 2;
 }
 
 message RemoveConnectionFromStatusInFlowResponse{

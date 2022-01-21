@@ -10,7 +10,7 @@ namespace Issues.Infrastructure.Database.Configuration
         {
             builder.Property(d => d.Id).IsRequired().HasMaxLength(63);
             builder.Property(d => d.ParentStatusInFlowId).IsRequired().HasMaxLength(63);
-            builder.HasOne(d => d.ConnectedStatus).WithMany().HasForeignKey(s=>s.ConnectedStatusId);
+            builder.HasOne(d => d.ConnectedStatusInFlow).WithMany().HasForeignKey(s=>s.ConnectedStatusInFlowId);
         }
     }
 }

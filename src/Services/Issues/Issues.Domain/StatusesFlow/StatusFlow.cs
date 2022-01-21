@@ -66,15 +66,15 @@ namespace Issues.Domain.StatusesFlow
             return status;
         }
 
-        public void DeleteStatusFromFlow(string statusName)
+        public void DeleteStatusFromFlow(string statusInFlowId)
         {
-            var statusInFlowToDelete = StatusesInFlow.FirstOrDefault(a => string.Equals(a.Name, statusName, StringComparison.CurrentCultureIgnoreCase));
+            var statusInFlowToDelete = StatusesInFlow.FirstOrDefault(a => string.Equals(a.Id, statusInFlowId, StringComparison.CurrentCultureIgnoreCase));
             if (statusInFlowToDelete == null)
                 throw new InvalidOperationException(
-                    $"Requested status to delete with name: {statusName} doesn't exist in flow with id: {Id}");
+                    $"Requested status to delete with id: {statusInFlowId} doesn't exist in flow with id: {Id}");
 
             if (statusInFlowToDelete.IsDefault)
-                throw new InvalidOperationException($"Could not delete default status with name: {statusName}");
+                throw new InvalidOperationException($"Could not delete default status with id: {statusInFlowId}");
 
             AddDomainEvent(new StatusInFlowDeletedDomainEvent(statusInFlowToDelete));
             _statusesInFlow.Remove(statusInFlowToDelete);

@@ -5,15 +5,12 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Issues.API.Extensions;
 using Issues.API.Protos;
-using Issues.Application.StatusFlow.ArchiveFlow;
-using Issues.Application.StatusFlow.CreateFlow;
+using Issues.Application.StatusFlow.AddConnection;
+using Issues.Application.StatusFlow.AddStatusToFlow;
+using Issues.Application.StatusFlow.DeleteStatus;
 using Issues.Application.StatusFlow.GetFlow;
 using Issues.Application.StatusFlow.GetFlowsForOrganization;
-using Issues.Application.StatusFlow.RenameFlow;
-using Issues.Application.StatusInFlow.AddConnection;
-using Issues.Application.StatusInFlow.AddStatusToFlow;
-using Issues.Application.StatusInFlow.DeleteStatusFromFlow;
-using Issues.Application.StatusInFlow.RemoveConnection;
+using Issues.Application.StatusFlow.RemoveConnection;
 using Issues.Domain.StatusesFlow;
 using MediatR;
 using Status = Grpc.Core.Status;
@@ -53,15 +50,14 @@ namespace Issues.API.GrpcServices
             return new GetStatusFlowResponse() {Flow = MapToGrpcFlow(flow)};
         }
 
-        public override async Task<RenameStatusFlowsResponse> RenameStatusFlow(RenameStatusFlowsRequest request, ServerCallContext context)
+        public override async Task<GetStatusFlowForGroupOfIssuesResponse> GetStatusFlowForGroupOfIssues(GetStatusFlowForGroupOfIssuesRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new RenameFlowCommand(request.Id, request.Name, context.GetOrganizationId()));
-            return new RenameStatusFlowsResponse();
+            return await base.GetStatusFlowForGroupOfIssues(request, context);
         }
 
         public override async Task<AddStatusToFlowResponse> AddStatusToFlow(AddStatusToFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new AddStatusToFlowCommand(request.StatusName, request.FlowId, context.GetOrganizationId()));
+            await _mediator.Send(new AddStatusToFlowCommand(request.FlowId, request.StatusName, context.GetOrganizationId()));
             return new AddStatusToFlowResponse();
         }
 
@@ -73,19 +69,14 @@ namespace Issues.API.GrpcServices
 
         public override async Task<AddConnectionToStatusInFlowResponse> AddConnectionToStatusInFlow(AddConnectionToStatusInFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new AddConnectionCommand(request.ParentStatusId, request.ConnectedStatusId, request.FlowId, context.GetOrganizationId()));
+            await _mediator.Send(new AddConnectionToStatusInFlowCommand(request.ParentStatusinFlowId, request.ConnectedStatusInFlowId, context.GetOrganizationId()));
             return new AddConnectionToStatusInFlowResponse();
         }
 
         public override async Task<RemoveConnectionFromStatusInFlowResponse> RemoveConnectionFromStatusInFlow(RemoveConnectionFromStatusInFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new RemoveConnectionCommand(request.FlowId, request.ParentStatusId, request.ConnectedStatusId, context.GetOrganizationId()));
+            await _mediator.Send(new RemoveConnectionFromStatusInFlowCommand(request.ParentStatusinFlowId, request.ConnectedStatusInFlowId, context.GetOrganizationId()));
             return new RemoveConnectionFromStatusInFlowResponse();
-        }
-
-        public override async Task<GetStatusFlowForGroupOfIssuesResponse> GetStatusFlowForGroupOfIssues(GetStatusFlowForGroupOfIssuesRequest request, ServerCallContext context)
-        {
-            return await base.GetStatusFlowForGroupOfIssues(request, context);
         }
 
         private StatusFlow MapToGrpcFlow(Domain.StatusesFlow.StatusFlow flow)
@@ -104,15 +95,15 @@ namespace Issues.API.GrpcServices
         {
             var res = new StatusInFlow()
             {
-                IndexInFLow = statusInFlow.IndexInFlow,
-                ParentStatusId = statusInFlow.ParentStatusId
+                Name = statusInFlow.Name,
+                Id = statusInFlow.Id
             };
 
             if (statusInFlow.ConnectedStatuses.Any())
                 res.ConnectedStatuses.AddRange(statusInFlow.ConnectedStatuses.Select(d => new ConnectedStatuses()
                 {
-                    ConnectedStatusId = d.ConnectedStatus.Id,
-                    ParentStatusId = d.ParentStatusInFlow.ParentStatus.Id,
+                    ConnectedStatusInFlowId = d.ConnectedStatusInFlow.Id,
+                    ParentStatusInFlowIdId = d.ParentStatusInFlow.Id,
                     DirectionOfStatus = MapToProtoDirection(d.Direction)
                 }));
                 

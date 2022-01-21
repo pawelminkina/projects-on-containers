@@ -6,6 +6,7 @@ namespace Issues.Domain.StatusesFlow.DomainEvents
     {
         public StatusInFlow StatusInFlow { get; }
 
+        //TODO delete all connections in database which have this status
         public StatusInFlowDeletedDomainEvent(StatusInFlow statusInFlow)
         {
             StatusInFlow = statusInFlow;

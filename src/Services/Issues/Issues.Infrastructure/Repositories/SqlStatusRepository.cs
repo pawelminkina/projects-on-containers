@@ -60,7 +60,7 @@ namespace Issues.Infrastructure.Repositories
         private IIncludableQueryable<StatusFlow, Status> GetFlowsWithInclude() =>
 
             _dbContext.StatusFlows
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedStatus)
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedStatusInFlow)
                 .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses)
                 .Include(d => d.StatusesInFlow).ThenInclude(d => d.ParentStatus);
         

@@ -32,21 +32,27 @@ namespace Issues.Domain.StatusesFlow
             if (status == null)
                 throw new InvalidOperationException("Given status to add is null");
 
-            if (ConnectedStatuses.Any(s=> s.ConnectedStatus.Id == status.Id && s.Direction == direction))
+            if (ConnectedStatuses.Any(s=> s.ConnectedStatusInFlow.Id == status.Id && s.Direction == direction))
                 throw new InvalidOperationException(
                     $"Status with connectedStatusId: {status.Id} is already added to connected statuses where status in flow has connectedStatusId: {Id} with direction of connection: {direction.ToString()}");
+
+            if (status.StatusFlow.Id != StatusFlow.Id)
+                throw new InvalidOperationException("Given status in flow to connect is in different status flow");
 
             var connectedStatus = new StatusInFlowConnection(this, direction, status);
             ConnectedStatuses.Add(connectedStatus);
             AddDomainEvent(new ConnectedStatusAddedDomainEvent(connectedStatus));
         }
 
-        public void DeleteConnectedStatus(string connectedStatusId, params StatusInFlowDirection[] directions)
+        public void DeleteConnectedStatus(StatusInFlow status, params StatusInFlowDirection[] directions)
         {
-            foreach (var connectionToDelete in directions.Select(direction => ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatus.Id == connectedStatusId && s.Direction == direction)))
+            if (status is null)
+                throw new InvalidOperationException("Given status to delete is null");
+
+            foreach (var connectionToDelete in directions.Select(direction => ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id && s.Direction == direction)))
             {
                 if (connectionToDelete == null)
-                    throw new InvalidOperationException($"Requested status in flow to delete with connectedStatusId: {connectedStatusId} in parent {Id} doesn't exist");
+                    throw new InvalidOperationException($"Requested status in flow to delete with connectedStatusId: {status.Id} in parent {Id} doesn't exist");
 
                 ConnectedStatuses.Remove(connectionToDelete);
                 AddDomainEvent(new ConnectedStatusRemovedDomainEvent(connectionToDelete));
