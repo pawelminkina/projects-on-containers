@@ -36,7 +36,7 @@ namespace Issues.Application.DomainEvents.GroupOfIssues
             var statusNames = defaultStatusFlow.StatusesInFlow.Select(d => d.Name);
             var defaultStatusInFlowName = defaultStatusFlow.StatusesInFlow.First(d => d.IsDefault).Name;
 
-            var statusFlow = new StatusFlow(StatusFlow.GetNameWithGroupOfIssues(createdGroupOfIssues.Name), organizationId, createdGroupOfIssues, statusNames, defaultStatusInFlowName);
+            var statusFlow = new Domain.StatusesFlow.StatusFlow(Domain.StatusesFlow.StatusFlow.GetNameWithGroupOfIssues(createdGroupOfIssues.Name), organizationId, createdGroupOfIssues, statusNames, defaultStatusInFlowName);
             createdGroupOfIssues.ConnectedStatusFlowId = statusFlow.Id;
 
             await _statusFlowRepository.AddNewStatusFlowAsync(statusFlow);

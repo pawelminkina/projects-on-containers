@@ -26,7 +26,7 @@ namespace Issues.Application.DomainEvents.GroupOfIssues
             if (await _groupOfIssuesRepository.AnyOfGroupHasGivenNameAsync(changedGroupOfIssues.Name, organizationId))
                 throw new InvalidOperationException($"Group of issues with name: {changedGroupOfIssues.Name} already exist");
 
-            changedGroupOfIssues.ConnectedStatusFlow.Rename(StatusFlow.GetNameWithGroupOfIssues(changedGroupOfIssues.Name));
+            changedGroupOfIssues.ConnectedStatusFlow.Rename(Domain.StatusesFlow.StatusFlow.GetNameWithGroupOfIssues(changedGroupOfIssues.Name));
         }
     }
 }

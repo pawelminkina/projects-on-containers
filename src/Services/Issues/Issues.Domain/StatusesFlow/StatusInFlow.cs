@@ -52,7 +52,7 @@ namespace Issues.Domain.StatusesFlow
             foreach (var connectionToDelete in directions.Select(direction => ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id && s.Direction == direction)))
             {
                 if (connectionToDelete == null)
-                    throw new InvalidOperationException($"Requested status in flow to delete with connectedStatusId: {status.Id} in parent {Id} doesn't exist");
+                    continue; //already removed
 
                 ConnectedStatuses.Remove(connectionToDelete);
                 AddDomainEvent(new ConnectedStatusRemovedDomainEvent(connectionToDelete));
