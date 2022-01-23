@@ -1,7 +1,6 @@
 ﻿using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.Issues;
 using Issues.Domain.StatusesFlow;
-using Issues.Domain.TypesOfIssues;
 using Microsoft.EntityFrameworkCore;
 
 namespace Issues.Infrastructure.Database
@@ -16,12 +15,9 @@ namespace Issues.Infrastructure.Database
         public DbSet<GroupOfIssues> GroupsOfIssues { get; set; }
         public DbSet<TypeOfGroupOfIssues> TypesOfGroupsOfIssues { get; set; }
         public DbSet<Issue> Issues { get; set; }
-        public DbSet<Status> Statuses { get; set; }
         public DbSet<StatusFlow> StatusFlows { get; set; }
         public DbSet<StatusInFlow> StatusesInFlow { get; set; }
         public DbSet<StatusInFlowConnection> StatusInFlowConnections { get; set; }
-        public DbSet<TypeOfIssue> TypesOfIssues { get; set; }
-        public DbSet<TypeOfIssueInTypeOfGroup> TypesOfIssueInTypeOfGroups { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -13,10 +13,9 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
         public StatusesInFlowMap()
         {
             Map(s => s.Id).Name("Id");
-            Map(s => s.ParentStatusId).Name("ParentStatusId");
             Map(s => s.StatusFlowId).Name("StatusFlowId");
-            Map(s => s.IndexInFlow).Name("IndexInFlow");
-            Map(s => s.IsArchived).Name("IsArchived");
+            Map(s => s.Name).Name("Name");
+            Map(s => s.IsDefault).Name("IsDefault");
 
         }
     }

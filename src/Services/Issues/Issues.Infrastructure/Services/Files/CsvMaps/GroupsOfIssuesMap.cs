@@ -16,7 +16,7 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
             Map(s => s.Name).Name("Name");
             Map(s => s.ShortName).Name("ShortName");
             Map(s => s.TypeOfGroupId).Name("TypeOfGroupId");
-            Map(s => s.IsArchived).Name("IsArchived");
+            Map(s => s.IsDeleted).Name("IsDeleted");
             Map(s => s.TypeOfGroup).Ignore();
             Map(s => s.Issues).Ignore();
         }

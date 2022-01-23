@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.Issues;
 using Issues.Domain.StatusesFlow;
-using Issues.Domain.TypesOfIssues;
 using Issues.Infrastructure.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -57,24 +56,6 @@ namespace Issues.API.Infrastructure.Database.Seeding
                         dbContext.Issues.AddRange(seedService.GetIssuesFromSeed());
                     }
 
-                    if (options.CsvSeed.SeedTypesOfIssues && !dbContext.TypesOfIssues.Any())
-                    {
-                        LogSeeding(logger, "TypesOfIssues");
-                        dbContext.TypesOfIssues.AddRange(seedService.GetTypesOfIssuesFromSeed());
-                    }
-
-                    if (options.CsvSeed.SeedTypesOfIssueInTypeOfGroups && !dbContext.TypesOfIssueInTypeOfGroups.Any())
-                    {
-                        LogSeeding(logger, "TypesOfIssueInTypeOfGroups");
-                        dbContext.TypesOfIssueInTypeOfGroups.AddRange(seedService.GetTypesOfIssueInTypeOfGroupsFromSeed());
-                    }
-
-                    if (options.CsvSeed.SeedStatuses && !dbContext.Statuses.Any())
-                    {
-                        LogSeeding(logger, "Statuses");
-                        dbContext.Statuses.AddRange(seedService.GetStatusesFromSeed());
-                    }
-
                     if (options.CsvSeed.SeedStatusFlows && !dbContext.StatusFlows.Any())
                     {
                         LogSeeding(logger, "StatusFlows");
@@ -109,11 +90,8 @@ namespace Issues.API.Infrastructure.Database.Seeding
             dbContext.TypesOfGroupsOfIssues.RemoveRange(dbContext.TypesOfGroupsOfIssues);
             dbContext.GroupsOfIssues.RemoveRange(dbContext.GroupsOfIssues);
             dbContext.Issues.RemoveRange(dbContext.Issues);
-            dbContext.TypesOfIssues.RemoveRange(dbContext.TypesOfIssues);
-            dbContext.TypesOfIssueInTypeOfGroups.RemoveRange(dbContext.TypesOfIssueInTypeOfGroups);
             dbContext.StatusFlows.RemoveRange(dbContext.StatusFlows);
             dbContext.StatusesInFlow.RemoveRange(dbContext.StatusesInFlow);
-            dbContext.Statuses.RemoveRange(dbContext.Statuses);
             dbContext.SaveChanges();
 
         }

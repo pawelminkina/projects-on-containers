@@ -12,7 +12,9 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.Name).IsRequired().HasMaxLength(1023);
             builder.Property(d => d.ShortName).IsRequired().HasMaxLength(6);
             builder.Property(d => d.TypeOfGroupId).IsRequired().HasMaxLength(63);
-            builder.Property(d => d.IsArchived).IsRequired();
+            builder.Property(d => d.IsDeleted).IsRequired();
+            builder.Property(d => d.TimeOfDeleteUtc);
+            builder.HasOne(d => d.ConnectedStatusFlow).WithOne(s=>s.ConnectedGroupOfIssues).HasForeignKey<GroupOfIssues>(s=>s.ConnectedStatusFlowId);
             builder.HasMany(d => d.Issues).WithOne(s => s.GroupOfIssue).HasForeignKey(s=>s.GroupOfIssueId);
         }
     }

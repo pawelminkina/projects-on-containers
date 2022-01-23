@@ -9,10 +9,9 @@ namespace Issues.Infrastructure.Database.Configuration
         public void Configure(EntityTypeBuilder<StatusInFlow> builder)
         {
             builder.Property(d => d.Id).IsRequired().HasMaxLength(63);
-            builder.Property(d => d.IndexInFlow).IsRequired();
-            builder.Property(d => d.IsArchived).IsRequired();
+            builder.Property(d => d.IsDefault).IsRequired();
+            builder.Property(d => d.Name).IsRequired().HasMaxLength(63);
             builder.HasOne(d => d.StatusFlow).WithMany(s => s.StatusesInFlow).HasForeignKey(s=>s.StatusFlowId);
-            builder.HasOne(d => d.ParentStatus).WithMany().HasForeignKey(s => s.ParentStatusId);
             builder.HasMany(d => d.ConnectedStatuses).WithOne(d=>d.ParentStatusInFlow).HasForeignKey(s=>s.ParentStatusInFlowId);
         }
     }

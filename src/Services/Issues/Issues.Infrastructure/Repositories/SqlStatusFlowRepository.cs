@@ -9,27 +9,19 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Issues.Infrastructure.Repositories
 {
-    public class SqlStatusRepository : IStatusFlowRepository
+    public class SqlStatusFlowRepository : IStatusFlowRepository
     {
         private readonly IssuesServiceDbContext _dbContext;
 
-        public SqlStatusRepository(IssuesServiceDbContext dbContext)
+        public SqlStatusFlowRepository(IssuesServiceDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         public async Task<StatusFlow> AddNewStatusFlowAsync(string name, string organizationId)
         {
-            var status = new StatusFlow(name, organizationId);
-            await _dbContext.StatusFlows.AddAsync(status);
-            return status;
-        }
+            throw new System.NotImplementedException();
 
-        public async Task RemoveStatusById(string id)
-        {
-            var statusToRemove = await GetStatusById(id);
-            _dbContext.Statuses.Remove(statusToRemove);
         }
-
         public async Task<StatusFlow> GetFlowById(string id)
         {
             return await GetFlowsWithInclude().FirstOrDefaultAsync(s => s.Id == id);
@@ -45,12 +37,11 @@ namespace Issues.Infrastructure.Repositories
             return GetFlowsWithInclude().Where(s => s.OrganizationId == organizationId);
         }
 
-        private IIncludableQueryable<StatusFlow, Status> GetFlowsWithInclude() =>
+        private IIncludableQueryable<StatusFlow, StatusFlow> GetFlowsWithInclude() =>
 
             _dbContext.StatusFlows
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedStatusInFlow)
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses)
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ParentStatus);
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedStatusInFlow).ThenInclude(d => d.StatusFlow)
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(s=>s.ParentStatusInFlow).ThenInclude(d=>d.StatusFlow);
         
 
         public async Task RemoveStatusInFlow(string statusInFlowId)

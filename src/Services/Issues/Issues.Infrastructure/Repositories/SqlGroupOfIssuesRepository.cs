@@ -33,10 +33,29 @@ namespace Issues.Infrastructure.Repositories
             return _dbContext.TypesOfGroupsOfIssues.Include(d=>d.Groups).Where(s => s.OrganizationId == organizationId);
         }
 
-        public async Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id)
+        public async Task DeleteTypeofGroupOfIssuesAsync(string id)
         {
-            return await _dbContext.GroupsOfIssues.Include(d=>d.TypeOfGroup).Include(s => s.Issues).ThenInclude(d=>d.TypeOfIssue).FirstOrDefaultAsync(s => s.Id == id);
+            throw new NotImplementedException();
         }
 
+        public async Task<bool> AnyOfTypeOfGroupHasGivenNameAsync(string name, string organizationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id)
+        {
+            return await _dbContext.GroupsOfIssues.Include(d=>d.TypeOfGroup).Include(s => s.Issues).FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public async Task<bool> AnyOfGroupHasGivenShortNameAsync(string shortName, string organizationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> AnyOfGroupHasGivenNameAsync(string name, string organizationId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -16,7 +16,6 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
             Map(s => s.Id).Name("Id");
             Map(s => s.OrganizationId).Name("OrganizationId");
             Map(s => s.IsDefault).Name("IsDefault");
-            Map(s => s.IsArchived).Name("IsArchived");
             Map(s => s.Groups).Ignore();
         }
     }

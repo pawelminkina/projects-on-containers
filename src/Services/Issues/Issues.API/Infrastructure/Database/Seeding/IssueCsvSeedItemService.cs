@@ -2,13 +2,12 @@
 using System.IO;
 using System.Linq;
 using Architecture.DDD;
-using Issues.Application.Services.Files;
+using Grpc.Core;
+using Issues.Application.Common.Services.Files;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.Issues;
 using Issues.Domain.StatusesFlow;
-using Issues.Domain.TypesOfIssues;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
 namespace Issues.API.Infrastructure.Database.Seeding
@@ -27,15 +26,9 @@ namespace Issues.API.Infrastructure.Database.Seeding
         }
         public IEnumerable<TypeOfGroupOfIssues> GetTypeOfGroupOfIssuesFromSeed() => GetEntitiesFromFileInSetupFolder<TypeOfGroupOfIssues>("TypesOfGroupOfIssues.csv");
 
-        public IEnumerable<TypeOfIssue> GetTypesOfIssuesFromSeed() => GetEntitiesFromFileInSetupFolder<TypeOfIssue>("TypesOfIssues.csv");
-
-        public IEnumerable<Status> GetStatusesFromSeed() => GetEntitiesFromFileInSetupFolder<Status>("Statuses.csv");
-
         public IEnumerable<GroupOfIssues> GetGroupsOfIssuesFromSeed() => GetEntitiesFromFileInSetupFolder<GroupOfIssues>("GroupsOfIssues.csv");
 
         public IEnumerable<Issue> GetIssuesFromSeed() => GetEntitiesFromFileInSetupFolder<Issue>("Issues.csv");
-
-        public IEnumerable<TypeOfIssueInTypeOfGroup> GetTypesOfIssueInTypeOfGroupsFromSeed() => GetEntitiesFromFileInSetupFolder<TypeOfIssueInTypeOfGroup>("TypesOfIssueInTypeOfGroups.csv");
 
         public IEnumerable<StatusFlow> GetStatusFlowsFromSeed() => GetEntitiesFromFileInSetupFolder<StatusFlow>("StatusFlows.csv");
 
