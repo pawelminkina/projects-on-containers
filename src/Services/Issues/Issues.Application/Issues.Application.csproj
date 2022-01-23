@@ -13,4 +13,9 @@
     <ProjectReference Include="..\Issues.Domain\Issues.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DomainEvents\StatusInFlow\" />
+    <Folder Include="DomainEvents\StatusFlow\" />
+  </ItemGroup>
+
 </Project>

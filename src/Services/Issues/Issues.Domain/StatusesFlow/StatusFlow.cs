@@ -127,5 +127,7 @@ namespace Issues.Domain.StatusesFlow
 
             throw new InvalidOperationException("Given status name list to create status flow is not unique");
         }
+
+        public static string GetNameWithGroupOfIssues(string groupOfIssuesName) => new StringBuilder("Status flow for: ").Append(groupOfIssuesName).ToString();
     }
 }

@@ -10,12 +10,12 @@ namespace Issues.Domain.GroupsOfIssues.DomainEvents
 {
     public class TypeOfGroupOfIssuesRenamedDomainEvent : DomainEventBase
     {
-        public TypeOfGroupOfIssues CreatedTypeOfGroupOfIssues { get; }
+        public TypeOfGroupOfIssues ChangedTypeOfGroupOfIssues { get; }
 
         //TODO check that name of type of group of issues is unique within organization
-        public TypeOfGroupOfIssuesRenamedDomainEvent(TypeOfGroupOfIssues createdTypeOfGroupOfIssues)
+        public TypeOfGroupOfIssuesRenamedDomainEvent(TypeOfGroupOfIssues changedTypeOfGroupOfIssues)
         {
-            CreatedTypeOfGroupOfIssues = createdTypeOfGroupOfIssues;
+            ChangedTypeOfGroupOfIssues = changedTypeOfGroupOfIssues;
         }
     }
 }

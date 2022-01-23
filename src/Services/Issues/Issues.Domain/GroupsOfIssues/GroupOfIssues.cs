@@ -110,7 +110,6 @@ namespace Issues.Domain.GroupsOfIssues
             IsDeleted = true;
             TimeOfDeleteUtc = DateTimeOffset.UtcNow;
             AddDomainEvent(new GroupOfIssuesDeletedDomainEvent(this));
-            //TODO archive status flow
         }
 
         internal void UndoDelete()
@@ -118,7 +117,6 @@ namespace Issues.Domain.GroupsOfIssues
             IsDeleted = false;
             TimeOfDeleteUtc = null;
             AddDomainEvent(new GroupOfIssuesUndoDeletedDomainEvent(this));
-            //TODO undo archive status flow
         }
 
         public bool IsInThrash() => TimeOfDeleteUtc?.AddDays(TimeInDaysKeptInThrash) > DateTimeOffset.UtcNow;

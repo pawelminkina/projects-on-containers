@@ -17,7 +17,7 @@ namespace Issues.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<StatusFlow> AddNewStatusFlowAsync(string name, string organizationId)
+        public async Task<StatusFlow> AddNewStatusFlowAsync(StatusFlow statusFlow)
         {
             throw new System.NotImplementedException();
 
@@ -35,6 +35,11 @@ namespace Issues.Infrastructure.Repositories
         public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganizationAsync(string organizationId)
         {
             return GetFlowsWithInclude().Where(s => s.OrganizationId == organizationId);
+        }
+
+        public async Task<StatusFlow> GetDefaultStatusFlowAsync(string organizationId)
+        {
+            throw new System.NotImplementedException();
         }
 
         private IIncludableQueryable<StatusFlow, StatusFlow> GetFlowsWithInclude() =>
