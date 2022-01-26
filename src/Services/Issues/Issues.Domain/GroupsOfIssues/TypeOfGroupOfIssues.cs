@@ -38,18 +38,24 @@ namespace Issues.Domain.GroupsOfIssues
 
         internal static TypeOfGroupOfIssues CreateWholeObject(string id, string name, string organizationId, bool isDefault)
         {
-            return null;
+            return new TypeOfGroupOfIssues()
+            {
+                Id = id,
+                IsDefault = isDefault,
+                Name = name,
+                OrganizationId = organizationId
+            };
         }
 
-        public TypeOfGroupOfIssues()
+        protected TypeOfGroupOfIssues()
         {
             _groups = new List<GroupOfIssues>();
             AddDomainEvent(new TypeOfGroupOfIssuesCreatedDomainEvent(this));
         }
 
-        public string Name { get; set; }
-        public string OrganizationId { get; set; }
-        public bool IsDefault { get; set; }
+        public string Name { get; protected set; }
+        public string OrganizationId { get; protected set; }
+        public bool IsDefault { get; protected set; }
 
         protected readonly List<GroupOfIssues> _groups;
         public IReadOnlyCollection<GroupOfIssues> Groups => _groups;

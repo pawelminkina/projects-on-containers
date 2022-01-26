@@ -12,10 +12,6 @@ using Issues.Domain.StatusesFlow.DomainEvents;
 
 namespace Issues.Domain.StatusesFlow
 {
-    //TODO factory w domain, które ma dostęp do internal ctorów w każdym entity, createwholeobject podajać wszystkie propsy
-    //samo factory ma własciwosc is seeding, zmianiane metodą, w metodzie sprawdzic kto ją wywołuje
-    //jeżeli jest to ktoś inny niż klasa seedera rzucić exception
-    //w kadzej metodzie create wholeobject przekazuje sie wszystkie parametry do encji
     public class StatusFlow : EntityBase, IAggregateRoot
     {
         public StatusFlow(string name, string organizationId, GroupOfIssues connectedGroupOfIssues, IEnumerable<string> statusInFlowNames, string nameOfDefaultStatus) : this()
@@ -26,7 +22,6 @@ namespace Issues.Domain.StatusesFlow
             IsDeleted = false;
             IsDefault = false;
             ConnectedGroupOfIssues = connectedGroupOfIssues;
-            ConnectedGroupOfIssuesId = connectedGroupOfIssues.Id;
             AddDefaultStatusesToFlow(statusInFlowNames, nameOfDefaultStatus);
         }
 
@@ -48,21 +43,22 @@ namespace Issues.Domain.StatusesFlow
             return null;
         }
 
-        public StatusFlow()
+        protected StatusFlow()
         {
             _statusesInFlow = new List<StatusInFlow>();
         }
 
-        public string Name { get; set; }
-        public string OrganizationId { get; set; }
-        public bool IsDefault { get; set; }
-        public string ConnectedGroupOfIssuesId { get; set; }
-        public GroupOfIssues ConnectedGroupOfIssues { get; set; }
+        public string Name { get; protected set; }
+        public string OrganizationId { get; protected set; }
+        public bool IsDefault { get; protected set; }
+        
+        private string _connectedGroupOfIssuesId;
+        public GroupOfIssues ConnectedGroupOfIssues { get; protected set; }
 
         protected List<StatusInFlow> _statusesInFlow;
         public IReadOnlyCollection<StatusInFlow> StatusesInFlow => _statusesInFlow;
 
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; protected set; }
 
         public StatusInFlow AddNewStatusToFlow(string statusName)
         {

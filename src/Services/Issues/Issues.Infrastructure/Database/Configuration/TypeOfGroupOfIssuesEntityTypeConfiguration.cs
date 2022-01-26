@@ -12,7 +12,7 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.Name).IsRequired().HasMaxLength(1023);
             builder.Property(d => d.OrganizationId).IsRequired().HasMaxLength(63);
             builder.Property(d => d.IsDefault).IsRequired();
-            builder.HasMany(d => d.Groups).WithOne(d => d.TypeOfGroup).HasForeignKey(s=>s.TypeOfGroupId);
+            builder.HasMany(d => d.Groups).WithOne(d => d.TypeOfGroup).HasForeignKey("_typeOfGroupId");
         }
     }
 }

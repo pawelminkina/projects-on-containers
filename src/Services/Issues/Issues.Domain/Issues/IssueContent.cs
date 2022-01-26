@@ -11,7 +11,7 @@ namespace Issues.Domain.Issues
     public class IssueContent : ValueObjectBase
     {
 
-        internal IssueContent(string textContent) : this()
+        public IssueContent(string textContent) : this()
         {
             TextContent = textContent;
         }

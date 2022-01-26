@@ -2,25 +2,27 @@
 using System;
 using System.Linq;
 using Issues.Domain.GroupsOfIssues;
+using Issues.Domain.StatusesFlow;
 
 namespace Issues.Domain.Issues
 {
     public class Issue : EntityBase
     {
-        public Issue(string name, string creatingUserId, GroupOfIssues groupOfIssue, DateTimeOffset timeOfCreation, string textContent) : this()
+        internal Issue(string name, string creatingUserId, GroupOfIssues groupOfIssue, DateTimeOffset timeOfCreation, string textContent) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             CreatingUserId = creatingUserId;
             GroupOfIssue = groupOfIssue;
-            GroupOfIssueId = groupOfIssue.Id;
+            _groupOfIssueId = groupOfIssue.Id;
             TimeOfCreation = timeOfCreation;
             IsDeleted = false;
             AddContent(textContent);
-            StatusInFlowId = groupOfIssue.ConnectedStatusFlow.StatusesInFlow.First(s => s.IsDefault).Id;
+            _statusInFlowId = groupOfIssue.ConnectedStatusFlow.StatusesInFlow.First(s => s.IsDefault).Id;
+            StatusInFlow = groupOfIssue.ConnectedStatusFlow.StatusesInFlow.First(s => s.IsDefault);
         }
 
-        public Issue()
+        protected Issue()
         {
 
         }
@@ -30,14 +32,17 @@ namespace Issues.Domain.Issues
             return null;
         }
 
-        public string Name { get; set; }
-        public string CreatingUserId { get; set; }
-        public IssueContent Content { get; set; }
-        public GroupOfIssues GroupOfIssue { get; set; }
-        public string GroupOfIssueId { get; set; }
-        public DateTimeOffset TimeOfCreation { get; set; }
-        public bool IsDeleted { get; set; }
-        public string StatusInFlowId { get; set; }
+        public string Name { get; protected set; }
+        public string CreatingUserId { get; protected set; }
+        public IssueContent Content { get; protected set; }
+
+        private string _groupOfIssueId;
+        public GroupOfIssues GroupOfIssue { get; protected set; }
+        public DateTimeOffset TimeOfCreation { get; protected set; }
+        public bool IsDeleted { get; protected set; }
+
+        private string _statusInFlowId;
+        public StatusInFlow StatusInFlow { get; protected set; }
         private IssueContent AddContent(string textContent)
         {
             if (Content != null)

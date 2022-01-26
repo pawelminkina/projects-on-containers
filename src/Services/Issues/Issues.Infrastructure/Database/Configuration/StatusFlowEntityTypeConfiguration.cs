@@ -13,7 +13,8 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.OrganizationId).IsRequired().HasMaxLength(63);
             builder.Property(d => d.IsDeleted).IsRequired();
             builder.Property(d => d.IsDefault).IsRequired();
-            builder.Property(d => d.ConnectedGroupOfIssuesId);
+            builder.Property<string>("_connectedGroupOfIssuesId").IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field).HasMaxLength(63);
+            builder.HasOne(d=>d.ConnectedGroupOfIssues).WithOne(s=>s.ConnectedStatusFlow).HasForeignKey("_connectedGroupOfIssuesId");
             builder.HasMany(d => d.StatusesInFlow).WithOne(s => s.StatusFlow);
         }
     }

@@ -18,16 +18,15 @@ namespace Issues.Domain.GroupsOfIssues
         internal const int MaxShortNameLength = 5;
         internal const int TimeInDaysKeptInThrash = 60;
         
-        public GroupOfIssues(string name, string shortName, TypeOfGroupOfIssues typeOfGroupOfIssues) : this()
+        internal GroupOfIssues(string name, string shortName, TypeOfGroupOfIssues typeOfGroupOfIssues) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             ShortName = shortName;
-            TypeOfGroupId = typeOfGroupOfIssues.Id;
             TypeOfGroup = typeOfGroupOfIssues;
         }
 
-        public GroupOfIssues()
+        protected GroupOfIssues()
         {
             _issues = new List<Issue>();
         }
@@ -36,12 +35,14 @@ namespace Issues.Domain.GroupsOfIssues
         {
             return null;
         }
-        public string Name { get; set; }
-        public string ShortName { get; set; }
-        public string TypeOfGroupId { get; set; }
-        public TypeOfGroupOfIssues TypeOfGroup { get; set; }
-        public string ConnectedStatusFlowId { get; set; }
-        public StatusFlow ConnectedStatusFlow { get; set; }
+        public string Name { get; protected set; }
+        public string ShortName { get; protected set; }
+
+        private string _typeOfGroupId;
+        public TypeOfGroupOfIssues TypeOfGroup { get; protected set; }
+        
+        private string _connectedStatusFlowId;
+        public StatusFlow ConnectedStatusFlow { get; protected set; }
 
         protected readonly List<Issue> _issues;
         public IReadOnlyCollection<Issue> Issues => _issues;
@@ -107,8 +108,8 @@ namespace Issues.Domain.GroupsOfIssues
 
         #region Delete
 
-        public bool IsDeleted { get; set; }
-        public DateTimeOffset? TimeOfDeleteUtc { get; set; }
+        public bool IsDeleted { get; protected set; }
+        public DateTimeOffset? TimeOfDeleteUtc { get; protected set; }
 
         internal void Delete()
         {

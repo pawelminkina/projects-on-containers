@@ -45,7 +45,6 @@ namespace Issues.Application.CQRS.GroupOfIssues.Commands.CreateGroup
             ValidateTypeWithRequestedParameters(type, request);
 
             var group = type.AddNewGroupOfIssues(request.Name, request.ShortName);
-            
             await _unitOfWork.CommitAsync(cancellationToken);
             
             return group.Id;

@@ -11,8 +11,9 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.Id).IsRequired().HasMaxLength(63);
             builder.Property(d => d.IsDefault).IsRequired();
             builder.Property(d => d.Name).IsRequired().HasMaxLength(63);
-            builder.HasOne(d => d.StatusFlow).WithMany(s => s.StatusesInFlow).HasForeignKey(s=>s.StatusFlowId);
-            builder.HasMany(d => d.ConnectedStatuses).WithOne(d=>d.ParentStatusInFlow).HasForeignKey(s=>s.ParentStatusInFlowId);
+            builder.Property<string>("_statusFlowId").IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field).HasMaxLength(63);
+            builder.HasOne(d => d.StatusFlow).WithMany(s => s.StatusesInFlow).HasForeignKey("_statusFlowId");
+            builder.HasMany(d => d.ConnectedStatuses).WithOne(d=>d.ParentStatusInFlow).HasForeignKey("_parentStatusInFlowId");
         }
     }
 }

@@ -10,13 +10,14 @@ namespace Issues.Domain.StatusesFlow
 {
     public class StatusInFlow : EntityBase
     {
-        public StatusInFlow(StatusFlow statusFlow, string name, bool isDefault) : this()
+        internal StatusInFlow(StatusFlow statusFlow, string name, bool isDefault) : this()
         {
             Id = Guid.NewGuid().ToString();
             StatusFlow = statusFlow;
             Name = name;
+            IsDefault = isDefault;
         }
-        public StatusInFlow()
+        protected StatusInFlow()
         {
             ConnectedStatuses = new List<StatusInFlowConnection>();
         }
@@ -26,10 +27,10 @@ namespace Issues.Domain.StatusesFlow
             return null;
         }
 
-        public StatusFlow StatusFlow { get; set; }
-        public string StatusFlowId { get; set; }
-        public string Name { get; set; }
-        public bool IsDefault { get; set; }
+        public StatusFlow StatusFlow { get; protected set; }
+        private string _statusFlowId;
+        public string Name { get; protected set; }
+        public bool IsDefault { get; protected set; }
 
         public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
 
