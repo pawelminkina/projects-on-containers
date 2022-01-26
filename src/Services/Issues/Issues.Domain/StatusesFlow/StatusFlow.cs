@@ -12,6 +12,10 @@ using Issues.Domain.StatusesFlow.DomainEvents;
 
 namespace Issues.Domain.StatusesFlow
 {
+    //TODO factory w domain, które ma dostęp do internal ctorów w każdym entity, createwholeobject podajać wszystkie propsy
+    //samo factory ma własciwosc is seeding, zmianiane metodą, w metodzie sprawdzic kto ją wywołuje
+    //jeżeli jest to ktoś inny niż klasa seedera rzucić exception
+    //w kadzej metodzie create wholeobject przekazuje sie wszystkie parametry do encji
     public class StatusFlow : EntityBase, IAggregateRoot
     {
         public StatusFlow(string name, string organizationId, GroupOfIssues connectedGroupOfIssues, IEnumerable<string> statusInFlowNames, string nameOfDefaultStatus) : this()
@@ -39,10 +43,16 @@ namespace Issues.Domain.StatusesFlow
             return statusFlow;
         }
 
+        internal static StatusFlow CreateWholeObject(string id, string name, string organizationId, string connectedGroupOfIssuesId, bool isDefault, bool isDeleted)
+        {
+            return null;
+        }
+
         public StatusFlow()
         {
             _statusesInFlow = new List<StatusInFlow>();
         }
+
         public string Name { get; set; }
         public string OrganizationId { get; set; }
         public bool IsDefault { get; set; }

@@ -36,6 +36,10 @@ namespace Issues.Domain.GroupsOfIssues
             return typeOfGroupOfIssues;
         }
 
+        internal static TypeOfGroupOfIssues CreateWholeObject(string id, string name, string organizationId, bool isDefault)
+        {
+            return null;
+        }
 
         public TypeOfGroupOfIssues()
         {

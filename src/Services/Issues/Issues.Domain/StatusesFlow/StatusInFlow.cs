@@ -20,6 +20,12 @@ namespace Issues.Domain.StatusesFlow
         {
             ConnectedStatuses = new List<StatusInFlowConnection>();
         }
+
+        internal static StatusInFlow CreateWholeObject(string id, string statusFlowId, string name, string isDefault)
+        {
+            return null;
+        }
+
         public StatusFlow StatusFlow { get; set; }
         public string StatusFlowId { get; set; }
         public string Name { get; set; }

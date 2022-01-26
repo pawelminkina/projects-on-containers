@@ -31,6 +31,11 @@ namespace Issues.Domain.GroupsOfIssues
         {
             _issues = new List<Issue>();
         }
+
+        internal static GroupOfIssues CreateWholeObject(string id, string name, string shortName, string typeOfGroupId, string connectedStatusFlowId, bool isDeleted, DateTimeOffset? timeOfDelete)
+        {
+            return null;
+        }
         public string Name { get; set; }
         public string ShortName { get; set; }
         public string TypeOfGroupId { get; set; }

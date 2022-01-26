@@ -20,6 +20,11 @@ namespace Issues.Domain.StatusesFlow
         {
                 
         }
+
+        internal static StatusInFlowConnection CreateWholeObject(string id, string parentId, string connectedId, StatusInFlowDirection direction)
+        {
+            return null;
+        }
         public StatusInFlowDirection Direction { get; set; }
         public StatusInFlow ConnectedStatusInFlow { get; set; }
         public StatusInFlow ParentStatusInFlow { get; set; }
