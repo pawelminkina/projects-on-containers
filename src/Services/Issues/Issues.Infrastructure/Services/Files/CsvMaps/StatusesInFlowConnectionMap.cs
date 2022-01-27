@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
+using Issues.Application.Common.Models.Files.Csv;
 using Issues.Domain.StatusesFlow;
 using Issues.Infrastructure.Services.Files.CsvMaps.TypeConverters;
 
 namespace Issues.Infrastructure.Services.Files.CsvMaps
 {
-    public class StatusesInFlowConnectionMap : ClassMap<StatusInFlowConnection>
+    public class StatusesInFlowConnectionMap : ClassMap<StatusInFlowConnectionCsvDto>
     {
         public StatusesInFlowConnectionMap()
         {
-            Map(s => s.ConnectedStatusInFlow).Ignore();
-            Map(s => s.ParentStatusInFlow).Ignore();
             Map(s => s.ParentStatusInFlowId).Name("ParentStatusInFlowId");
             Map(s => s.ConnectedStatusInFlowId).Name("ConnectedStatusInFlowId");
             Map(s => s.Id).Name("Id");

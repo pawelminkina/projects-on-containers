@@ -22,9 +22,15 @@ namespace Issues.Domain.StatusesFlow
             ConnectedStatuses = new List<StatusInFlowConnection>();
         }
 
-        internal static StatusInFlow CreateWholeObject(string id, string statusFlowId, string name, string isDefault)
+        internal static StatusInFlow CreateWholeObject(string id, string statusFlowId, string name, bool isDefault)
         {
-            return null;
+            return new StatusInFlow()
+            {
+                Id = id,
+                _statusFlowId = statusFlowId,
+                Name = name,
+                IsDefault = isDefault
+            };
         }
 
         public StatusFlow StatusFlow { get; protected set; }

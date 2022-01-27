@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
+using Issues.Application.Common.Models.Files.Csv;
 using Issues.Domain.GroupsOfIssues;
 
 namespace Issues.Infrastructure.Services.Files.CsvMaps
 {
-    public class GroupsOfIssuesMap : ClassMap<GroupOfIssues>
+    public class GroupsOfIssuesMap : ClassMap<GroupOfIssuesCvsDto>
     {
         public GroupsOfIssuesMap()
         {
@@ -16,9 +17,9 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
             Map(s => s.Name).Name("Name");
             Map(s => s.ShortName).Name("ShortName");
             Map(s => s.TypeOfGroupId).Name("TypeOfGroupId");
+            Map(s => s.ConnectedStatusFlowId).Name("ConnectedStatusFlowId");
             Map(s => s.IsDeleted).Name("IsDeleted");
-            Map(s => s.TypeOfGroup).Ignore();
-            Map(s => s.Issues).Ignore();
+            Map(s => s.TimeOfDeleteUtc).Name("TimeOfDeleteUtc");
         }
     }
 }

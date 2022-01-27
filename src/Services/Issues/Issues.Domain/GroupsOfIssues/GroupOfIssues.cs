@@ -33,7 +33,16 @@ namespace Issues.Domain.GroupsOfIssues
 
         internal static GroupOfIssues CreateWholeObject(string id, string name, string shortName, string typeOfGroupId, string connectedStatusFlowId, bool isDeleted, DateTimeOffset? timeOfDelete)
         {
-            return null;
+            return new GroupOfIssues()
+            {
+                Id = id,
+                _connectedStatusFlowId = connectedStatusFlowId,
+                _typeOfGroupId = typeOfGroupId,
+                IsDeleted = isDeleted,
+                Name = name,
+                ShortName = shortName,
+                TimeOfDeleteUtc = timeOfDelete
+            };
         }
         public string Name { get; protected set; }
         public string ShortName { get; protected set; }

@@ -40,7 +40,15 @@ namespace Issues.Domain.StatusesFlow
 
         internal static StatusFlow CreateWholeObject(string id, string name, string organizationId, string connectedGroupOfIssuesId, bool isDefault, bool isDeleted)
         {
-            return null;
+            return new StatusFlow()
+            {
+                Id = id,
+                Name = name,
+                OrganizationId = organizationId,
+                _connectedGroupOfIssuesId = connectedGroupOfIssuesId,
+                IsDeleted = isDeleted,
+                IsDefault = isDefault
+            };
         }
 
         protected StatusFlow()

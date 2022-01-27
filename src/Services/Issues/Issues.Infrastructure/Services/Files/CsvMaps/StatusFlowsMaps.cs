@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
+using Issues.Application.Common.Models.Files.Csv;
 using Issues.Domain.StatusesFlow;
 
 namespace Issues.Infrastructure.Services.Files.CsvMaps
 {
-    public class StatusFlowsMaps : ClassMap<StatusFlow>
+    public class StatusFlowsMaps : ClassMap<StatusFlowCsvDto>
     {
         public StatusFlowsMaps()
         {
@@ -17,7 +18,6 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
             Map(s => s.OrganizationId).Name("OrganizationId");
             Map(s => s.IsDeleted).Name("IsDeleted");
             Map(s => s.IsDefault).Name("IsDefault");
-            Map(s => s.StatusesInFlow).Ignore();
             Map(s => s.ConnectedGroupOfIssuesId).Name("ConnectedGroupOfIssuesId");
         }
     }

@@ -29,7 +29,17 @@ namespace Issues.Domain.Issues
 
         internal static Issue CreateWholeObject(string id, string name, string creatingUserId, string groupOfIssueId, DateTimeOffset timeOfCreation, string textContent, bool isDeleted, string statusInFlowId)
         {
-            return null;
+            return new Issue()
+            {
+                Id = id,
+                Name = name,
+                CreatingUserId = creatingUserId,
+                _groupOfIssueId = groupOfIssueId,
+                TimeOfCreation = timeOfCreation,
+                IsDeleted = isDeleted,
+                _statusInFlowId = statusInFlowId,
+                Content = new IssueContent(textContent)
+            };
         }
 
         public string Name { get; protected set; }

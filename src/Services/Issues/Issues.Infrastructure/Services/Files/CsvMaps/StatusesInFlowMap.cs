@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration;
+using Issues.Application.Common.Models.Files.Csv;
 using Issues.Domain.StatusesFlow;
 
 namespace Issues.Infrastructure.Services.Files.CsvMaps
 {
-    public class StatusesInFlowMap : ClassMap<StatusInFlow>
+    public class StatusesInFlowMap : ClassMap<StatusInFlowCsvDto>
     {
         public StatusesInFlowMap()
         {

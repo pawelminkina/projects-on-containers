@@ -26,7 +26,7 @@ namespace Issues.Domain
         public static StatusFlow CreateStatusFlow(string id, string name, string organizationId, string connectedGroupOfIssuesId, bool isDefault, bool isDeleted) =>
             StatusFlow.CreateWholeObject(id,name,organizationId,connectedGroupOfIssuesId,isDefault,isDeleted);
 
-        public static StatusInFlow CreateStatusInFlow(string id, string statusFlowId, string name, string isDefault) =>
+        public static StatusInFlow CreateStatusInFlow(string id, string statusFlowId, string name, bool isDefault) =>
             StatusInFlow.CreateWholeObject(id,statusFlowId,name,isDefault);
 
         public static StatusInFlowConnection CreateStatusInFlowConnection(string id, string parentId, string connectedId, StatusInFlowDirection direction) =>
