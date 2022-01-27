@@ -35,7 +35,7 @@ namespace Issues.AcceptanceTests.Services
             //WHEN types are retrieved from server
             var request = new GetTypesOfGroupsOfIssuesRequest();
             var response = await _grpcClient.GetTypesOfGroupsOfIssuesAsync(request);
-            var actual = response.Types_;
+            var actual = response.TypesOfGroups;
 
             //THEN check equality of expected and actual items
             actual.Should().BeEquivalentTo(expectedTypesOfGroupOfIssues);
@@ -44,8 +44,8 @@ namespace Issues.AcceptanceTests.Services
 
             IEnumerable<TypeOfGroupOfIssues> GetExpectedTypesOfGroupOfIssues() => new[]
             {
-                new TypeOfGroupOfIssues() {Id = "001-001", IsArchived = false, Name = "Type Of Group Of Issues 1"},
-                new TypeOfGroupOfIssues() {Id = "001-002", IsArchived = false, Name = "Type Of Group Of Issues 2"},
+                new TypeOfGroupOfIssues() {Id = "001-001", Name = "Type Of Group Of Issues 1"},
+                new TypeOfGroupOfIssues() {Id = "001-002", Name = "Type Of Group Of Issues 2"},
             };
 
             #endregion
@@ -60,7 +60,7 @@ namespace Issues.AcceptanceTests.Services
             //WHEN item is retrieved from server
             var request = new GetTypeOfGroupOfIssuesRequest() {Id = expected.Id};
             var response = await _grpcClient.GetTypeOfGroupOfIssuesAsync(request);
-            var actual = response.Type;
+            var actual = response.TypeOfGroup;
 
             //THEN check equality of expected and actual item
             actual.Should().BeEquivalentTo(expected);
@@ -68,7 +68,7 @@ namespace Issues.AcceptanceTests.Services
             #region Local methods
 
             TypeOfGroupOfIssues GetExpectedTypeOfGroupOfIssues() => 
-                new () {Id = "001-002", IsArchived = false, Name = "Type Of Group Of Issues 2"};
+                new () {Id = "001-002", Name = "Type Of Group Of Issues 2"};
             
             #endregion
         }
@@ -86,7 +86,7 @@ namespace Issues.AcceptanceTests.Services
             //AND retrieved from server
             var getRequest = new GetTypeOfGroupOfIssuesRequest() {Id = createResponse.Id};
             var getResponse = await _grpcClient.GetTypeOfGroupOfIssuesAsync(getRequest);
-            var actual = getResponse.Type;
+            var actual = getResponse.TypeOfGroup;
 
             //THEN assign id of created item to expected
             expectedToBeCreated.Id = createResponse.Id;
@@ -97,7 +97,7 @@ namespace Issues.AcceptanceTests.Services
             #region Local methods
 
             TypeOfGroupOfIssues GetExpectedTypeOfGroupOfIssuesToBeCreated() =>
-                new() { IsArchived = false, Name = "Type to create" };
+                new() { Name = "Type to create" };
 
             #endregion
         }
@@ -118,29 +118,29 @@ namespace Issues.AcceptanceTests.Services
             //AND retrieved from server
             var getRequest = new GetTypeOfGroupOfIssuesRequest() { Id = idToChange };
             var getResponse = await _grpcClient.GetTypeOfGroupOfIssuesAsync(getRequest);
-            var actualName = getResponse.Type.Name;
+            var actualName = getResponse.TypeOfGroup.Name;
 
             //THEN check that item has new name
             actualName.Should().Be(expectedName);
         }
 
-        [Test]
-        public async Task ShouldChangeStatusOfTypeOfGroupOfIssuesToArchived()
-        {
-            //GIVEN type of group of issues to archive
-            var idToArchive = "001-002";
+        //[Test]
+        //public async Task ShouldChangeStatusOfTypeOfGroupOfIssuesToArchived()
+        //{
+        //    //GIVEN type of group of issues to archive
+        //    var idToArchive = "001-002";
 
-            //WHEN item is archived
-            var archiveRequest = new ArchiveTypeOfGroupOfIssuesRequest() { Id = idToArchive, TypeOfGroupOfIssuesWhereGroupsWillBeMovedId = "001-001"};
-            var archiveResponse = await _grpcClient.ArchiveTypeOfGroupOfIssuesAsync(archiveRequest);
+        //    //WHEN item is archived
+        //    var archiveRequest = new ArchiveTypeOfGroupOfIssuesRequest() { Id = idToArchive, TypeOfGroupOfIssuesWhereGroupsWillBeMovedId = "001-001"};
+        //    var archiveResponse = await _grpcClient.ArchiveTypeOfGroupOfIssuesAsync(archiveRequest);
 
-            //AND retrieved from server
-            var getRequest = new GetTypeOfGroupOfIssuesRequest() { Id = idToArchive };
-            var getResponse = await _grpcClient.GetTypeOfGroupOfIssuesAsync(getRequest);
-            var actualArchiveStatus = getResponse.Type.IsArchived;
+        //    //AND retrieved from server
+        //    var getRequest = new GetTypeOfGroupOfIssuesRequest() { Id = idToArchive };
+        //    var getResponse = await _grpcClient.GetTypeOfGroupOfIssuesAsync(getRequest);
+        //    var actualArchiveStatus = getResponse.Type.IsArchived;
             
-            //THEN check that item has been archived
-            actualArchiveStatus.Should().BeTrue();
-        }
+        //    //THEN check that item has been archived
+        //    actualArchiveStatus.Should().BeTrue();
+        //}
     }
 }

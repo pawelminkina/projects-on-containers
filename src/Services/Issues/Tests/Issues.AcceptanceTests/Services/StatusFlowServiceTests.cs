@@ -44,23 +44,23 @@ namespace Issues.AcceptanceTests.Services
             {
                 GrpcStatusFlowFactory.Create("007-001", "Status Flow 1", new []
                 {
-                    GrpcStatusInFlowFactory.Create("004-001", 0, new List<ConnectedStatuses>()
+                    GrpcStatusInFlowFactory.Create("004-001", "", new List<ConnectedStatuses>()
                     {
-                        new ConnectedStatuses() {ConnectedStatusId = "004-002", ParentStatusId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
-                        new ConnectedStatuses() {ConnectedStatusId = "004-002", ParentStatusId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
-                        new ConnectedStatuses() {ConnectedStatusId = "004-003", ParentStatusId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-002", ParentStatusInFlowIdId= "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-002", ParentStatusInFlowIdId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-003", ParentStatusInFlowIdId = "004-001", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
                     }),
-                    GrpcStatusInFlowFactory.Create("004-002", 1, new List<ConnectedStatuses>()
+                    GrpcStatusInFlowFactory.Create("004-002", "", new List<ConnectedStatuses>()
                     {
-                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
-                        new ConnectedStatuses() {ConnectedStatusId = "004-003", ParentStatusId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
-                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-001", ParentStatusInFlowIdId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-003", ParentStatusInFlowIdId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-001", ParentStatusInFlowIdId = "004-002", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
                     }),
-                    GrpcStatusInFlowFactory.Create("004-003", 2, new List<ConnectedStatuses>()
+                    GrpcStatusInFlowFactory.Create("004-003", "", new List<ConnectedStatuses>()
                     {
-                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
-                        new ConnectedStatuses() {ConnectedStatusId = "004-002", ParentStatusId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
-                        new ConnectedStatuses() {ConnectedStatusId = "004-001", ParentStatusId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-001", ParentStatusInFlowIdId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-002", ParentStatusInFlowIdId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.In},
+                        new ConnectedStatuses() {ConnectedStatusInFlowId = "004-001", ParentStatusInFlowIdId = "004-003", DirectionOfStatus = ConnectedStatuses.Types.Direction.Out},
 
                     }),
                 }),

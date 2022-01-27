@@ -42,9 +42,9 @@ namespace Issues.AcceptanceTests.Services
 
             IEnumerable<GroupOfIssue> GetExpectedGroupOfIssues() => new[]
             {
-                new GroupOfIssue() {Id = "002-001", IsArchived = false, Name = "Group Of Issues 1", ShortName = "GOF1", TypeOfGroupId = "001-001"},
-                new GroupOfIssue() {Id = "002-002", IsArchived = false, Name = "Group Of Issues 2", ShortName = "GOF2", TypeOfGroupId = "001-001"},
-                new GroupOfIssue() {Id = "002-003", IsArchived = false, Name = "Group Of Issues 3", ShortName = "GOF3", TypeOfGroupId = "001-002"},
+                new GroupOfIssue() {Id = "002-001", Name = "Group Of Issues 1", ShortName = "GOF1", TypeOfGroupId = "001-001"},
+                new GroupOfIssue() {Id = "002-002", Name = "Group Of Issues 2", ShortName = "GOF2", TypeOfGroupId = "001-001"},
+                new GroupOfIssue() {Id = "002-003", Name = "Group Of Issues 3", ShortName = "GOF3", TypeOfGroupId = "001-002"},
             };
 
             #endregion
@@ -67,7 +67,7 @@ namespace Issues.AcceptanceTests.Services
             #region Local methods
 
             GroupOfIssue GetExpectedGroupOfIssue() =>
-                new() { Id = "002-001", IsArchived = false, Name = "Group Of Issues 1", ShortName = "GOF1", TypeOfGroupId = "001-001" };
+                new() { Id = "002-001", Name = "Group Of Issues 1", ShortName = "GOF1", TypeOfGroupId = "001-001" };
 
             #endregion
         }
@@ -96,7 +96,7 @@ namespace Issues.AcceptanceTests.Services
             #region Local methods
 
             GroupOfIssue GetExpectedGroupOfIssue() =>
-                new() { IsArchived = false, Name = "Expected group of issue", ShortName = "EXCP", TypeOfGroupId = "001-001" };
+                new() { Name = "Expected group of issue", ShortName = "EXCP", TypeOfGroupId = "001-001" };
 
             #endregion
         }
@@ -123,23 +123,23 @@ namespace Issues.AcceptanceTests.Services
             actualName.Should().Be(expectedName);
         }
 
-        [Test]
-        public async Task ShouldArchiveGroupOfIssue()
-        {
-            //GIVEN group of issues to archive
-            var idToArchive = "002-002";
+        //[Test]
+        //public async Task ShouldArchiveGroupOfIssue()
+        //{
+        //    //GIVEN group of issues to archive
+        //    var idToArchive = "002-002";
 
-            //WHEN item is archived
-            var archiveRequest = new ArchiveGroupOfIssuesRequest() { Id = idToArchive };
-            var archiveResponse = await _grpcClient.ArchiveGroupOfIssuesAsync(archiveRequest);
+        //    //WHEN item is archived
+        //    var archiveRequest = new ArchiveGroupOfIssuesRequest() { Id = idToArchive };
+        //    var archiveResponse = await _grpcClient.ArchiveGroupOfIssuesAsync(archiveRequest);
 
-            //AND retrieved from server
-            var getRequest = new GetGroupOfIssuesRequest() { Id = idToArchive };
-            var getResponse = await _grpcClient.GetGroupOfIssuesAsync(getRequest);
-            var actualArchiveStatus = getResponse.Group.IsArchived;
+        //    //AND retrieved from server
+        //    var getRequest = new GetGroupOfIssuesRequest() { Id = idToArchive };
+        //    var getResponse = await _grpcClient.GetGroupOfIssuesAsync(getRequest);
+        //    var actualArchiveStatus = getResponse.Group.IsArchived;
 
-            //THEN check that item has been archived
-            actualArchiveStatus.Should().BeTrue();
-        }
+        //    //THEN check that item has been archived
+        //    actualArchiveStatus.Should().BeTrue();
+        //}
     }
 }

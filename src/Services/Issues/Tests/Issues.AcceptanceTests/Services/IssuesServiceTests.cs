@@ -45,8 +45,8 @@ namespace Issues.AcceptanceTests.Services
 
             IEnumerable<IssueReference> GetExpectedIssues() => new[]
             {
-                new IssueReference() {Id = "005-003", IsArchived = false, Name = "Issue 3", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
-                new IssueReference() {Id = "005-004", IsArchived = false, Name = "Issue 4", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
+                new IssueReference() {Id = "005-003", Name = "Issue 3", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-002"},
+                new IssueReference() {Id = "005-004", Name = "Issue 4", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-002"},
             };
 
             #endregion
@@ -72,8 +72,8 @@ namespace Issues.AcceptanceTests.Services
 
             IEnumerable<IssueReference> GetExpectedIssues() => new[]
             {
-                new IssueReference() {Id = "005-003", IsArchived = false, Name = "Issue 3", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
-                new IssueReference() {Id = "005-004", IsArchived = false, Name = "Issue 4", StatusId = "004-002", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), TypeOfIssueId = "003-002", GroupId = "002-002"},
+                new IssueReference() {Id = "005-003", Name = "Issue 3", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(),  GroupId = "002-002"},
+                new IssueReference() {Id = "005-004", Name = "Issue 4", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(),  GroupId = "002-002"},
             };
 
             #endregion
@@ -101,11 +101,8 @@ namespace Issues.AcceptanceTests.Services
             IssueReference GetExpectedIssue() => new IssueReference()
             {
                 Id = "005-003",
-                IsArchived = false,
                 Name = "Issue 3",
-                StatusId = "004-002",
                 CreatingUserId = "BaseUserId2",
-                TypeOfIssueId = "003-002",
                 GroupId = "002-002",
                 TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp()
             };
@@ -129,7 +126,6 @@ namespace Issues.AcceptanceTests.Services
             var createRequest = new CreateIssueRequest()
             {
                 GroupId = "002-002", Name = expected.Name, TextContent = expectedContent.TextContent,
-                TypeOfIssueId = expected.TypeOfIssueId
             };
             var createResponse = await _grpcClient.CreateIssueAsync(createRequest);
 
@@ -151,12 +147,9 @@ namespace Issues.AcceptanceTests.Services
 
             IssueReference GetExpectedIssue() => new IssueReference()
             {
-                IsArchived = false,
                 Name = "Issue 6",
-                StatusId = "004-001",
                 CreatingUserId = "BaseUserId",
                 TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp(),
-                TypeOfIssueId = "003-002",
                 GroupId = "002-002"
             };
 
@@ -199,8 +192,8 @@ namespace Issues.AcceptanceTests.Services
             var newContent = "new content for issue";
 
             //WHEN issue content is updated
-            var updateTextContentRequest = new UpdateIssueContentRequest() {IssueId = issueId, TextContent = newContent};
-            var updateTextContentResponse = await _grpcClient.UpdateIssueContentAsync(updateTextContentRequest);
+            var updateTextContentRequest = new UpdateIssueTextContentRequest() {IssueId = issueId, TextContent = newContent};
+            var updateTextContentResponse = await _grpcClient.UpdateIssueTextContentAsync(updateTextContentRequest);
 
             //AND issue is retrieved from server
             var getRequest = new GetIssueWithContentRequest() { IssueId = issueId };
