@@ -1,4 +1,9 @@
-Id,ParentStatusId,StatusFlowId,IndexInFlow,IsArchived
-008-001,004-001,007-001,0,false,
-008-002,004-002,007-001,1,false,
-008-003,004-003,007-001,2,false,
+Id,Name,StatusFlowId,IsDefault
+005-001,To do,004-001,true,
+005-002,Done,004-001,false,
+005-003,To do,004-002,true,
+005-004,Done,004-002,false,
+005-005,To do,004-003,true,
+005-006,Done,004-003,false,
+005-007,To do,004-004,true,
+005-008,Done,004-004,false,
