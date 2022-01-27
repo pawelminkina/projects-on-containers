@@ -78,19 +78,19 @@ namespace Issues.Infrastructure.Services.Files
                 return WholeEntityObjectCreator.CreateGroupOfIssues(groupOfIssues.Id,groupOfIssues.Name,groupOfIssues.ShortName,groupOfIssues.TypeOfGroupId,groupOfIssues.ConnectedStatusFlowId,groupOfIssues.IsDeleted,groupOfIssues.TimeOfDeleteUtc);
 
             else if (recordAsCsvDto is TypeOfGroupOfIssuesCsvDto typeOfGroupOfIssues)
-                WholeEntityObjectCreator.CreateTypeOfGroupOfIssues(typeOfGroupOfIssues.Id,typeOfGroupOfIssues.Name,typeOfGroupOfIssues.OrganizationId,typeOfGroupOfIssues.IsDefault);
+                return WholeEntityObjectCreator.CreateTypeOfGroupOfIssues(typeOfGroupOfIssues.Id,typeOfGroupOfIssues.Name,typeOfGroupOfIssues.OrganizationId,typeOfGroupOfIssues.IsDefault);
 
             else if (recordAsCsvDto is IssueCsvDto issue)
-                WholeEntityObjectCreator.CreateIssue(issue.Id,issue.Name,issue.CreatingUserId,issue.GroupOfIssueId,issue.TimeOfCreation,issue.TextContent,issue.IsDeleted,issue.StatusInFlowId);
+                return WholeEntityObjectCreator.CreateIssue(issue.Id,issue.Name,issue.CreatingUserId,issue.GroupOfIssueId,issue.TimeOfCreation,issue.TextContent,issue.IsDeleted,issue.StatusInFlowId);
 
             else if (recordAsCsvDto is StatusFlowCsvDto statusFlow)
-                WholeEntityObjectCreator.CreateStatusFlow(statusFlow.Id,statusFlow.Name,statusFlow.OrganizationId,statusFlow.ConnectedGroupOfIssuesId,statusFlow.IsDefault,statusFlow.IsDeleted);
+                return WholeEntityObjectCreator.CreateStatusFlow(statusFlow.Id,statusFlow.Name,statusFlow.OrganizationId,statusFlow.IsDefault,statusFlow.IsDeleted);
 
             else if (recordAsCsvDto is StatusInFlowCsvDto statusInFlow)
-                WholeEntityObjectCreator.CreateStatusInFlow(statusInFlow.Id,statusInFlow.StatusFlowId,statusInFlow.Name,statusInFlow.IsDefault);
+                return WholeEntityObjectCreator.CreateStatusInFlow(statusInFlow.Id,statusInFlow.StatusFlowId,statusInFlow.Name,statusInFlow.IsDefault);
 
             else if (recordAsCsvDto is StatusInFlowConnectionCsvDto statusInFlowConnection)
-                WholeEntityObjectCreator.CreateStatusInFlowConnection(statusInFlowConnection.Id,statusInFlowConnection.ParentStatusInFlowId,statusInFlowConnection.ConnectedStatusInFlowId,statusInFlowConnection.Direction);
+                return WholeEntityObjectCreator.CreateStatusInFlowConnection(statusInFlowConnection.Id,statusInFlowConnection.ParentStatusInFlowId,statusInFlowConnection.ConnectedStatusInFlowId,statusInFlowConnection.Direction);
 
             throw new InvalidOperationException($"Requested type of entity: {recordAsCsvDto.GetType()} has no mapping added");
         }

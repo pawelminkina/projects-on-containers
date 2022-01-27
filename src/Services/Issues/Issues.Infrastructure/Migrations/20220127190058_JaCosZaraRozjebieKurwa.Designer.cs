@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issues.Infrastructure.Migrations
 {
     [DbContext(typeof(IssuesServiceDbContext))]
-    [Migration("20211228143325_SomeMigrationaagffkf")]
-    partial class SomeMigrationaagffkf
+    [Migration("20220127190058_JaCosZaraRozjebieKurwa")]
+    partial class JaCosZaraRozjebieKurwa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,7 +30,7 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<bool>("IsArchived")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -40,17 +40,23 @@ namespace Issues.Infrastructure.Migrations
 
                     b.Property<string>("ShortName")
                         .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeOfGroupId")
+                    b.Property<DateTimeOffset?>("TimeOfDeleteUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("_connected StatusFlowId")
+                        .HasMaxLength(63)
+                        .HasColumnType("nvarchar(63)");
+
+                    b.Property<string>("_typeOfGroupId")
                         .IsRequired()
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeOfGroupId");
+                    b.HasIndex("_typeOfGroupId");
 
                     b.ToTable("GroupsOfIssues");
                 });
@@ -60,9 +66,6 @@ namespace Issues.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -93,13 +96,6 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<string>("GroupOfIssueId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(63)");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -107,51 +103,27 @@ namespace Issues.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(1023)
                         .HasColumnType("nvarchar(1023)");
-
-                    b.Property<string>("StatusId")
-                        .IsRequired()
-                        .HasMaxLength(63)
-                        .HasColumnType("nvarchar(63)");
 
                     b.Property<DateTimeOffset>("TimeOfCreation")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("TypeOfIssueId")
+                    b.Property<string>("_groupOfIssueId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(63)")
-                        .HasColumnName("TypeOfIssueId");
+                        .HasMaxLength(63)
+                        .HasColumnType("nvarchar(63)");
+
+                    b.Property<string>("_statusInFlowId")
+                        .IsRequired()
+                        .HasMaxLength(63)
+                        .HasColumnType("nvarchar(63)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupOfIssueId");
+                    b.HasIndex("_groupOfIssueId");
 
-                    b.HasIndex("TypeOfIssueId");
+                    b.HasIndex("_statusInFlowId");
 
                     b.ToTable("Issues");
-                });
-
-            modelBuilder.Entity("Issues.Domain.StatusesFlow.Status", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(63)
-                        .HasColumnType("nvarchar(63)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(1023)
-                        .HasColumnType("nvarchar(1023)");
-
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasMaxLength(63)
-                        .HasColumnType("nvarchar(63)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusFlow", b =>
@@ -160,10 +132,10 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<bool>("IsArchived")
+                    b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDefault")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -176,7 +148,14 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
+                    b.Property<string>("_connectedStatusFlowId")
+                        .HasColumnType("nvarchar(63)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("_connectedStatusFlowId")
+                        .IsUnique()
+                        .HasFilter("[_connectedStatusFlowId] IS NOT NULL");
 
                     b.ToTable("StatusFlows");
                 });
@@ -187,23 +166,22 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<int>("IndexInFlow")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsArchived")
+                    b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ParentStatusId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<string>("StatusFlowId")
+                    b.Property<string>("_statusFlowId")
+                        .IsRequired()
+                        .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentStatusId");
-
-                    b.HasIndex("StatusFlowId");
+                    b.HasIndex("_statusFlowId");
 
                     b.ToTable("StatusesInFlow");
                 });
@@ -214,83 +192,33 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<string>("ConnectedWithParentId")
-                        .HasColumnType("nvarchar(63)");
+                    b.Property<int>("Direction")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ParentStatusId")
-                        .HasColumnType("nvarchar(63)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConnectedWithParentId")
-                        .IsUnique()
-                        .HasFilter("[ConnectedWithParentId] IS NOT NULL");
-
-                    b.HasIndex("ParentStatusId");
-
-                    b.ToTable("StatusInFlowConnection");
-                });
-
-            modelBuilder.Entity("Issues.Domain.TypesOfIssues.TypeOfIssue", b =>
-                {
-                    b.Property<string>("Id")
+                    b.Property<string>("_connectedStatusInFlowId")
+                        .IsRequired()
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(1023)
-                        .HasColumnType("nvarchar(1023)");
-
-                    b.Property<string>("OrganizationId")
+                    b.Property<string>("_parentStatusInFlowId")
                         .IsRequired()
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypesOfIssues");
-                });
+                    b.HasIndex("_connectedStatusInFlowId");
 
-            modelBuilder.Entity("Issues.Domain.TypesOfIssues.TypeOfIssueInTypeOfGroup", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(63)
-                        .HasColumnType("nvarchar(63)");
+                    b.HasIndex("_parentStatusInFlowId");
 
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ParentId")
-                        .HasColumnType("nvarchar(63)");
-
-                    b.Property<string>("StatusFlowId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(63)");
-
-                    b.Property<string>("TypeOfGroupOfIssuesId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(63)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("StatusFlowId");
-
-                    b.HasIndex("TypeOfGroupOfIssuesId");
-
-                    b.ToTable("TypesOfIssueInTypeOfGroups");
+                    b.ToTable("StatusInFlowConnections");
                 });
 
             modelBuilder.Entity("Issues.Domain.GroupsOfIssues.GroupOfIssues", b =>
                 {
                     b.HasOne("Issues.Domain.GroupsOfIssues.TypeOfGroupOfIssues", "TypeOfGroup")
                         .WithMany("Groups")
-                        .HasForeignKey("TypeOfGroupId")
+                        .HasForeignKey("_typeOfGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -301,13 +229,13 @@ namespace Issues.Infrastructure.Migrations
                 {
                     b.HasOne("Issues.Domain.GroupsOfIssues.GroupOfIssues", "GroupOfIssue")
                         .WithMany("Issues")
-                        .HasForeignKey("GroupOfIssueId")
+                        .HasForeignKey("_groupOfIssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Issues.Domain.TypesOfIssues.TypeOfIssue", "TypeOfIssue")
+                    b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "StatusInFlow")
                         .WithMany()
-                        .HasForeignKey("TypeOfIssueId")
+                        .HasForeignKey("_statusInFlowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -315,12 +243,6 @@ namespace Issues.Infrastructure.Migrations
                         {
                             b1.Property<string>("IssueId")
                                 .HasColumnType("nvarchar(63)");
-
-                            b1.Property<bool>("IsArchived")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("IsDeleted")
-                                .HasColumnType("bit");
 
                             b1.Property<string>("TextContent")
                                 .HasColumnType("nvarchar(max)");
@@ -337,66 +259,52 @@ namespace Issues.Infrastructure.Migrations
 
                     b.Navigation("GroupOfIssue");
 
-                    b.Navigation("TypeOfIssue");
+                    b.Navigation("StatusInFlow");
+                });
+
+            modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusFlow", b =>
+                {
+                    b.HasOne("Issues.Domain.GroupsOfIssues.GroupOfIssues", "ConnectedGroupOfIssues")
+                        .WithOne("ConnectedStatusFlow")
+                        .HasForeignKey("Issues.Domain.StatusesFlow.StatusFlow", "_connectedStatusFlowId");
+
+                    b.Navigation("ConnectedGroupOfIssues");
                 });
 
             modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusInFlow", b =>
                 {
-                    b.HasOne("Issues.Domain.StatusesFlow.Status", "ParentStatus")
-                        .WithMany()
-                        .HasForeignKey("ParentStatusId");
-
                     b.HasOne("Issues.Domain.StatusesFlow.StatusFlow", "StatusFlow")
                         .WithMany("StatusesInFlow")
-                        .HasForeignKey("StatusFlowId");
-
-                    b.Navigation("ParentStatus");
+                        .HasForeignKey("_statusFlowId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("StatusFlow");
                 });
 
             modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusInFlowConnection", b =>
                 {
-                    b.HasOne("Issues.Domain.StatusesFlow.Status", "ConnectedWithParent")
-                        .WithOne()
-                        .HasForeignKey("Issues.Domain.StatusesFlow.StatusInFlowConnection", "ConnectedWithParentId");
+                    b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ConnectedStatusInFlow")
+                        .WithMany()
+                        .HasForeignKey("_connectedStatusInFlowId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ParentStatus")
+                    b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ParentStatusInFlow")
                         .WithMany("ConnectedStatuses")
-                        .HasForeignKey("ParentStatusId");
-
-                    b.Navigation("ConnectedWithParent");
-
-                    b.Navigation("ParentStatus");
-                });
-
-            modelBuilder.Entity("Issues.Domain.TypesOfIssues.TypeOfIssueInTypeOfGroup", b =>
-                {
-                    b.HasOne("Issues.Domain.TypesOfIssues.TypeOfIssue", "Parent")
-                        .WithMany("TypesInGroups")
-                        .HasForeignKey("ParentId");
-
-                    b.HasOne("Issues.Domain.StatusesFlow.StatusFlow", "Flow")
-                        .WithMany()
-                        .HasForeignKey("StatusFlowId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("_parentStatusInFlowId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Issues.Domain.GroupsOfIssues.TypeOfGroupOfIssues", "TypeOfGroup")
-                        .WithMany()
-                        .HasForeignKey("TypeOfGroupOfIssuesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ConnectedStatusInFlow");
 
-                    b.Navigation("Flow");
-
-                    b.Navigation("Parent");
-
-                    b.Navigation("TypeOfGroup");
+                    b.Navigation("ParentStatusInFlow");
                 });
 
             modelBuilder.Entity("Issues.Domain.GroupsOfIssues.GroupOfIssues", b =>
                 {
+                    b.Navigation("ConnectedStatusFlow");
+
                     b.Navigation("Issues");
                 });
 
@@ -413,11 +321,6 @@ namespace Issues.Infrastructure.Migrations
             modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusInFlow", b =>
                 {
                     b.Navigation("ConnectedStatuses");
-                });
-
-            modelBuilder.Entity("Issues.Domain.TypesOfIssues.TypeOfIssue", b =>
-                {
-                    b.Navigation("TypesInGroups");
                 });
 #pragma warning restore 612, 618
         }

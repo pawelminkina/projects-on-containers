@@ -18,7 +18,6 @@ namespace Issues.Infrastructure.Services.Files.CsvMaps
             Map(s => s.OrganizationId).Name("OrganizationId");
             Map(s => s.IsDeleted).Name("IsDeleted");
             Map(s => s.IsDefault).Name("IsDefault");
-            Map(s => s.ConnectedGroupOfIssuesId).Name("ConnectedGroupOfIssuesId");
         }
     }
 }

@@ -23,8 +23,8 @@ namespace Issues.Domain
         public static Issue CreateIssue(string id, string name, string creatingUserId, string groupOfIssueId, DateTimeOffset timeOfCreation, string textContent, bool isDeleted, string statusInFlowId) =>
             Issue.CreateWholeObject(id,name,creatingUserId,groupOfIssueId,timeOfCreation,textContent,isDeleted,statusInFlowId);
 
-        public static StatusFlow CreateStatusFlow(string id, string name, string organizationId, string connectedGroupOfIssuesId, bool isDefault, bool isDeleted) =>
-            StatusFlow.CreateWholeObject(id,name,organizationId,connectedGroupOfIssuesId,isDefault,isDeleted);
+        public static StatusFlow CreateStatusFlow(string id, string name, string organizationId, bool isDefault, bool isDeleted) =>
+            StatusFlow.CreateWholeObject(id,name,organizationId,isDefault,isDeleted);
 
         public static StatusInFlow CreateStatusInFlow(string id, string statusFlowId, string name, bool isDefault) =>
             StatusInFlow.CreateWholeObject(id,statusFlowId,name,isDefault);

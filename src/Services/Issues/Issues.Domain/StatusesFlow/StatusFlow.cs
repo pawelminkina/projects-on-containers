@@ -38,14 +38,13 @@ namespace Issues.Domain.StatusesFlow
             return statusFlow;
         }
 
-        internal static StatusFlow CreateWholeObject(string id, string name, string organizationId, string connectedGroupOfIssuesId, bool isDefault, bool isDeleted)
+        internal static StatusFlow CreateWholeObject(string id, string name, string organizationId, bool isDefault, bool isDeleted)
         {
             return new StatusFlow()
             {
                 Id = id,
                 Name = name,
                 OrganizationId = organizationId,
-                _connectedGroupOfIssuesId = connectedGroupOfIssuesId,
                 IsDeleted = isDeleted,
                 IsDefault = isDefault
             };
@@ -59,8 +58,6 @@ namespace Issues.Domain.StatusesFlow
         public string Name { get; protected set; }
         public string OrganizationId { get; protected set; }
         public bool IsDefault { get; protected set; }
-        
-        private string _connectedGroupOfIssuesId;
         public GroupOfIssues ConnectedGroupOfIssues { get; protected set; }
 
         protected List<StatusInFlow> _statusesInFlow;

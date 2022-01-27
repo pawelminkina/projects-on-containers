@@ -12,7 +12,6 @@ namespace Issues.Application.Common.Models.Files.Csv
         public string Name { get; set; }
         public string OrganizationId { get; set; }
         public bool IsDefault { get; set; }
-        public string ConnectedGroupOfIssuesId { get; set; }
         public bool IsDeleted { get; set; }
 
     }

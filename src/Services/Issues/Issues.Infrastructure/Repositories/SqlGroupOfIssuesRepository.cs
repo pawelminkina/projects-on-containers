@@ -35,12 +35,12 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task DeleteTypeofGroupOfIssuesAsync(string id)
         {
-            throw new NotImplementedException();
+            _dbContext.TypesOfGroupsOfIssues.Remove(await GetTypeOfGroupOfIssuesByIdAsync(id));
         }
 
         public async Task<bool> AnyOfTypeOfGroupHasGivenNameAsync(string name, string organizationId)
         {
-            throw new NotImplementedException();
+            return _dbContext.TypesOfGroupsOfIssues.Any(s => s.OrganizationId == organizationId && s.Name == name);
         }
 
         public async Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id)
@@ -50,12 +50,12 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<bool> AnyOfGroupHasGivenShortNameAsync(string shortName, string organizationId)
         {
-            throw new NotImplementedException();
+            return _dbContext.GroupsOfIssues.Any(s => s.TypeOfGroup.OrganizationId == organizationId && s.ShortName == shortName);
         }
 
         public async Task<bool> AnyOfGroupHasGivenNameAsync(string name, string organizationId)
         {
-            throw new NotImplementedException();
+            return _dbContext.GroupsOfIssues.Any(s => s.TypeOfGroup.OrganizationId == organizationId && s.Name == name);
         }
     }
 }
