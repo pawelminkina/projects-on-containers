@@ -22,16 +22,12 @@ namespace Issues.Domain.GroupsOfIssues
             Name = name;
             OrganizationId = organizationId;
             IsDefault = false;
+            AddDomainEvent(new TypeOfGroupOfIssuesCreatedDomainEvent(this));
         }
 
-        public static TypeOfGroupOfIssues CreateDefault(string name, string organizationId)
+        public static TypeOfGroupOfIssues CreateDefault(string organizationId, string name)
         {
-            var typeOfGroupOfIssues = new TypeOfGroupOfIssues()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = name,
-                OrganizationId = organizationId,
-            };
+            var typeOfGroupOfIssues = new TypeOfGroupOfIssues(organizationId, name);
             typeOfGroupOfIssues.SetDefaultToTrue();
             return typeOfGroupOfIssues;
         }
@@ -50,7 +46,6 @@ namespace Issues.Domain.GroupsOfIssues
         protected TypeOfGroupOfIssues()
         {
             _groups = new List<GroupOfIssues>();
-            AddDomainEvent(new TypeOfGroupOfIssuesCreatedDomainEvent(this));
         }
 
         public string Name { get; protected set; }
@@ -109,17 +104,29 @@ namespace Issues.Domain.GroupsOfIssues
             
             if (IsDefault)
             {
-                reason = $"Type of group of issues with id: {Id} could not be deleted because it is default";
+                reason = ErrorMessages.CanNotBeDeletedBecauseIsDefault(Id);
                 return false;
             }
 
             if (Groups.Any())
             {
-                reason = $"Type of group of issues with id: {Id} could not be deleted because it has groups assigned to it";
+                reason = ErrorMessages.CanNotBeDeletedBecauseHasGroupsAssigned(Id);
                 return false;
             }
 
             return true;
+        }
+
+        public static class ErrorMessages
+        {
+            public static string CanNotBeDeletedBecauseIsDefault(string id) =>
+                $"Type of group of issues with id: {id} could not be deleted because it is default";
+
+            public static string CanNotBeDeletedBecauseHasGroupsAssigned(string id) =>
+                $"Type of group of issues with id: {id} could not be deleted because it has groups assigned to it";
+
+            public static string SomeTypeOfGroupAlreadyExistWithName(string name) =>
+                $"Type of group of issues with name: {name} already exist";
         }
     }
 }

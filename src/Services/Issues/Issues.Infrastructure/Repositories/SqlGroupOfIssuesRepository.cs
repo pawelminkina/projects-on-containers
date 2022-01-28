@@ -33,7 +33,7 @@ namespace Issues.Infrastructure.Repositories
             return _dbContext.TypesOfGroupsOfIssues.Include(d=>d.Groups).Where(s => s.OrganizationId == organizationId);
         }
 
-        public async Task DeleteTypeofGroupOfIssuesAsync(string id)
+        public async Task DeleteTypeOfGroupOfIssuesAsync(string id)
         {
             _dbContext.TypesOfGroupsOfIssues.Remove(await GetTypeOfGroupOfIssuesByIdAsync(id));
         }

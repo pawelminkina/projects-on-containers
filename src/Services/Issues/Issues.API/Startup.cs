@@ -18,6 +18,7 @@ using Architecture.DDD.Repositories;
 using FluentValidation;
 using Issues.API.Infrastructure.Database.Migration;
 using Issues.API.Infrastructure.Database.Seeding;
+using Issues.API.Infrastructure.Grpc.Interceptors;
 using Issues.API.Infrastructure.Validation;
 using Issues.Application.Common.Services.Files;
 using Issues.Application.CQRS.Issues.Commands.CreateIssue;
@@ -50,6 +51,7 @@ namespace Issues.API
             services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = true;
+                options.Interceptors.Add<GrpcErrorInterceptor>();
             });
             services.AddControllers().AddApplicationPart(typeof(Startup).Assembly);
 

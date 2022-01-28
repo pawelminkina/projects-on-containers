@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using MediatR;
 
@@ -36,12 +37,11 @@ namespace Issues.Application.CQRS.TypeOfGroupOfIssues.Queries.GetType
 
         private void ValidateTypeWithRequestParameters(Domain.GroupsOfIssues.TypeOfGroupOfIssues type, GetTypeOfGroupOfIssuesQuery request)
         {
-            //TODO 404
             if (type is null)
-                throw new InvalidOperationException($"Requested type with id: {request.Id} don't exist");
+                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.Id);
 
             if (type.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Type of group of issues with id: {request.Id} was found and is not accessible for organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.Id, request.OrganizationId);
 
         }
     }

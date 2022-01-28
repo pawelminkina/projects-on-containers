@@ -34,10 +34,10 @@ namespace Issues.Application.CQRS.TypeOfGroupOfIssues.Commands.DeleteType
             var type = await _repository.GetTypeOfGroupOfIssuesByIdAsync(request.Id);
             ValidateTypeWithRequestedParameters(type, request);
 
-            if (type.CanBeDeleted(out var reasonWhyNot))
+            if (!type.CanBeDeleted(out var reasonWhyNot))
                 throw new InvalidOperationException($"Delete operation failed reason: {reasonWhyNot}");
             
-            await _repository.DeleteTypeofGroupOfIssuesAsync(type.Id);
+            await _repository.DeleteTypeOfGroupOfIssuesAsync(type.Id);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 

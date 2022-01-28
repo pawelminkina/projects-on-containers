@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Architecture.DDD;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.Issues;
 using Issues.Domain.StatusesFlow;
@@ -71,7 +72,10 @@ namespace Issues.API.Infrastructure.Database.Seeding
                     }
 
                     if (_anyItemSeeded)
+                    {
+                        ClearDomainEvents(dbContext);
                         await dbContext.SaveChangesAsync();
+                    }
                     else
                         logger.LogInformation($"Database has items. Seeder {this.GetType().Name} was not applied.");
 
@@ -93,7 +97,18 @@ namespace Issues.API.Infrastructure.Database.Seeding
             dbContext.StatusFlows.RemoveRange(dbContext.StatusFlows);
             dbContext.StatusesInFlow.RemoveRange(dbContext.StatusesInFlow);
             dbContext.StatusInFlowConnections.RemoveRange(dbContext.StatusInFlowConnections);
+
             dbContext.SaveChanges();
+        }
+
+        private void ClearDomainEvents(IssuesServiceDbContext dbContext)
+        {
+            //Because seeding is used, then domain events are not needed for the state of creating db.
+            dbContext.ChangeTracker
+                .Entries<EntityBase>()
+                .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any())
+                .ToList()
+                .ForEach(s=>s.Entity.ClearDomainEvents());
         }
 
        
