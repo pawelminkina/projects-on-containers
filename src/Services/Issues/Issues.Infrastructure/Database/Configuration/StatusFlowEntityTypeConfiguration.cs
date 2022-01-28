@@ -13,7 +13,7 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.OrganizationId).IsRequired().HasMaxLength(63);
             builder.Property(d => d.IsDeleted).IsRequired();
             builder.Property(d => d.IsDefault).IsRequired();
-            builder.HasMany(d => d.StatusesInFlow).WithOne(s => s.StatusFlow).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(d => d.StatusesInFlow).WithOne(s => s.StatusFlow);
         }
     }
 }
