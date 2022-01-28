@@ -92,8 +92,8 @@ namespace Issues.API.Infrastructure.Database.Seeding
             dbContext.Issues.RemoveRange(dbContext.Issues);
             dbContext.StatusFlows.RemoveRange(dbContext.StatusFlows);
             dbContext.StatusesInFlow.RemoveRange(dbContext.StatusesInFlow);
+            dbContext.StatusInFlowConnections.RemoveRange(dbContext.StatusInFlowConnections);
             dbContext.SaveChanges();
-
         }
 
        
