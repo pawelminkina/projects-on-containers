@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Architecture.DDD.Exceptions;
 using Architecture.DDD.Repositories;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
 using Issues.Domain.StatusesFlow.DomainEvents;
@@ -58,7 +59,7 @@ namespace Issues.Domain.GroupsOfIssues
         public void RenameTypeOfGroup(string newName)
         {
             if (IsDefault)
-                throw new InvalidOperationException("You can't change name of default type of group of issues");
+                throw new InvalidOperationException(ErrorMessages.CannotChangeNameOfDefaultTypeOfGroupOfIssuesWithId(Id));
 
             ChangeStringProperty("Name", newName);
 
@@ -67,11 +68,11 @@ namespace Issues.Domain.GroupsOfIssues
 
         public GroupOfIssues AddNewGroupOfIssues(string name, string shortName)
         {
-            if (shortName.Length is > GroupOfIssues.MaxShortNameLength or < GroupOfIssues.MinShortNameLength)
-                throw new InvalidOperationException($"Requested new short name: {shortName} have more cases then {GroupOfIssues.MaxShortNameLength} or has less cases then {GroupOfIssues.MinShortNameLength}");
+            if (!GroupOfIssues.FitsShortNameSize(shortName))
+                throw new DomainException(GroupOfIssues.ErrorMessages.RequestedShortNameHasNotRequiredSize(shortName));
             
             if (string.IsNullOrEmpty(name))
-                throw new InvalidOperationException("Requested group of issues name is empty");
+                throw new DomainException(ErrorMessages.RequestedGroupOfIssuesNameIsEmpty());
 
             var group = new GroupOfIssues(name, shortName, this);
             _groups.Add(group);
@@ -84,10 +85,10 @@ namespace Issues.Domain.GroupsOfIssues
         {
             var groupToDelete = _groups.FirstOrDefault(s => s.Id == id);
             if (groupToDelete is null)
-                throw new InvalidOperationException($"Requested group with id: {id} don't exist in type of group of issues with id: {Id}");
+                throw new DomainException(ErrorMessages.GroupToDeleteIsNotInThisTypeOfGroup(id,this.Id));
 
             if (groupToDelete.IsDeleted)
-                throw new InvalidOperationException($"Cannot delete group with id: {id} which is already deleted");
+                throw new DomainException(ErrorMessages.CannotDeleteGroupWhichIsAlreadyDeleted(id));
 
             groupToDelete.Delete();
         }
@@ -127,6 +128,18 @@ namespace Issues.Domain.GroupsOfIssues
 
             public static string SomeTypeOfGroupAlreadyExistWithName(string name) =>
                 $"Type of group of issues with name: {name} already exist";
+
+            public static string GroupToDeleteIsNotInThisTypeOfGroup(string idToDelete, string idOfType) =>
+                $"Requested group with id: {idToDelete} don't exist in type of group of issues with id: {idOfType}";
+
+            public static string CannotDeleteGroupWhichIsAlreadyDeleted(string idOfGroup) =>
+                $"Cannot delete group with id: {idOfGroup} which is already deleted";
+
+            public static string CannotChangeNameOfDefaultTypeOfGroupOfIssuesWithId(string id) =>
+                $"You can't change name of default type of group of issues with {id}";
+
+            public static string RequestedGroupOfIssuesNameIsEmpty() =>
+                "Requested group of issues name is empty";
         }
     }
 }

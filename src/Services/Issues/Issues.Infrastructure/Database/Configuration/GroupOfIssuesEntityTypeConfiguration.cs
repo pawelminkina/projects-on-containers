@@ -15,8 +15,8 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property(d => d.IsDeleted).IsRequired();
             builder.Property(d => d.TimeOfDeleteUtc);
             builder.Property<string>("_typeOfGroupId").UsePropertyAccessMode(PropertyAccessMode.Field).IsRequired().HasMaxLength(63);
-            builder.Property<string>("_connected StatusFlowId").UsePropertyAccessMode(PropertyAccessMode.Field).HasMaxLength(63);
-            builder.HasOne(d => d.ConnectedStatusFlow).WithOne(s=>s.ConnectedGroupOfIssues).HasForeignKey<StatusFlow>("_connectedStatusFlowId");
+            builder.Property<string>("_connectedStatusFlowId").UsePropertyAccessMode(PropertyAccessMode.Field).HasMaxLength(63);
+            builder.HasOne(d => d.ConnectedStatusFlow).WithOne(s=>s.ConnectedGroupOfIssues).HasForeignKey<GroupOfIssues>("_connectedStatusFlowId");
             builder.HasMany(d => d.Issues).WithOne(s => s.GroupOfIssue).HasForeignKey("_groupOfIssueId");
         }
     }

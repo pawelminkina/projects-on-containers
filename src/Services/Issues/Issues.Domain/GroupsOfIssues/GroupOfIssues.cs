@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+ using Architecture.DDD.Exceptions;
  using Issues.Domain.GroupsOfIssues.DomainEvents;
  using Issues.Domain.StatusesFlow;
 
@@ -60,7 +61,7 @@ namespace Issues.Domain.GroupsOfIssues
         {
 
             if (IsDeleted)
-                throw new InvalidOperationException($"Add issue operation failed because group of issues with Id: {Id} is deleted");
+                throw new DomainException(ErrorMessages.ModifyOperationFailedBecauseGroupOfIssuesIsDeleted(Id));
 
             var issue = new Issue(name, creatingUserId, this, DateTimeOffset.UtcNow, textContent);
             _issues.Add(issue);
@@ -74,7 +75,7 @@ namespace Issues.Domain.GroupsOfIssues
                 throw new InvalidOperationException($"Requested issue to remove with id: {issueId} is not added in group with {Id}");
 
             if (IsDeleted)
-                throw new InvalidOperationException($"Delete operation failed because group of issues with Id: {Id} is deleted");
+                throw new DomainException(ErrorMessages.ModifyOperationFailedBecauseGroupOfIssuesIsDeleted(Id));
 
             if (issueToRemove.IsDeleted)
                 throw new InvalidOperationException($"Delete operation failed because issue with Id: {Id} is already deleted");
@@ -83,19 +84,10 @@ namespace Issues.Domain.GroupsOfIssues
             issueToRemove.SetIsDeletedToTrue();
         }
 
-        internal void RemoveIssueFromGroup(string issueId)
-        {
-            var issueToRemove = _issues.FirstOrDefault(a => a.Id == issueId);
-            if (issueToRemove is null)
-                throw new InvalidOperationException($"Requested issue to remove with id: {issueId} is not added in group with {Id}");
-
-            _issues.Remove(issueToRemove);
-        }
-
         public void Rename(string newName)
         {
             if (IsDeleted)
-                throw new InvalidOperationException($"Group of issue with id: {Id} is deleted, that's why modify operation is not possible");
+                throw new DomainException(ErrorMessages.ModifyOperationFailedBecauseGroupOfIssuesIsDeleted(Id));
 
             ChangeStringProperty("Name", newName);
 
@@ -105,15 +97,17 @@ namespace Issues.Domain.GroupsOfIssues
         public void ChangeShortName(string newShortName)
         {
             if (IsDeleted)
-                throw new InvalidOperationException($"Cannot change short name of group with id: {Id} which is deleted");
+                throw new DomainException(ErrorMessages.ModifyOperationFailedBecauseGroupOfIssuesIsDeleted(Id));
 
-            if (newShortName.Length is > MaxShortNameLength or < MinShortNameLength)
-                throw new InvalidOperationException($"Requested new short name: {newShortName} have more cases then {MaxShortNameLength} or has less cases then {MinShortNameLength}");
+            if (!FitsShortNameSize(newShortName))
+                throw new DomainException(ErrorMessages.RequestedShortNameHasNotRequiredSize(newShortName));
 
             ChangeStringProperty("ShortName", newShortName);
             AddDomainEvent(new GroupOfIssuesShortNameChangedDomainEvent(this));
-            //TODO shortname changed event domain, and check that any of those already exist in db _groupOfIssuesRepository.AnyOfGroupHasGivenShortNameAsync
         }
+
+        public static bool FitsShortNameSize(string shortName) => shortName.Length is >= MinShortNameLength and <= MaxShortNameLength;
+        
 
         #region Delete
 
@@ -139,6 +133,20 @@ namespace Issues.Domain.GroupsOfIssues
 
         #endregion
 
+        public static class ErrorMessages
+        {
+            public static string SomeGroupAlreadyExistWithName(string name) =>
+                $"Group of issues with name: {name} already exist";
+
+            public static string SomeGroupAlreadyExistWithShortName(string shortName) =>
+                $"Group of issues with short name: {shortName} already exist";
+
+            public static string ModifyOperationFailedBecauseGroupOfIssuesIsDeleted(string id) =>
+                $"Modify operation failed because group of issues with id: {id} is deleted";
+
+            public static string RequestedShortNameHasNotRequiredSize(string shortName) =>
+                $"Requested new short name: {shortName} have more cases then {MaxShortNameLength} or has less cases then {MinShortNameLength}";
+        }
 
     }
 }

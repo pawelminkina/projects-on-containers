@@ -135,8 +135,9 @@ namespace Issues.Domain.StatusesFlow
             //TODO have unique values extension
             if (statusNames.Count() == statusNames.Distinct().Count())
                 _statusesInFlow.AddRange(statusNames.Select(s => new StatusInFlow(this, s, nameOfDefault == s)));
-
-            throw new InvalidOperationException("Given status name list to create status flow is not unique");
+            
+            else
+                throw new InvalidOperationException("Given status name list to create status flow is not unique");
         }
 
         public static string GetNameWithGroupOfIssues(string groupOfIssuesName) => new StringBuilder("Status flow for: ").Append(groupOfIssuesName).ToString();

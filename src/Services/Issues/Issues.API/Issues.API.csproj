@@ -40,6 +40,32 @@
     <None Remove="Protos\groupofissue.proto" />
     <None Remove="Protos\statusflow.proto" />
     <None Remove="Protos\typeofgroupofissue.proto" />
+    <None Remove="Setup\GroupsOfIssues.csv" />
+    <None Remove="Setup\Issues.csv" />
+    <None Remove="Setup\StatusesInFlow.csv" />
+    <None Remove="Setup\StatusesInFlowConnection.csv" />
+    <None Remove="Setup\StatusFlows.csv" />
+    <None Remove="Setup\TypesOfGroupOfIssues.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Setup\GroupsOfIssues.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\Issues.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\StatusesInFlow.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\StatusesInFlowConnection.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\StatusFlows.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\TypesOfGroupOfIssues.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infrastructure\Validation\" />

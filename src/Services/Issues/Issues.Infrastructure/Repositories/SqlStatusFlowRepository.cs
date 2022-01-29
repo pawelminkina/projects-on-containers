@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
 using Issues.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Issues.Infrastructure.Repositories
 {
@@ -19,17 +19,18 @@ namespace Issues.Infrastructure.Repositories
         }
         public async Task<StatusFlow> AddNewStatusFlowAsync(StatusFlow statusFlow)
         {
-            throw new System.NotImplementedException();
-
+            await _dbContext.StatusFlows.AddAsync(statusFlow);
+            return statusFlow;
         }
         public async Task<StatusFlow> GetFlowById(string id)
         {
             return await GetFlowsWithInclude().FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<StatusInFlow> GetStatusInFlowById(string id)
+        public Task<StatusInFlow> GetStatusInFlowById(string id)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(_dbContext.StatusesInFlow.Include(s => s.ConnectedStatuses).ThenInclude(d => d.ConnectedStatusInFlow)
+                .FirstOrDefault(s => s.Id == id));
         }
 
         public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganizationAsync(string organizationId)
@@ -39,20 +40,21 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<StatusFlow> GetDefaultStatusFlowAsync(string organizationId)
         {
-            throw new System.NotImplementedException();
+            return GetFlowsWithInclude().FirstOrDefault(d => d.OrganizationId == organizationId && d.IsDefault);
         }
 
-        private IIncludableQueryable<StatusFlow, StatusFlow> GetFlowsWithInclude() =>
+        private IIncludableQueryable<StatusFlow, TypeOfGroupOfIssues> GetFlowsWithInclude() =>
 
             _dbContext.StatusFlows
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(d => d.ConnectedStatusInFlow).ThenInclude(d => d.StatusFlow)
-                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses).ThenInclude(s=>s.ParentStatusInFlow).ThenInclude(d=>d.StatusFlow);
-        
+                .Include(d => d.StatusesInFlow).ThenInclude(d => d.ConnectedStatuses)
+                .ThenInclude(d => d.ConnectedStatusInFlow)
+                .Include(d => d.ConnectedGroupOfIssues).ThenInclude(s => s.TypeOfGroup);
 
-        public async Task RemoveStatusInFlow(string statusInFlowId)
+
+
+        public Task RemoveStatusInFlow(StatusInFlow statusInFlow)
         {
-            var statusInFlow = await _dbContext.StatusesInFlow.FirstOrDefaultAsync(s=>s.Id == statusInFlowId);
-            _dbContext.StatusesInFlow.Remove(statusInFlow);
+            return Task.FromResult(_dbContext.StatusesInFlow.Remove(statusInFlow));
         }
     }
 }

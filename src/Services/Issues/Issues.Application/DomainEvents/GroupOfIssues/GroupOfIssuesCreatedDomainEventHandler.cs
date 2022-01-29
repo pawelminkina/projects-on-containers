@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Architecture.DDD.Exceptions;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
 using Issues.Domain.StatusesFlow;
@@ -25,12 +27,12 @@ namespace Issues.Application.DomainEvents.GroupOfIssues
         {
             var createdGroupOfIssues = notification.Created;
             var organizationId = createdGroupOfIssues.TypeOfGroup.OrganizationId;
-
+            
             if (await _groupOfIssuesRepository.AnyOfGroupHasGivenShortNameAsync(createdGroupOfIssues.ShortName, organizationId))
-                throw new InvalidOperationException($"Group of issues with short name: {createdGroupOfIssues.ShortName} already exist");
+                throw new AlreadyExistException(Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithShortName(createdGroupOfIssues.ShortName));
 
             if (await _groupOfIssuesRepository.AnyOfGroupHasGivenNameAsync(createdGroupOfIssues.Name, organizationId))
-                throw new InvalidOperationException($"Group of issues with name: {createdGroupOfIssues.Name} already exist");
+                throw new AlreadyExistException(Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithName(createdGroupOfIssues.Name));
 
             var defaultStatusFlow = await _statusFlowRepository.GetDefaultStatusFlowAsync(organizationId);
             var statusNames = defaultStatusFlow.StatusesInFlow.Select(d => d.Name);

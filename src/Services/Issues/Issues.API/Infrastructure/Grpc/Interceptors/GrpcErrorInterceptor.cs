@@ -38,12 +38,16 @@ namespace Issues.API.Infrastructure.Grpc.Interceptors
             {
                 throw new RpcException(new Status(StatusCode.PermissionDenied, permissionDeniedException.Message));
             }
+            catch (AlreadyExistException akAlreadyExistException)
+            {
+                throw new RpcException(new Status(StatusCode.AlreadyExists, akAlreadyExistException.Message));
+            }
             catch (Exception ex)
             {
                 // Note: The gRPC framework also logs exceptions thrown by handlers to .NET Core logging.
-                _logger.LogError(ex, $"Error thrown by {context.Method}.");
+                _logger.LogError(ex, "Error thrown by {context.Method}. Exception:{ex}.", context.Method, ex);
 
-                throw new RpcException(Status.DefaultCancelled, ex.Message);
+                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
             }
         }
 

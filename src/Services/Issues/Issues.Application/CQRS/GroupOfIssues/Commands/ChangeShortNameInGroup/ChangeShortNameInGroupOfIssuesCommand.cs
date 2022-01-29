@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using MediatR;
 
@@ -39,7 +40,7 @@ namespace Issues.Application.CQRS.GroupOfIssues.Commands.ChangeShortNameInGroup
             var requestedGroup = await _groupOfIssuesRepository.GetGroupOfIssuesByIdAsync(request.Id);
             ValidateTypeWithRequestedParameters(requestedGroup, request);
 
-            requestedGroup.ChangeShortName(requestedGroup.ShortName);
+            requestedGroup.ChangeShortName(request.NewShortName);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
@@ -47,12 +48,10 @@ namespace Issues.Application.CQRS.GroupOfIssues.Commands.ChangeShortNameInGroup
 
         private void ValidateTypeWithRequestedParameters(Domain.GroupsOfIssues.GroupOfIssues group, ChangeShortNameInGroupOfIssuesCommand request)
         {
-            //TODO custom exceptions which return status codes for example there 404
             if (group is null)
-                throw new InvalidOperationException("Requested group was not found");
-
+                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.Id);
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Group of issue with id: {request.OrganizationId} was found and is not accessible for organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.Id, request.OrganizationId);
         }
     }
 }

@@ -33,13 +33,11 @@ namespace Issues.AcceptanceTests.Base
                     cb.AddJsonFile("Base/appsettings.json", optional: false)
                     .AddEnvironmentVariables();
                 }).UseStartup<IssuesTestStartup>()
-                .UseSerilog((c, s) =>
+                .ConfigureLogging(s =>
                 {
-                    s.MinimumLevel.Verbose();
-                    s.Enrich.FromLogContext();
-                    s.WriteTo.Console();
-                    s.ReadFrom.Configuration(c.Configuration);
-                    
+                    s.AddConsole();
+                    s.AddDebug();
+                    s.SetMinimumLevel(LogLevel.Trace);
                 });
 
             var testServer = new TestServer(hostBuilder);

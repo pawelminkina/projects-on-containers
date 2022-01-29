@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
 using Issues.Domain.StatusesFlow;
@@ -24,7 +25,8 @@ namespace Issues.Application.DomainEvents.GroupOfIssues
             var changedGroupOfIssues = notification.ChangedGroupOfIssues;
             var organizationId = changedGroupOfIssues.TypeOfGroup.OrganizationId;
             if (await _groupOfIssuesRepository.AnyOfGroupHasGivenNameAsync(changedGroupOfIssues.Name, organizationId))
-                throw new InvalidOperationException($"Group of issues with name: {changedGroupOfIssues.Name} already exist");
+                throw new AlreadyExistException(Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithName(changedGroupOfIssues.Name));
+
             changedGroupOfIssues.ConnectedStatusFlow.Rename(Domain.StatusesFlow.StatusFlow.GetNameWithGroupOfIssues(changedGroupOfIssues.Name));
         }
     }

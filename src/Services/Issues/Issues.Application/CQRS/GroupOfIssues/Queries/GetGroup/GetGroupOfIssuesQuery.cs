@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using MediatR;
 
@@ -36,12 +37,11 @@ namespace Issues.Application.CQRS.GroupOfIssues.Queries.GetGroup
 
         private void ValidateGroupWithRequestParameters(Domain.GroupsOfIssues.GroupOfIssues group, GetGroupOfIssuesQuery request)
         {
-            //TODO 404
             if (group is null)
-                throw new InvalidOperationException("Requested group was not found");
+                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.Id);
 
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Group of issues with id: {request.Id} was found and is not accessible for organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.Id, request.OrganizationId);
 
         }
     }

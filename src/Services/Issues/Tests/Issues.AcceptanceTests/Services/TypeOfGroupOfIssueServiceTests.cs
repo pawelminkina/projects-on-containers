@@ -126,7 +126,7 @@ namespace Issues.AcceptanceTests.Services
             var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.CreateTypeOfGroupOfIssuesAsync(createRequest));
 
             //THEN check errors status code
-            exception.Status.StatusCode.Should().Be(StatusCode.Internal);
+            exception.Status.StatusCode.Should().Be(StatusCode.AlreadyExists);
 
             //AND message
             var expectedErrorMessage = Domain.GroupsOfIssues.TypeOfGroupOfIssues.ErrorMessages.SomeTypeOfGroupAlreadyExistWithName(expectedToBeCreated.Name);
@@ -180,7 +180,7 @@ namespace Issues.AcceptanceTests.Services
             var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.RenameTypeOfGroupOfIssuesAsync(changeRequest));
 
             //THEN check errors status code
-            exception.Status.StatusCode.Should().Be(StatusCode.Internal);
+            exception.Status.StatusCode.Should().Be(StatusCode.AlreadyExists);
 
             //AND message
             var expectedErrorMessage = Domain.GroupsOfIssues.TypeOfGroupOfIssues.ErrorMessages.SomeTypeOfGroupAlreadyExistWithName(expectedName);

@@ -31,6 +31,7 @@ using Issues.Infrastructure.Processing;
 using Issues.Infrastructure.Repositories;
 using Issues.Infrastructure.Services.Files;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace Issues.API
 {
@@ -106,7 +107,6 @@ namespace Issues.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.UseRouting();
 
             app.UseAuthorization();

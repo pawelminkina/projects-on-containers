@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Exceptions;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
 using MediatR;
@@ -19,7 +20,7 @@ namespace Issues.Application.DomainEvents.TypeOfGroupOfIssues
         {
             var created = notification.CreatedTypeOfGroupOfIssues;
             if (await _repository.AnyOfTypeOfGroupHasGivenNameAsync(created.Name, created.OrganizationId))
-                throw new DomainException(Domain.GroupsOfIssues.TypeOfGroupOfIssues.ErrorMessages.SomeTypeOfGroupAlreadyExistWithName(created.Name));
+                throw new AlreadyExistException(Domain.GroupsOfIssues.TypeOfGroupOfIssues.ErrorMessages.SomeTypeOfGroupAlreadyExistWithName(created.Name));
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
 using MediatR;
@@ -23,7 +24,7 @@ namespace Issues.Application.DomainEvents.GroupOfIssues
         {
             var changedGroup = notification.ChangedGroupOfIssues;
             if (await _groupOfIssuesRepository.AnyOfGroupHasGivenShortNameAsync(changedGroup.ShortName, changedGroup.TypeOfGroup.OrganizationId))
-                throw new InvalidOperationException($"Group of issues with short name: {changedGroup.ShortName} already exist");
+                throw new AlreadyExistException(Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithShortName(changedGroup.ShortName));
         }
     }
 }

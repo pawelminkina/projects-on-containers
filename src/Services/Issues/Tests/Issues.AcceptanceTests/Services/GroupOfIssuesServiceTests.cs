@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsvHelper;
 using FluentAssertions;
+using Grpc.Core;
 using Issues.AcceptanceTests.Base;
 using Issues.API.Protos;
 using Microsoft.AspNetCore.TestHost;
@@ -23,6 +25,9 @@ namespace Issues.AcceptanceTests.Services
             var channel = GetGrpcChannel(_server);
             _grpcClient = new GroupOfIssueService.GroupOfIssueServiceClient(channel);
         }
+
+        #region Get All
+
 
         [Test]
         public async Task ShouldReturnGroupsOfIssues()
@@ -50,6 +55,10 @@ namespace Issues.AcceptanceTests.Services
             #endregion
         }
 
+        #endregion
+
+        #region Get Single
+
         [Test]
         public async Task ShouldReturnExpectedGroupOfIssues()
         {
@@ -57,7 +66,7 @@ namespace Issues.AcceptanceTests.Services
             var expected = GetExpectedGroupOfIssue();
 
             //WHEN group is retrieved from server
-            var request = new GetGroupOfIssuesRequest() {Id = expected.Id};
+            var request = new GetGroupOfIssuesRequest() { Id = expected.Id };
             var response = await _grpcClient.GetGroupOfIssuesAsync(request);
             var actual = response.Group;
 
@@ -72,6 +81,10 @@ namespace Issues.AcceptanceTests.Services
             #endregion
         }
 
+        #endregion
+
+        #region Create
+
         [Test]
         public async Task ShouldCreateGroupOfIssues()
         {
@@ -79,11 +92,11 @@ namespace Issues.AcceptanceTests.Services
             var expected = GetExpectedGroupOfIssue();
 
             //WHEN group is created
-            var createRequest = new CreateGroupOfIssuesRequest() {Name = expected.Name, ShortName = expected.ShortName, TypeOfGroupId = expected.TypeOfGroupId};
+            var createRequest = new CreateGroupOfIssuesRequest() { Name = expected.Name, ShortName = expected.ShortName, TypeOfGroupId = expected.TypeOfGroupId };
             var createResponse = await _grpcClient.CreateGroupOfIssuesAsync(createRequest);
 
             //AND retrieved from server
-            var getRequest = new GetGroupOfIssuesRequest() {Id = createResponse.Id};
+            var getRequest = new GetGroupOfIssuesRequest() { Id = createResponse.Id };
             var getResponse = await _grpcClient.GetGroupOfIssuesAsync(getRequest);
             var actual = getResponse.Group;
 
@@ -96,10 +109,65 @@ namespace Issues.AcceptanceTests.Services
             #region Local methods
 
             GroupOfIssue GetExpectedGroupOfIssue() =>
-                new() { Name = "Expected group of issue", ShortName = "EXCP", TypeOfGroupId = "001-001" };
+                new() { Name = "Expected group of issue", ShortName = "EXP", TypeOfGroupId = "001-001" };
 
             #endregion
         }
+
+        [Test]
+        public void ShouldNotCreateGroupOfIssuesBecauseAlreadyExistOneWithGivenName()
+        {
+            //GIVEN expected group of issues
+            var expectedToBeCreated = GetExpectedGroupOfIssue();
+
+            //WHEN item is created
+            var createRequest = new CreateGroupOfIssuesRequest() { Name = expectedToBeCreated.Name, ShortName = expectedToBeCreated.ShortName, TypeOfGroupId = expectedToBeCreated.TypeOfGroupId};
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.CreateGroupOfIssuesAsync(createRequest));
+
+            //THEN check errors status code
+            exception.Status.StatusCode.Should().Be(StatusCode.AlreadyExists);
+
+            //AND message
+            var expectedErrorMessage = Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithName(expectedToBeCreated.Name);
+            exception.Status.Detail.Should().Be(expectedErrorMessage);
+
+            #region Local methods
+
+            GroupOfIssue GetExpectedGroupOfIssue() =>
+                new() { Name = "Group Of Issues 1", ShortName = "EXP", TypeOfGroupId = "001-001" };
+
+            #endregion
+        }
+
+        [Test]
+        public void ShouldNotCreateGroupOfIssuesBecauseAlreadyExistOneWithGivenShortName()
+        {
+            //GIVEN expected group of issues
+            var expectedToBeCreated = GetExpectedGroupOfIssue();
+
+            //WHEN item is created
+            var createRequest = new CreateGroupOfIssuesRequest() { Name = expectedToBeCreated.Name, ShortName = expectedToBeCreated.ShortName, TypeOfGroupId = expectedToBeCreated.TypeOfGroupId };
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.CreateGroupOfIssuesAsync(createRequest));
+
+            //THEN check errors status code
+            exception.Status.StatusCode.Should().Be(StatusCode.AlreadyExists);
+
+            //AND message
+            var expectedErrorMessage = Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithShortName(expectedToBeCreated.ShortName);
+            exception.Status.Detail.Should().Be(expectedErrorMessage);
+
+            #region Local methods
+
+            GroupOfIssue GetExpectedGroupOfIssue() =>
+                new() { Name = "Expected group of issue", ShortName = "GOF1", TypeOfGroupId = "001-001" };
+
+            #endregion
+        }
+
+        #endregion
+
+
+        #region Rename
 
         [Test]
         public async Task ShouldRenameGroupOfIssues()
@@ -123,23 +191,122 @@ namespace Issues.AcceptanceTests.Services
             actualName.Should().Be(expectedName);
         }
 
-        //[Test]
-        //public async Task ShouldArchiveGroupOfIssue()
-        //{
-        //    //GIVEN group of issues to archive
-        //    var idToArchive = "002-002";
+        [Test]
+        public void ShouldNotRenameGroupOfIssuesBecauseAlreadyExistOneWithGivenName()
+        {
+            //GIVEN group of issues to change
+            var idToChange = "002-001";
 
-        //    //WHEN item is archived
-        //    var archiveRequest = new ArchiveGroupOfIssuesRequest() { Id = idToArchive };
-        //    var archiveResponse = await _grpcClient.ArchiveGroupOfIssuesAsync(archiveRequest);
+            //AND new name for this group
+            var expectedName = "Group Of Issues 2";
 
-        //    //AND retrieved from server
-        //    var getRequest = new GetGroupOfIssuesRequest() { Id = idToArchive };
-        //    var getResponse = await _grpcClient.GetGroupOfIssuesAsync(getRequest);
-        //    var actualArchiveStatus = getResponse.Group.IsArchived;
+            //WHEN items name is changed
+            var changeRequest = new RenameGroupOfIssuesRequest() { Id = idToChange, NewName = expectedName };
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.RenameGroupOfIssuesAsync(changeRequest));
 
-        //    //THEN check that item has been archived
-        //    actualArchiveStatus.Should().BeTrue();
-        //}
+            //THEN check errors status code
+            exception.Status.StatusCode.Should().Be(StatusCode.AlreadyExists);
+
+            //AND message
+            var expectedErrorMessage = Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithName(expectedName);
+            exception.Status.Detail.Should().Be(expectedErrorMessage);
+        }
+
+        #endregion
+
+
+        #region Change Short Name
+
+        [Test]
+        public async Task ShouldChangeShortNameForGroupOfIssues()
+        {
+            //GIVEN group of issues to change
+            var idToChange = "002-001";
+
+            //AND new short name for this group
+            var expectedShortName = "NSN";
+
+            //WHEN items short name is changed
+            var changeRequest = new ChangeShortNameForGroupOfIssuesRequest() { Id = idToChange, NewShortName= expectedShortName };
+            var changeResponse = await _grpcClient.ChangeShortNameForGroupOfIssuesAsync(changeRequest);
+
+            //AND retrieved from server
+            var getRequest = new GetGroupOfIssuesRequest() { Id = idToChange };
+            var getResponse = await _grpcClient.GetGroupOfIssuesAsync(getRequest);
+            var actualName = getResponse.Group.ShortName;
+
+            //THEN check that item has new name
+            actualName.Should().Be(expectedShortName);
+        }
+
+        [Test]
+        public void ShouldNotChangeShortNameOfGroupOfIssuesBecauseAlreadyExistOneWithGivenShortName()
+        {
+            //GIVEN group of issues to change
+            var idToChange = "002-001";
+
+            //AND new short name for this group
+            var expectedShortName = "GOF2";
+
+            //WHEN items short name is changed
+            var changeRequest = new ChangeShortNameForGroupOfIssuesRequest() { Id = idToChange, NewShortName= expectedShortName };
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.ChangeShortNameForGroupOfIssuesAsync(changeRequest));
+
+            //THEN check errors status code
+            exception.Status.StatusCode.Should().Be(StatusCode.AlreadyExists);
+
+            //AND message
+            var expectedErrorMessage = Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithShortName(expectedShortName);
+            exception.Status.Detail.Should().Be(expectedErrorMessage);
+        }
+
+        #endregion
+
+        #region Delete
+
+        [Test]
+        public async Task ShouldMoveGroupOfIssuesToThrash()
+        {
+            //GIVEN group of issues to delete
+            var idToDelete = "002-001";
+
+            //WHEN item is deleted
+            var deleteRequest = new DeleteGroupOfIssuesRequest() { Id = idToDelete};
+            var deleteResponse = await _grpcClient.DeleteGroupOfIssuesAsync(deleteRequest);
+
+            //AND retrieved from server
+            var getRequest = new GetGroupOfIssuesRequest() { Id = idToDelete };
+            var getResponse = await _grpcClient.GetGroupOfIssuesAsync(getRequest);
+            var deletedGroup = getResponse.Group;
+
+            //THEN check that item is in thrash
+            deletedGroup.IsInThrash.Should().Be(true);
+
+            //AND check that date of delete is today
+            deletedGroup.TimeOfDelete.ToDateTime().Date.Should().Be(DateTime.Today.Date);
+        }
+
+        [Test]
+        public async Task ShouldNotDeleteGroupOfIssuesBecauseItIsAlreadyDeleted()
+        {
+            //GIVEN group of issues to delete
+            var idToDelete = "002-001";
+
+            //WHEN item is deleted
+            var deleteRequest = new DeleteGroupOfIssuesRequest() { Id = idToDelete };
+            var deleteResponse = await _grpcClient.DeleteGroupOfIssuesAsync(deleteRequest);
+
+            //AND deleted again
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.DeleteGroupOfIssuesAsync(deleteRequest));
+
+            //THEN check errors status code
+            exception.Status.StatusCode.Should().Be(StatusCode.Internal);
+
+            //AND message
+            var expectedErrorMessage = Domain.GroupsOfIssues.TypeOfGroupOfIssues.ErrorMessages.CannotDeleteGroupWhichIsAlreadyDeleted(idToDelete);
+            exception.Status.Detail.Should().Be(expectedErrorMessage);
+        }
+
+        #endregion
     }
 }

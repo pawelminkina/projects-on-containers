@@ -4,6 +4,7 @@ using Issues.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Issues.Infrastructure.Migrations
 {
     [DbContext(typeof(IssuesServiceDbContext))]
-    partial class IssuesServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220129111008_assad")]
+    partial class assad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,10 +55,6 @@ namespace Issues.Infrastructure.Migrations
                         .HasColumnType("nvarchar(63)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("_connectedStatusFlowId")
-                        .IsUnique()
-                        .HasFilter("[_connectedStatusFlowId] IS NOT NULL");
 
                     b.HasIndex("_typeOfGroupId");
 
@@ -150,7 +148,14 @@ namespace Issues.Infrastructure.Migrations
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
+                    b.Property<string>("_connectedStatusFlowId")
+                        .HasColumnType("nvarchar(63)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("_connectedStatusFlowId")
+                        .IsUnique()
+                        .HasFilter("[_connectedStatusFlowId] IS NOT NULL");
 
                     b.ToTable("StatusFlows");
                 });
@@ -211,17 +216,11 @@ namespace Issues.Infrastructure.Migrations
 
             modelBuilder.Entity("Issues.Domain.GroupsOfIssues.GroupOfIssues", b =>
                 {
-                    b.HasOne("Issues.Domain.StatusesFlow.StatusFlow", "ConnectedStatusFlow")
-                        .WithOne("ConnectedGroupOfIssues")
-                        .HasForeignKey("Issues.Domain.GroupsOfIssues.GroupOfIssues", "_connectedStatusFlowId");
-
                     b.HasOne("Issues.Domain.GroupsOfIssues.TypeOfGroupOfIssues", "TypeOfGroup")
                         .WithMany("Groups")
                         .HasForeignKey("_typeOfGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ConnectedStatusFlow");
 
                     b.Navigation("TypeOfGroup");
                 });
@@ -263,6 +262,15 @@ namespace Issues.Infrastructure.Migrations
                     b.Navigation("StatusInFlow");
                 });
 
+            modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusFlow", b =>
+                {
+                    b.HasOne("Issues.Domain.GroupsOfIssues.GroupOfIssues", "ConnectedGroupOfIssues")
+                        .WithOne("ConnectedStatusFlow")
+                        .HasForeignKey("Issues.Domain.StatusesFlow.StatusFlow", "_connectedStatusFlowId");
+
+                    b.Navigation("ConnectedGroupOfIssues");
+                });
+
             modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusInFlow", b =>
                 {
                     b.HasOne("Issues.Domain.StatusesFlow.StatusFlow", "StatusFlow")
@@ -295,6 +303,8 @@ namespace Issues.Infrastructure.Migrations
 
             modelBuilder.Entity("Issues.Domain.GroupsOfIssues.GroupOfIssues", b =>
                 {
+                    b.Navigation("ConnectedStatusFlow");
+
                     b.Navigation("Issues");
                 });
 
@@ -305,8 +315,6 @@ namespace Issues.Infrastructure.Migrations
 
             modelBuilder.Entity("Issues.Domain.StatusesFlow.StatusFlow", b =>
                 {
-                    b.Navigation("ConnectedGroupOfIssues");
-
                     b.Navigation("StatusesInFlow");
                 });
 
