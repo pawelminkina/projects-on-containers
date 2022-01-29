@@ -38,9 +38,13 @@ namespace Issues.API.Infrastructure.Grpc.Interceptors
             {
                 throw new RpcException(new Status(StatusCode.PermissionDenied, permissionDeniedException.Message));
             }
-            catch (AlreadyExistException akAlreadyExistException)
+            catch (AlreadyExistException alreadyExistException)
             {
-                throw new RpcException(new Status(StatusCode.AlreadyExists, akAlreadyExistException.Message));
+                throw new RpcException(new Status(StatusCode.AlreadyExists, alreadyExistException.Message));
+            }
+            catch (InvalidArgumentException invalidArgumentException)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, invalidArgumentException.Message));
             }
             catch (Exception ex)
             {

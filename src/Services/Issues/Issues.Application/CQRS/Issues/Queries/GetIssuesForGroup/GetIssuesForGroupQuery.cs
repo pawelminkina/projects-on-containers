@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.Issues;
 using MediatR;
@@ -23,6 +24,7 @@ namespace Issues.Application.CQRS.Issues.Queries.GetIssuesForGroup
     
     public class GetIssuesForGroupQueryHandler : IRequestHandler<GetIssuesForGroupQuery, IEnumerable<Issue>>
     {
+        public string IssuesNotAvailableForDeletedGroupErrorMessage(string groupId) => $"Requested group with id: {groupId} is deleted";
         private readonly IGroupOfIssuesRepository _groupOfIssuesRepository;
 
         public GetIssuesForGroupQueryHandler(IGroupOfIssuesRepository groupOfIssuesRepository)
@@ -40,13 +42,13 @@ namespace Issues.Application.CQRS.Issues.Queries.GetIssuesForGroup
         private void ValidateGroupWithRequestParameters(Domain.GroupsOfIssues.GroupOfIssues group, GetIssuesForGroupQuery request)
         {
             if (group is null)
-                throw new InvalidOperationException($"Group of issues with id: {request.GroupId} was not found");
+                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.GroupId);
 
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Group of issues with id: {request.GroupId} was found and is not accessible for organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.GroupId, request.OrganizationId);
 
             if (group.IsDeleted)
-                throw new InvalidOperationException($"Requested group with id: {request.GroupId} is deleted");
+                throw new NotFoundException(IssuesNotAvailableForDeletedGroupErrorMessage(request.GroupId));
         }
     }
 }

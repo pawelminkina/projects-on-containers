@@ -4,3 +4,4 @@ Id,Name,CreatingUserId,IssueTextContent,GroupOfIssueId,TimeOfCreation,IsDeleted,
 003-003,Issue 3,BaseUserId2,Issue 3 content,002-002,12/22/2021,false,005-003
 003-004,Issue 4,BaseUserId2,Issue 4 content,002-002,12/22/2021,false,005-004
 003-005,Issue 5,BaseUserId,Issue 5 content,002-001,12/22/2021,false,005-002
+003-006,Issue 6,BaseUserId,Issue 6 content,002-004,12/22/2021,false,005-009

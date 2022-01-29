@@ -51,7 +51,7 @@ namespace Issues.API.GrpcServices
 
         public override async Task<GetIssueWithContentResponse> GetIssueWithContent(GetIssueWithContentRequest request, ServerCallContext context)
         {
-            var issue = await _mediator.Send(new GetIssueWithContentQuery(request.IssueId, context.GetOrganizationId()));
+            var issue = await _mediator.Send(new GetIssueWithContentQuery(request.Id, context.GetOrganizationId()));
             return new GetIssueWithContentResponse()
                 {Content = MapToIssueContent(issue.Content), Issue = MapToIssueReference(issue)};
         }
@@ -70,7 +70,7 @@ namespace Issues.API.GrpcServices
 
         public override async Task<UpdateIssueTextContentResponse> UpdateIssueTextContent(UpdateIssueTextContentRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new UpdateIssueTextContentCommand(request.IssueId, request.TextContent, context.GetOrganizationId()));
+            await _mediator.Send(new UpdateIssueTextContentCommand(request.Id, request.TextContent, context.GetOrganizationId()));
             return new UpdateIssueTextContentResponse();
         }
 

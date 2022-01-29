@@ -1,6 +1,7 @@
 ﻿using Architecture.DDD;
 using System;
 using System.Linq;
+using Architecture.DDD.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
 
@@ -53,14 +54,6 @@ namespace Issues.Domain.Issues
 
         private string _statusInFlowId;
         public StatusInFlow StatusInFlow { get; protected set; }
-        private IssueContent AddContent(string textContent)
-        {
-            if (Content != null)
-                throw new InvalidOperationException($"Content to issue with id: {Id} is already added");
-
-            Content = new IssueContent(textContent);
-            return Content;
-        }
 
         public void ChangeTextContent(string newTextContent)
         {
@@ -77,17 +70,34 @@ namespace Issues.Domain.Issues
 
         internal void SetIsDeletedToTrue()
         {
+            ValidateModifyOperation();
             IsDeleted = true;
         }
 
         private void ValidateModifyOperation()
         {
             if (IsDeleted)
-                throw new InvalidOperationException($"Issue with id: {Id} is already deleted so it could not be modified");
+                throw new DomainException(ErrorMessages.ModifyOperationFailedBecauseIssueIsDeleted(Id));
 
             if (GroupOfIssue.IsDeleted)
-                throw new InvalidOperationException($"Issue with id: {Id} is in group which is deleted, so it could not be modified");
+                throw new DomainException(ErrorMessages.IssueIsInDeleteGroup(GroupOfIssue.Id, Id));
+        }
 
+        private void AddContent(string textContent)
+        {
+            Content = new IssueContent(textContent);
+        }
+
+        public static class ErrorMessages
+        {
+            public static string RequestIssueToModifyIsNotInGivenGroup(string issueId, string groupId) =>
+                $"Requested issue to modify with id: {issueId} is not added in group with {groupId}";
+
+            public static string ModifyOperationFailedBecauseIssueIsDeleted(string id) =>
+                $"Modify operation failed because issue with Id: {id} is deleted";
+
+            public static string IssueIsInDeleteGroup(string groupId, string issueId) =>
+                $"Issue with id: {issueId} is in group with id: {groupId} which is deleted, so it could not be modified";
         }
     }
 }

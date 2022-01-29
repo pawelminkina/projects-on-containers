@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 
 namespace Issues.Application.Common.Exceptions
 {
-    public class AlreadyExistException : Exception
+    public class InvalidArgumentException : Exception
     {
-        public AlreadyExistException()
+        public InvalidArgumentException()
             : base()
         {
         }
 
-        public AlreadyExistException(string message)
+        public InvalidArgumentException(string message)
             : base(message)
         {
         }
 
-        public AlreadyExistException(string message, Exception innerException)
+        public InvalidArgumentException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
+
     }
 }

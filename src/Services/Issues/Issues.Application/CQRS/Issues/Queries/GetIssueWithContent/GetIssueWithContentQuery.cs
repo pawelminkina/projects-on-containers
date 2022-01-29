@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.Issues;
 using MediatR;
 
@@ -19,6 +20,8 @@ namespace Issues.Application.CQRS.Issues.Queries.GetIssueWithContent
 
     public class GetIssueWithContentQueryHandler : IRequestHandler<GetIssueWithContentQuery, Issue>
     {
+        public string IssuesNotAvailableForDeletedGroupErrorMessage(string groupId, string issueId) => $"Issue with id: {issueId} is in deleted group with id: {groupId}";
+
         private readonly IIssueRepository _issueRepository;
 
         public GetIssueWithContentQueryHandler(IIssueRepository issueRepository)
@@ -36,13 +39,13 @@ namespace Issues.Application.CQRS.Issues.Queries.GetIssueWithContent
         private void ValidateIssueWithRequestedParameters(Domain.Issues.Issue issue, GetIssueWithContentQuery request)
         {
             if (issue is null)
-                throw new InvalidOperationException($"Issue with id: {request.IssueId} was not found");
+                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.IssueId);
 
             if (issue.GroupOfIssue.TypeOfGroup.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Issue with id: {request.IssueId} was found and is not accessible for organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.IssueId, request.OrganizationId);
 
             if (issue.GroupOfIssue.IsDeleted)
-                throw new InvalidOperationException($"Issue with id: {request.IssueId} is in deleted group with id: {issue.GroupOfIssue.Id}");
+                throw new NotFoundException(IssuesNotAvailableForDeletedGroupErrorMessage(issue.GroupOfIssue.Id, request.IssueId));
         }
     }
 }

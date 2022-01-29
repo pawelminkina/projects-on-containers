@@ -59,7 +59,6 @@ namespace Issues.Domain.GroupsOfIssues
 
         public Issue AddIssue(string name, string creatingUserId, string textContent)
         {
-
             if (IsDeleted)
                 throw new DomainException(ErrorMessages.ModifyOperationFailedBecauseGroupOfIssuesIsDeleted(Id));
 
@@ -72,14 +71,7 @@ namespace Issues.Domain.GroupsOfIssues
         {
             var issueToRemove = _issues.FirstOrDefault(a => a.Id == issueId);
             if (issueToRemove is null)
-                throw new InvalidOperationException($"Requested issue to remove with id: {issueId} is not added in group with {Id}");
-
-            if (IsDeleted)
-                throw new DomainException(ErrorMessages.ModifyOperationFailedBecauseGroupOfIssuesIsDeleted(Id));
-
-            if (issueToRemove.IsDeleted)
-                throw new InvalidOperationException($"Delete operation failed because issue with Id: {Id} is already deleted");
-
+                throw new DomainException(Issue.ErrorMessages.RequestIssueToModifyIsNotInGivenGroup(issueId, this.Id));
 
             issueToRemove.SetIsDeletedToTrue();
         }

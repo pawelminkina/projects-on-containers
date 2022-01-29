@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.Issues;
 using MediatR;
 
@@ -43,10 +44,10 @@ namespace Issues.Application.CQRS.Issues.Commands.UpdateIssueContent
         private void ValidateIssueWithRequestedParameters(Domain.Issues.Issue issue, UpdateIssueTextContentCommand request)
         {
             if (issue is null)
-                throw new InvalidOperationException($"Issue with id: {request.IssueId} was not found");
+                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.IssueId);
 
             if (issue.GroupOfIssue.TypeOfGroup.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Issue with id: {request.IssueId} was found and is not accessible for organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(issue.GroupOfIssue.TypeOfGroup.OrganizationId, request.OrganizationId);
         }
     }
 }

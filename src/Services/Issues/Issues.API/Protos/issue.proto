@@ -21,7 +21,7 @@ message DeleteIssueResponse{
 }
 
 message GetIssueWithContentRequest{
-	string issueId = 1;
+	string id = 1;
 }
 
 message GetIssueWithContentResponse{
@@ -64,7 +64,7 @@ message RenameIssueRequest{
 message RenameIssueResponse{}
 
 message UpdateIssueTextContentRequest{
-	string issueId = 1;
+	string id = 1;
 	string textContent = 2;
 }
 
