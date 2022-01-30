@@ -47,7 +47,7 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.AddConnection
                 throw new InvalidOperationException($"Connected status in flow with given id: {request.ParentStatusInFlowId} does not exist");
             ValidateStatusInFlowWithRequestedParameters(parentStatusInFlow, request);
             
-            parentStatusInFlow.AddConnectedStatus(connectedStatusInFlow, StatusInFlowDirection.Out);
+            parentStatusInFlow.AddConnectedStatus(connectedStatusInFlow);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;

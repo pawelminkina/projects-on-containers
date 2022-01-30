@@ -1,10 +1,8 @@
 ﻿using Architecture.DDD;
+using Issues.Domain.StatusesFlow.DomainEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Issues.Domain.StatusesFlow.DomainEvents;
 
 namespace Issues.Domain.StatusesFlow
 {
@@ -40,36 +38,33 @@ namespace Issues.Domain.StatusesFlow
 
         public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
 
-        public void AddConnectedStatus(StatusInFlow status, StatusInFlowDirection direction)
+        public void AddConnectedStatus(StatusInFlow status)
         {
             if (status == null)
                 throw new InvalidOperationException("Given status to add is null");
 
-            if (ConnectedStatuses.Any(s=> s.ConnectedStatusInFlow.Id == status.Id && s.Direction == direction))
+            if (ConnectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == status.Id))
                 throw new InvalidOperationException(
-                    $"Status with connectedStatusId: {status.Id} is already added to connected statuses where status in flow has connectedStatusId: {Id} with direction of connection: {direction.ToString()}");
+                    $"Status with connectedStatusId: {status.Id} is already added to connected statuses where status in flow has connectedStatusId: {Id}");
 
             if (status.StatusFlow.Id != StatusFlow.Id)
                 throw new InvalidOperationException("Given status in flow to connect is in different status flow");
 
-            var connectedStatus = new StatusInFlowConnection(this, direction, status);
+            var connectedStatus = new StatusInFlowConnection(this, status);
             ConnectedStatuses.Add(connectedStatus);
-            AddDomainEvent(new ConnectedStatusAddedDomainEvent(connectedStatus));
         }
 
-        public void DeleteConnectedStatus(StatusInFlow status, params StatusInFlowDirection[] directions)
+        public void DeleteConnectedStatus(StatusInFlow status)
         {
             if (status is null)
                 throw new InvalidOperationException("Given status to delete is null");
 
-            foreach (var connectionToDelete in directions.Select(direction => ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id && s.Direction == direction)))
-            {
-                if (connectionToDelete == null)
-                    continue; //already removed
+            var connectionToDelete = ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id);
+            if (connectionToDelete is null)
+                throw new InvalidOperationException($"There is no connection between parent status with id: {Id} and connected with id: {status.Id}");
+            
+            ConnectedStatuses.Remove(connectionToDelete);
 
-                ConnectedStatuses.Remove(connectionToDelete);
-                AddDomainEvent(new ConnectedStatusRemovedDomainEvent(connectionToDelete));
-            }
         }
 
         public void SetDefaultToTrue()

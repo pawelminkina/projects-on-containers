@@ -14,14 +14,12 @@ namespace Issues.Application.DomainEvents.StatusInFlow
     {
         public async Task Handle(StatusInFlowDeletedDomainEvent notification, CancellationToken cancellationToken)
         {
-            foreach (var statusInFlow in notification.StatusInFlow.ConnectedStatuses)
+
+            foreach (var statusInFlow in notification.StatusInFlow.StatusFlow.StatusesInFlow)
             {
-                statusInFlow.ConnectedStatusInFlow.DeleteConnectedStatus(notification.StatusInFlow, GetOppositeDirection(statusInFlow.Direction));
+                if (statusInFlow.ConnectedStatuses.Any(s=>s.ConnectedStatusInFlow.Id == notification.StatusInFlow.Id))
+                    statusInFlow.DeleteConnectedStatus(notification.StatusInFlow);
             }
         }
-
-        private static StatusInFlowDirection GetOppositeDirection(StatusInFlowDirection direction) =>
-            direction == StatusInFlowDirection.In ? StatusInFlowDirection.Out : StatusInFlowDirection.In;
-
     }
 }

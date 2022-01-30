@@ -29,7 +29,7 @@ namespace Issues.Domain
         public static StatusInFlow CreateStatusInFlow(string id, string statusFlowId, string name, bool isDefault) =>
             StatusInFlow.CreateWholeObject(id,statusFlowId,name,isDefault);
 
-        public static StatusInFlowConnection CreateStatusInFlowConnection(string id, string parentId, string connectedId, StatusInFlowDirection direction) =>
-            StatusInFlowConnection.CreateWholeObject(id,parentId,connectedId,direction);
+        public static StatusInFlowConnection CreateStatusInFlowConnection(string id, string parentId, string connectedId) =>
+            StatusInFlowConnection.CreateWholeObject(id,parentId,connectedId);
     }
 }

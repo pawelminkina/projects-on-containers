@@ -12,6 +12,5 @@ namespace Issues.Application.Common.Models.Files.Csv
         public string Id { get; set; }
         public string ParentStatusInFlowId { get; set; }
         public string ConnectedStatusInFlowId { get; set; }
-        public StatusInFlowDirection Direction { get; set; }
     }
 }

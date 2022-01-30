@@ -101,10 +101,5 @@ message StatusInFlow{
 message ConnectedStatuses{
 	string parentStatusInFlowIdId = 1;
 	string connectedStatusInFlowId = 2;
-	enum Direction {
-		In = 0;
-		Out = 1;
-	}
-	Direction directionOfStatus = 3;
 }
 

@@ -90,7 +90,7 @@ namespace Issues.Infrastructure.Services.Files
                 return WholeEntityObjectCreator.CreateStatusInFlow(statusInFlow.Id,statusInFlow.StatusFlowId,statusInFlow.Name,statusInFlow.IsDefault);
 
             else if (recordAsCsvDto is StatusInFlowConnectionCsvDto statusInFlowConnection)
-                return WholeEntityObjectCreator.CreateStatusInFlowConnection(statusInFlowConnection.Id,statusInFlowConnection.ParentStatusInFlowId,statusInFlowConnection.ConnectedStatusInFlowId,statusInFlowConnection.Direction);
+                return WholeEntityObjectCreator.CreateStatusInFlowConnection(statusInFlowConnection.Id,statusInFlowConnection.ParentStatusInFlowId,statusInFlowConnection.ConnectedStatusInFlowId);
 
             throw new InvalidOperationException($"Requested type of entity: {recordAsCsvDto.GetType()} has no mapping added");
         }

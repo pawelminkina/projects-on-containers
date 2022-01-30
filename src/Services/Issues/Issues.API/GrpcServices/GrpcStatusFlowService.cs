@@ -106,15 +106,9 @@ namespace Issues.API.GrpcServices
                 {
                     ConnectedStatusInFlowId = d.ConnectedStatusInFlow.Id,
                     ParentStatusInFlowIdId = d.ParentStatusInFlow.Id,
-                    DirectionOfStatus = MapToProtoDirection(d.Direction)
                 }));
                 
             return res;
         }
-
-        private ConnectedStatuses.Types.Direction MapToProtoDirection(StatusInFlowDirection direction) =>
-            direction == StatusInFlowDirection.In
-                ? ConnectedStatuses.Types.Direction.In
-                : ConnectedStatuses.Types.Direction.Out;
     }
 }

@@ -46,7 +46,7 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.RemoveConnection
                 throw new InvalidOperationException($"Connected status in flow with given id: {request.ParentStatusInFlowId} does not exist");
             ValidateStatusInFlowWithRequestedParameters(parentStatusInFlow, request);
 
-            parentStatusInFlow.DeleteConnectedStatus(connectedStatusInFlow, StatusInFlowDirection.Out);
+            parentStatusInFlow.DeleteConnectedStatus(connectedStatusInFlow);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
