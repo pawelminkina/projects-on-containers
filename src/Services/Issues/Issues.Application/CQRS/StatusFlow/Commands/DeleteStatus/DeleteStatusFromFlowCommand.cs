@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.StatusesFlow;
 using MediatR;
 
@@ -37,7 +38,8 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.DeleteStatus
             var statusToDelete = await _statusFlowRepository.GetStatusInFlowById(request.StatusInFlowId);
             ValidateStatusInFlowWithRequestedParameters(statusToDelete, request);
 
-            statusToDelete.StatusFlow.DeleteStatusFromFlow(request.StatusInFlowId);
+            var statusFlow = await _statusFlowRepository.GetFlowById(statusToDelete.StatusFlow.Id);
+            statusFlow.DeleteStatusFromFlow(request.StatusInFlowId);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
@@ -46,10 +48,10 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.DeleteStatus
         private void ValidateStatusInFlowWithRequestedParameters(Domain.StatusesFlow.StatusInFlow statusInFlow, DeleteStatusFromFlowCommand request)
         {
             if (statusInFlow is null)
-                throw new InvalidOperationException($"Status in flow with given id: {request.StatusInFlowId} does not exist");
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.StatusInFlowId);
 
             if (statusInFlow.StatusFlow.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Status in flow with given id: {statusInFlow.Id} is not assigned to organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.StatusInFlowId, request.OrganizationId);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Issues.Application.CQRS.GroupOfIssues.Commands.ChangeShortNameInGroup
         private void ValidateTypeWithRequestedParameters(Domain.GroupsOfIssues.GroupOfIssues group, ChangeShortNameInGroupOfIssuesCommand request)
         {
             if (group is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.Id);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.Id);
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.Id, request.OrganizationId);
         }

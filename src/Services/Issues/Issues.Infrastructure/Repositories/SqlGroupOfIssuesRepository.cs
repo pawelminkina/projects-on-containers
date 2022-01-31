@@ -28,9 +28,9 @@ namespace Issues.Infrastructure.Repositories
             return await _dbContext.TypesOfGroupsOfIssues.Include(d=>d.Groups).FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<IEnumerable<TypeOfGroupOfIssues>> GetTypeOfGroupOfIssuesForOrganizationAsync(string organizationId)
+        public Task<IEnumerable<TypeOfGroupOfIssues>> GetTypeOfGroupOfIssuesForOrganizationAsync(string organizationId)
         {
-            return _dbContext.TypesOfGroupsOfIssues.Include(d=>d.Groups).Where(s => s.OrganizationId == organizationId);
+            return Task.FromResult(_dbContext.TypesOfGroupsOfIssues.Include(d=>d.Groups).Where(s => s.OrganizationId == organizationId).AsEnumerable());
         }
 
         public async Task DeleteTypeOfGroupOfIssuesAsync(string id)
@@ -38,24 +38,24 @@ namespace Issues.Infrastructure.Repositories
             _dbContext.TypesOfGroupsOfIssues.Remove(await GetTypeOfGroupOfIssuesByIdAsync(id));
         }
 
-        public async Task<bool> AnyOfTypeOfGroupHasGivenNameAsync(string name, string organizationId)
+        public Task<bool> AnyOfTypeOfGroupHasGivenNameAsync(string name, string organizationId)
         {
-            return _dbContext.TypesOfGroupsOfIssues.Any(s => s.OrganizationId == organizationId && s.Name == name);
+            return Task.FromResult(_dbContext.TypesOfGroupsOfIssues.Any(s => s.OrganizationId == organizationId && s.Name == name));
         }
 
         public async Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id)
         {
-            return await _dbContext.GroupsOfIssues.Include(d=>d.TypeOfGroup).Include(s => s.Issues).Include(d=>d.ConnectedStatusFlow).ThenInclude(d=>d.StatusesInFlow).FirstOrDefaultAsync(s => s.Id == id);
+            return await _dbContext.GroupsOfIssues.Include(d=>d.TypeOfGroup).Include(s => s.Issues).Include(d=>d.ConnectedStatusFlow).ThenInclude(d=>d.StatusesInFlow).ThenInclude(s=>s.ConnectedStatuses).FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task<bool> AnyOfGroupHasGivenShortNameAsync(string shortName, string organizationId)
+        public Task<bool> AnyOfGroupHasGivenShortNameAsync(string shortName, string organizationId)
         {
-            return _dbContext.GroupsOfIssues.Any(s => s.TypeOfGroup.OrganizationId == organizationId && s.ShortName == shortName);
+            return Task.FromResult(_dbContext.GroupsOfIssues.Any(s => s.TypeOfGroup.OrganizationId == organizationId && s.ShortName == shortName));
         }
 
-        public async Task<bool> AnyOfGroupHasGivenNameAsync(string name, string organizationId)
+        public Task<bool> AnyOfGroupHasGivenNameAsync(string name, string organizationId)
         {
-            return _dbContext.GroupsOfIssues.Any(s => s.TypeOfGroup.OrganizationId == organizationId && s.Name == name);
+            return Task.FromResult(_dbContext.GroupsOfIssues.Any(s => s.TypeOfGroup.OrganizationId == organizationId && s.Name == name));
         }
     }
 }

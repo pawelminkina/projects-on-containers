@@ -44,10 +44,6 @@ namespace Issues.API.GrpcServices
         public override async Task<GetStatusFlowResponse> GetStatusFlow(GetStatusFlowRequest request, ServerCallContext context)
         {
             var flow = await _mediator.Send(new GetFlowQuery(request.Id, context.GetOrganizationId()));
-
-            if (flow is null)
-                throw new RpcException(new Status(StatusCode.NotFound, $"Flow with id: {request.Id} was not found"));
-
             return new GetStatusFlowResponse() {Flow = MapToGrpcFlow(flow)};
         }
 
@@ -59,8 +55,8 @@ namespace Issues.API.GrpcServices
 
         public override async Task<AddStatusToFlowResponse> AddStatusToFlow(AddStatusToFlowRequest request, ServerCallContext context)
         {
-            await _mediator.Send(new AddStatusToFlowCommand(request.FlowId, request.StatusName, context.GetOrganizationId()));
-            return new AddStatusToFlowResponse();
+            var statusId = await _mediator.Send(new AddStatusToFlowCommand(request.FlowId, request.StatusName, context.GetOrganizationId()));
+            return new AddStatusToFlowResponse() {StatusId = statusId};
         }
 
         public override async Task<DeleteStatusFromFlowResponse> DeleteStatusFromFlow(DeleteStatusFromFlowRequest request, ServerCallContext context)
@@ -86,7 +82,8 @@ namespace Issues.API.GrpcServices
             var res = new StatusFlow()
             {
                 Id = flow.Id,
-                Name = flow.Name
+                Name = flow.Name,
+                IsDefault = flow.IsDefault
             };
             if (flow.StatusesInFlow.Any())
                 res.Statuses.AddRange(flow.StatusesInFlow.Select(MapToGrpcStatusInFlow));

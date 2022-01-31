@@ -50,7 +50,7 @@ namespace Issues.Application.CQRS.GroupOfIssues.Commands.RenameGroup
         private void ValidateTypeWithRequestedParameters(Domain.GroupsOfIssues.GroupOfIssues group, RenameGroupOfIssuesCommand request)
         {
             if (group is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.GroupId);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.GroupId);
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.GroupId, request.OrganizationId);
         }

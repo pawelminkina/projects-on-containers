@@ -210,7 +210,7 @@ namespace Issues.AcceptanceTests.Services
             exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
 
             //AND message
-            exception.Status.Detail.Should().Be(NotFoundException.RequestedResourceWithIdDoWasNotFound(idToDelete).Message);
+            exception.Status.Detail.Should().Be(NotFoundException.RequestedResourceWithIdWasNotFound(idToDelete).Message);
         }
 
         #endregion

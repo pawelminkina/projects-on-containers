@@ -36,9 +36,6 @@ namespace Issues.API.GrpcServices
         public override async Task<GetTypeOfGroupOfIssuesResponse> GetTypeOfGroupOfIssues(GetTypeOfGroupOfIssuesRequest request, ServerCallContext context)
         {
             var typeOfGroupOfIssues = await _mediator.Send(new GetTypeOfGroupOfIssuesQuery(request.Id, context.GetOrganizationId()));
-            if (typeOfGroupOfIssues is null)
-                throw new RpcException(new Status(StatusCode.NotFound, $"Type of group of issues with id: {request.Id} was not found"));
-
             return new GetTypeOfGroupOfIssuesResponse() {TypeOfGroup = MapToTypeOfGroupOfIssues(typeOfGroupOfIssues)};
         }
 

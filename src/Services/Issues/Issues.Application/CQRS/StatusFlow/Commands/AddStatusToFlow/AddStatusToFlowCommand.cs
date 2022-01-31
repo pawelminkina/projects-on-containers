@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.StatusesFlow;
 using MediatR;
 
@@ -48,10 +49,10 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.AddStatusToFlow
         private void ValidateStatusInFlowWithRequestedParameters(Domain.StatusesFlow.StatusFlow statusFlow, AddStatusToFlowCommand request)
         {
             if (statusFlow is null)
-                throw new InvalidOperationException($"Status flow with given id: {request.StatusFlowId} does not exist");
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.StatusFlowId);
 
             if (statusFlow.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Status flow with given id: {statusFlow.Id} is not assigned to organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.StatusFlowId, request.OrganizationId);
         }
     }
 }

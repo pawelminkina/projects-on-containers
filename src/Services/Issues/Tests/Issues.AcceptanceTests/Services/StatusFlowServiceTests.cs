@@ -26,6 +26,8 @@ namespace Issues.AcceptanceTests.Services
             _grpcClient = new StatusFlowService.StatusFlowServiceClient(channel);
         }
 
+        #region Get all
+
         [Test]
         public async Task ShouldReturnStatusFlows()
         {
@@ -51,120 +53,155 @@ namespace Issues.AcceptanceTests.Services
             #endregion
         }
 
+        #endregion
+
+        #region Get Single
+
         [Test]
         public async Task ShouldReturnStatusFlow()
         {
             //GIVEN expected status flow
+            var expected = GetExpectedStatusFlow();
 
             //WHEN flow is retrieved from server
+            var getRequest = new GetStatusFlowRequest() {Id = expected.Id};
+            var getResponse = await _grpcClient.GetStatusFlowAsync(getRequest);
 
             //THEN check equality of expected and actual item
+            getResponse.Flow.Should().BeEquivalentTo(expected);
 
-            Assert.Fail();
+            #region Local methods
+
+            StatusFlow GetExpectedStatusFlow() => GetStatusFlowWithId004002(); 
+
+            #endregion
         }
 
         [Test]
-        public async Task ShouldCreateStatusFlow()
+        public async Task ShouldReturnStatusFlowForGroupOfIssues()
         {
-            //GIVEN expected status flow to create
+            //GIVEN group of issues
+            var groupOfIssuesId = "002-002";
 
-            //WHEN flow is created
+            //AND expected status flow
+            var expected = GetExpectedStatusFlow();
 
-            //AND id of created flow is assigned to expected flow
-
-            //AND flow is retrieved from server
+            //WHEN flow is retrieved from server
+            var getRequest = new GetStatusFlowForGroupOfIssuesRequest() { GroupOfIssuesId = groupOfIssuesId};
+            var getResponse = await _grpcClient.GetStatusFlowForGroupOfIssuesAsync(getRequest);
 
             //THEN check equality of expected and actual item
+            getResponse.Flow.Should().BeEquivalentTo(expected);
 
-            Assert.Fail();
+            #region Local methods
 
+            StatusFlow GetExpectedStatusFlow() => GetStatusFlowWithId004002();
+
+            #endregion
         }
 
-        [Test]
-        public async Task ShouldRemoveStatusFlow()
-        {
-            //GIVEN status flow to remove
-
-            //WHEN status flow is removed
-
-            //AND is retrieved from server
-
-            //THEN returned status flow should be null
-            Assert.Fail();
-
-            //TODO should he? Shouldn't he be set to isDeleted or smth?
-        }
-
-        public async Task ShouldRenameStatusFlow()
-        {
-            //GIVEN status flow to rename
-
-            //AND new name for status flow
-
-            //WHEN status is renamed
-
-            //AND retrieved from server
-
-            Assert.Fail();
-            //THEN check equality of actual and expected status flow name
-        }
-
-        //TODO I think it should be another service for this methods
+        #endregion
 
         [Test]
         public async Task ShouldAddStatusToFlow()
         {
             //GIVEN status to add
+            var expectedName = "New status";
 
             //AND status flow in which status will be added
+            var statusFlow = "004-002";
 
             //WHEN status is added to flow
-
+            var addStatusRequest = new AddStatusToFlowRequest() {FlowId = statusFlow, StatusName = expectedName};
+            var addStatusResponse = await _grpcClient.AddStatusToFlowAsync(addStatusRequest);
+            
             //AND flow is retrieved from server
-            Assert.Fail();
+            var getRequest = new GetStatusFlowRequest() { Id = statusFlow };
+            var getResponse = await _grpcClient.GetStatusFlowAsync(getRequest);
 
             //THEN check does flow contain added status
+            getResponse.Flow.Statuses.Should().HaveCount(3);
+            getResponse.Flow.Statuses.Should().Contain(s => s.Name == expectedName);
         }
 
         [Test]
-        public async Task ShouldRemoveStatusFromFlow()
+        public async Task ShouldDeleteStatusFromFlowAndAllHisConnections()
         {
-            //GIVEN status to remove
+            //GIVEN status to delete
+            var statusToDelete = "005-004";
 
-            //AND status flow from status will be removed
+            //AND status flow in which status will be deleted
+            var statusFlow = "004-002";
 
             //WHEN status is removed from flow
+            var deleteStatusRequest = new DeleteStatusFromFlowRequest() {StatusInFlowId = statusToDelete};
+            var deleteStatusResponse = await _grpcClient.DeleteStatusFromFlowAsync(deleteStatusRequest);
 
             //AND flow is retrieved from server
-            Assert.Fail();
+            var getRequest = new GetStatusFlowRequest() { Id = statusFlow };
+            var getResponse = await _grpcClient.GetStatusFlowAsync(getRequest);
 
             //THEN check does flow contain removed status
+            getResponse.Flow.Statuses.Should().HaveCount(1).And.Contain(s => s.Name == "To do");
+
+            //AND that none of statuses contain connection to delete status
+            getResponse.Flow.Statuses.Should().NotContain(s=>s.ConnectedStatuses.Any(d=>d.ConnectedStatusInFlowId == statusToDelete));
         }
 
         [Test]
         public async Task ShouldAddConnectionToStatusInFlow()
         {
-            //GIVEN connection in flow to add
+            //GIVEN parent status which is connecting
+            var parentStatus = "005-011";
+
+            //AND connected status to which connection is going
+            var connectedStatus = "005-006";
+
+            //AND flow in which connection will be added
+            var statusFlow = "004-003";
 
             //WHEN connection is added to flow
+            var addConnectionRequest = new AddConnectionToStatusInFlowRequest() {ParentStatusinFlowId = parentStatus, ConnectedStatusInFlowId = connectedStatus};
+            var addConnectionResponse = await _grpcClient.AddConnectionToStatusInFlowAsync(addConnectionRequest);
 
             //AND flow is retrieved from server
-            Assert.Fail();
+            var getRequest = new GetStatusFlowRequest() { Id = statusFlow };
+            var getResponse = await _grpcClient.GetStatusFlowAsync(getRequest);
+
+            //AND status on which add connection operation was performed is retrieved from flow
+            var actualStatus = getResponse.Flow.Statuses.FirstOrDefault(s => s.Id == parentStatus);
 
             //THEN check does flow contain added connection
+            actualStatus.Should().NotBeNull();
+            actualStatus.ConnectedStatuses.Should().HaveCount(1);
+            actualStatus.ConnectedStatuses.First().ConnectedStatusInFlowId.Should().Be(connectedStatus);
         }
 
         [Test]
-        public async Task ShouldRemoveconnectionFromStatusInFlow()
+        public async Task ShouldRemoveConnectionFromStatusInFlow()
         {
-            //GIVEN connection in flow to remove
+            //GIVEN parent status which is connecting
+            var parentStatus = "005-005";
+
+            //AND connected status to which connection is going
+            var connectedStatus = "005-006";
+
+            //AND flow in which connection will be removed
+            var statusFlow = "004-003";
 
             //WHEN connection is removed from flow
+            var removeConnectionRequest = new RemoveConnectionFromStatusInFlowRequest() {ConnectedStatusInFlowId = connectedStatus, ParentStatusinFlowId = parentStatus};
+            var removeConnectionResponse = await _grpcClient.RemoveConnectionFromStatusInFlowAsync(removeConnectionRequest);
 
             //AND flow is retrieved from server
-            Assert.Fail();
+            var getRequest = new GetStatusFlowRequest() { Id = statusFlow };
+            var getResponse = await _grpcClient.GetStatusFlowAsync(getRequest);
+
+            //AND status on which remove connection operation was performed is retrieved from flow
+            var actualStatus = getResponse.Flow.Statuses.FirstOrDefault(d => d.Id == parentStatus);
 
             //THEN check does flow contain removed connection
+            actualStatus.ConnectedStatuses.Should().BeEmpty();
         }
 
         #region Data from csv
@@ -191,7 +228,8 @@ namespace Issues.AcceptanceTests.Services
                 GrpcStatusInFlowFactory.Create("005-006", "Done", new List<ConnectedStatuses>()
                 {
                     new() {ConnectedStatusInFlowId = "005-005", ParentStatusInFlowIdId = "005-006"},
-                })
+                }),
+                GrpcStatusInFlowFactory.Create("005-011", "Some status", new List<ConnectedStatuses>())
             });
         private StatusFlow GetStatusFlowWithId004004() =>
             GrpcStatusFlowFactory.Create("004-004", "Status Flow 4", new List<StatusInFlow>()
@@ -204,7 +242,7 @@ namespace Issues.AcceptanceTests.Services
                 {
                     new() {ConnectedStatusInFlowId = "005-007", ParentStatusInFlowIdId = "005-008"},
                 })
-            });
+            }, true);
 
 
         #endregion

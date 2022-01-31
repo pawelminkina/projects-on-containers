@@ -47,7 +47,7 @@ namespace Issues.Application.CQRS.Issues.Commands.DeleteIssue
         private void ValidateIssueWithRequestedParameters(Issue issue, DeleteIssueCommand request)
         {
             if (issue is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.IssueId);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.IssueId);
 
             if (issue.GroupOfIssue.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(issue.GroupOfIssue.TypeOfGroup.OrganizationId, request.OrganizationId);

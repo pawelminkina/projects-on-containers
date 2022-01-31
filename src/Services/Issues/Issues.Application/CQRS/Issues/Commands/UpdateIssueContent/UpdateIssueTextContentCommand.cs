@@ -44,7 +44,7 @@ namespace Issues.Application.CQRS.Issues.Commands.UpdateIssueContent
         private void ValidateIssueWithRequestedParameters(Domain.Issues.Issue issue, UpdateIssueTextContentCommand request)
         {
             if (issue is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.IssueId);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.IssueId);
 
             if (issue.GroupOfIssue.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(issue.GroupOfIssue.TypeOfGroup.OrganizationId, request.OrganizationId);

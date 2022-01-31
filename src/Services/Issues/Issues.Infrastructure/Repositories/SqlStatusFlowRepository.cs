@@ -30,17 +30,18 @@ namespace Issues.Infrastructure.Repositories
         public Task<StatusInFlow> GetStatusInFlowById(string id)
         {
             return Task.FromResult(_dbContext.StatusesInFlow.Include(s => s.ConnectedStatuses).ThenInclude(d => d.ConnectedStatusInFlow)
+                .Include(d=>d.StatusFlow)
                 .FirstOrDefault(s => s.Id == id));
         }
 
-        public async Task<IEnumerable<StatusFlow>> GetFlowsByOrganizationAsync(string organizationId)
+        public Task<IEnumerable<StatusFlow>> GetFlowsByOrganizationAsync(string organizationId)
         {
-            return GetFlowsWithInclude().Where(s => s.OrganizationId == organizationId);
+            return Task.FromResult(GetFlowsWithInclude().Where(s => s.OrganizationId == organizationId).AsEnumerable());
         }
 
-        public async Task<StatusFlow> GetDefaultStatusFlowAsync(string organizationId)
+        public Task<StatusFlow> GetDefaultStatusFlowAsync(string organizationId)
         {
-            return GetFlowsWithInclude().FirstOrDefault(d => d.OrganizationId == organizationId && d.IsDefault);
+            return Task.FromResult(GetFlowsWithInclude().FirstOrDefault(d => d.OrganizationId == organizationId && d.IsDefault));
         }
 
         private IIncludableQueryable<StatusFlow, TypeOfGroupOfIssues> GetFlowsWithInclude() =>

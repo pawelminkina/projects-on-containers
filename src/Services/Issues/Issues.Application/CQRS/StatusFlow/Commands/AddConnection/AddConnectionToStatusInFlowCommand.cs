@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Repositories;
 using FluentValidation.Validators;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.StatusesFlow;
 using MediatR;
 
@@ -38,13 +39,17 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.AddConnection
         public async Task<Unit> Handle(AddConnectionToStatusInFlowCommand request, CancellationToken cancellationToken)
         {
             var connectedStatusInFlow = await _statusFlowRepository.GetStatusInFlowById(request.ConnectedStatusInFlowId);
+
             if (connectedStatusInFlow is null)
-                throw new InvalidOperationException($"Connected status in flow with given id: {request.ConnectedStatusInFlowId} does not exist");
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.ConnectedStatusInFlowId);
+
             ValidateStatusInFlowWithRequestedParameters(connectedStatusInFlow, request);
 
             var parentStatusInFlow = await _statusFlowRepository.GetStatusInFlowById(request.ParentStatusInFlowId);
+            
             if (parentStatusInFlow is null)
-                throw new InvalidOperationException($"Connected status in flow with given id: {request.ParentStatusInFlowId} does not exist");
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.ParentStatusInFlowId);
+
             ValidateStatusInFlowWithRequestedParameters(parentStatusInFlow, request);
             
             parentStatusInFlow.AddConnectedStatus(connectedStatusInFlow);
@@ -56,7 +61,7 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.AddConnection
         private void ValidateStatusInFlowWithRequestedParameters(Domain.StatusesFlow.StatusInFlow statusInFlow, AddConnectionToStatusInFlowCommand request)
         {
             if (statusInFlow.StatusFlow.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Status in flow with given id: {statusInFlow.Id} is not assigned to organization with id: {request.OrganizationId}");
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(statusInFlow.Id, request.OrganizationId);
         }
     }
 }

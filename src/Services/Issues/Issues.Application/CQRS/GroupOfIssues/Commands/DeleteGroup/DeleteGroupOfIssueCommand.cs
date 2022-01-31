@@ -47,7 +47,7 @@ namespace Issues.Application.CQRS.GroupOfIssues.Commands.DeleteGroup
         private void ValidateTypeWithRequestedParameters(Domain.GroupsOfIssues.GroupOfIssues group, DeleteGroupOfIssueCommand request)
         {
             if (group is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.Id);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.Id);
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.Id, request.OrganizationId);
         }

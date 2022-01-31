@@ -57,7 +57,7 @@ message AddStatusToFlowRequest{
 }
 
 message AddStatusToFlowResponse{
-
+	string statusId = 1;
 }
 
 message DeleteStatusFromFlowRequest{
@@ -90,6 +90,7 @@ message StatusFlow{
 	string id = 1;
 	string name = 2;
 	repeated StatusInFlow statuses = 3;
+	bool isDefault = 4;
 }
 
 message StatusInFlow{

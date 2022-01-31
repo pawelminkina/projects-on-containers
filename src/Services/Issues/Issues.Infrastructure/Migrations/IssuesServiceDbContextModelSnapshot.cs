@@ -188,7 +188,6 @@ namespace Issues.Infrastructure.Migrations
                         .HasColumnType("nvarchar(63)");
 
                     b.Property<string>("_connectedStatusInFlowId")
-                        .IsRequired()
                         .HasMaxLength(63)
                         .HasColumnType("nvarchar(63)");
 
@@ -276,13 +275,12 @@ namespace Issues.Infrastructure.Migrations
                     b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ConnectedStatusInFlow")
                         .WithMany()
                         .HasForeignKey("_connectedStatusInFlowId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.ClientNoAction);
 
                     b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ParentStatusInFlow")
                         .WithMany("ConnectedStatuses")
                         .HasForeignKey("_parentStatusInFlowId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ConnectedStatusInFlow");

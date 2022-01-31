@@ -42,7 +42,7 @@ namespace Issues.Application.CQRS.Issues.Queries.GetIssuesForGroup
         private void ValidateGroupWithRequestParameters(Domain.GroupsOfIssues.GroupOfIssues group, GetIssuesForGroupQuery request)
         {
             if (group is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.GroupId);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.GroupId);
 
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.GroupId, request.OrganizationId);

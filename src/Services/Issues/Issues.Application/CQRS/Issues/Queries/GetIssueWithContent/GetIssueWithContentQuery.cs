@@ -39,7 +39,7 @@ namespace Issues.Application.CQRS.Issues.Queries.GetIssueWithContent
         private void ValidateIssueWithRequestedParameters(Domain.Issues.Issue issue, GetIssueWithContentQuery request)
         {
             if (issue is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.IssueId);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.IssueId);
 
             if (issue.GroupOfIssue.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.IssueId, request.OrganizationId);

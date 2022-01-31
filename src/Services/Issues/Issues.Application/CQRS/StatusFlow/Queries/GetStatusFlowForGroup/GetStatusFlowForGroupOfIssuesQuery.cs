@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Issues.Application.Common.Exceptions;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
 using MediatR;
@@ -41,13 +42,11 @@ namespace Issues.Application.CQRS.StatusFlow.Queries.GetStatusFlowForGroup
 
         private void ValidateGroupWithRequestParameters(Domain.GroupsOfIssues.GroupOfIssues group, GetStatusFlowForGroupOfIssuesQuery request)
         {
-            //TODO 404
             if (group is null)
-                throw new InvalidOperationException("Requested group was not found");
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.GroupOfIssuesId);
 
             if (group.TypeOfGroup.OrganizationId != request.OrganizationId)
-                throw new InvalidOperationException($"Group of issues with id: {request.GroupOfIssuesId} was found and is not accessible for organization with id: {request.OrganizationId}");
-
+                throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.GroupOfIssuesId, request.OrganizationId);
         }
     }
 }

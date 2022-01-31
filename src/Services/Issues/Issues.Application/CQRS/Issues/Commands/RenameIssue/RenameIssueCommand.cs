@@ -45,7 +45,7 @@ namespace Issues.Application.CQRS.Issues.Commands.RenameIssue
         private void ValidateIssueWithRequestedParameters(Domain.Issues.Issue issue, RenameIssueCommand request)
         {
             if (issue is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.IssueId);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.IssueId);
 
             if (issue.GroupOfIssue.TypeOfGroup.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(issue.GroupOfIssue.TypeOfGroup.OrganizationId, request.OrganizationId);

@@ -38,7 +38,7 @@ namespace Issues.Application.CQRS.TypeOfGroupOfIssues.Queries.GetType
         private void ValidateTypeWithRequestParameters(Domain.GroupsOfIssues.TypeOfGroupOfIssues type, GetTypeOfGroupOfIssuesQuery request)
         {
             if (type is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.Id);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.Id);
 
             if (type.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.Id, request.OrganizationId);

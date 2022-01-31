@@ -54,7 +54,7 @@ namespace Issues.Application.CQRS.GroupOfIssues.Commands.CreateGroup
         private void ValidateTypeWithRequestedParameters(Domain.GroupsOfIssues.TypeOfGroupOfIssues type, CreateGroupOfIssuesCommand request)
         {
             if (type is null)
-                throw NotFoundException.RequestedResourceWithIdDoWasNotFound(request.TypeOfGroupId);
+                throw NotFoundException.RequestedResourceWithIdWasNotFound(request.TypeOfGroupId);
 
             if (type.OrganizationId != request.OrganizationId)
                 throw PermissionDeniedException.ResourceFoundAndNotAccessibleInOrganization(request.TypeOfGroupId, request.OrganizationId);

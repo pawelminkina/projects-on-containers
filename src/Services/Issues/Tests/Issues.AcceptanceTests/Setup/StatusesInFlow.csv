@@ -9,3 +9,4 @@ Id,Name,StatusFlowId,IsDefault
 005-008,Done,004-004,false,
 005-009,To do,004-005,true,
 005-010,Done,004-005,false,
+005-011,Some status,004-003,false,

@@ -23,7 +23,7 @@ namespace Issues.Application.Common.Exceptions
         {
         }
 
-        public static NotFoundException RequestedResourceWithIdDoWasNotFound(string id)
+        public static NotFoundException RequestedResourceWithIdWasNotFound(string id)
         {
             return new NotFoundException($"Requested resource with id: {id} was not found");
         }

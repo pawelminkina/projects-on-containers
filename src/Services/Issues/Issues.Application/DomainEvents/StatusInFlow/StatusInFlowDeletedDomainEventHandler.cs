@@ -15,7 +15,7 @@ namespace Issues.Application.DomainEvents.StatusInFlow
         public async Task Handle(StatusInFlowDeletedDomainEvent notification, CancellationToken cancellationToken)
         {
 
-            foreach (var statusInFlow in notification.StatusInFlow.StatusFlow.StatusesInFlow)
+            foreach (var statusInFlow in notification.AllStatusesFromFlow)
             {
                 if (statusInFlow.ConnectedStatuses.Any(s=>s.ConnectedStatusInFlow.Id == notification.StatusInFlow.Id))
                     statusInFlow.DeleteConnectedStatus(notification.StatusInFlow);

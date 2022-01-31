@@ -87,7 +87,14 @@ namespace Issues.Domain.StatusesFlow
             if (statusInFlowToDelete.IsDefault)
                 throw new InvalidOperationException($"Could not delete default status with id: {statusInFlowId}");
 
-            AddDomainEvent(new StatusInFlowDeletedDomainEvent(statusInFlowToDelete));
+            //AddDomainEvent(new StatusInFlowDeletedDomainEvent(statusInFlowToDelete, StatusesInFlow));
+            
+            foreach (var statusInFlow in StatusesInFlow)
+            {
+                if (statusInFlow.ConnectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == statusInFlowToDelete.Id))
+                    statusInFlow.DeleteConnectedStatus(statusInFlowToDelete);
+            }
+
             _statusesInFlow.Remove(statusInFlowToDelete);
         }
 
