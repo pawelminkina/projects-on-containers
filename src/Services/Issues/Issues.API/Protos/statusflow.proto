@@ -9,7 +9,10 @@ service StatusFlowService{
 	rpc DeleteStatusFromFlow(DeleteStatusFromFlowRequest) returns (DeleteStatusFromFlowResponse);
 	rpc AddConnectionToStatusInFlow(AddConnectionToStatusInFlowRequest) returns (AddConnectionToStatusInFlowResponse);
 	rpc RemoveConnectionFromStatusInFlow(RemoveConnectionFromStatusInFlowRequest) returns (RemoveConnectionFromStatusInFlowResponse);
+	rpc ChangeDefaultStatusInFlow(ChangeDefaultStatusInFlowRequest) returns (ChangeDefaultStatusInFlowResponse);
 }
+
+
 
 message GetStatusFlowsRequest{
 
@@ -86,6 +89,14 @@ message RemoveConnectionFromStatusInFlowResponse{
 
 }
 
+message ChangeDefaultStatusInFlowRequest{
+	string newDefaultStatusInFlowId = 1;
+}
+
+message ChangeDefaultStatusInFlowResponse{
+
+}
+
 message StatusFlow{
 	string id = 1;
 	string name = 2;
@@ -97,6 +108,7 @@ message StatusInFlow{
 	string id = 1;
 	string Name = 2;
 	repeated ConnectedStatuses connectedStatuses = 3;
+	bool isDefault = 4;
 }
 
 message ConnectedStatuses{

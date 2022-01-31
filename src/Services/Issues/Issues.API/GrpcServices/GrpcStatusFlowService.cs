@@ -7,6 +7,7 @@ using Issues.API.Extensions;
 using Issues.API.Protos;
 using Issues.Application.CQRS.StatusFlow.Commands.AddConnection;
 using Issues.Application.CQRS.StatusFlow.Commands.AddStatusToFlow;
+using Issues.Application.CQRS.StatusFlow.Commands.ChangeDefaultStatus;
 using Issues.Application.CQRS.StatusFlow.Commands.DeleteStatus;
 using Issues.Application.CQRS.StatusFlow.Commands.RemoveConnection;
 using Issues.Application.CQRS.StatusFlow.Queries.GetFlow;
@@ -77,6 +78,13 @@ namespace Issues.API.GrpcServices
             return new RemoveConnectionFromStatusInFlowResponse();
         }
 
+        public override async Task<ChangeDefaultStatusInFlowResponse> ChangeDefaultStatusInFlow(ChangeDefaultStatusInFlowRequest request, ServerCallContext context)
+        {
+            await _mediator.Send(new ChangeDefaultStatusInFlowCommand(request.NewDefaultStatusInFlowId, context.GetOrganizationId()));
+            return new ChangeDefaultStatusInFlowResponse();
+        }
+
+
         private StatusFlow MapToGrpcFlow(Domain.StatusesFlow.StatusFlow flow)
         {
             var res = new StatusFlow()
@@ -95,7 +103,8 @@ namespace Issues.API.GrpcServices
             var res = new StatusInFlow()
             {
                 Name = statusInFlow.Name,
-                Id = statusInFlow.Id
+                Id = statusInFlow.Id,
+                IsDefault = statusInFlow.IsDefault
             };
 
             if (statusInFlow.ConnectedStatuses.Any())

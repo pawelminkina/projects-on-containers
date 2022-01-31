@@ -6,12 +6,13 @@ namespace Issues.API.Infrastructure.Factories
 {
     public static class GrpcStatusInFlowFactory
     {
-        public static StatusInFlow Create(string id, string name, IEnumerable<ConnectedStatuses> connectedStatuses)
+        public static StatusInFlow Create(string id, string name, IEnumerable<ConnectedStatuses> connectedStatuses, bool isDefault = false)
         {
             var status = new StatusInFlow()
             {
                 Id = id,
-                Name = name
+                Name = name,
+                IsDefault = isDefault
             };
             if (connectedStatuses is not null)
                 status.ConnectedStatuses.AddRange(connectedStatuses);

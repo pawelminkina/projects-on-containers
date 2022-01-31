@@ -204,6 +204,31 @@ namespace Issues.AcceptanceTests.Services
             actualStatus.ConnectedStatuses.Should().BeEmpty();
         }
 
+        [Test]
+        public async Task ShouldChangeStatusOfFlowToDefault()
+        {
+            //GIVEN status to be set as default
+            var statusToChange = "005-004";
+
+            //AND status flow in which status will be changed
+            var statusFlow = "004-002";
+
+            //WHEN status is changed
+            var changeDefaultStatusRequest = new ChangeDefaultStatusInFlowRequest() { NewDefaultStatusInFlowId = statusToChange};
+            var changeDefaultStatusResponse = await _grpcClient.ChangeDefaultStatusInFlowAsync(changeDefaultStatusRequest);
+
+            //AND flow with statuses is retrieved from server
+            var getRequest = new GetStatusFlowRequest() { Id = statusFlow };
+            var getResponse = await _grpcClient.GetStatusFlowAsync(getRequest);
+            var newDefaultStatus = getResponse.Flow.Statuses.FirstOrDefault(s => s.Id == statusToChange);
+            var oldDefaultStatus = getResponse.Flow.Statuses.FirstOrDefault(s => s.Id != statusToChange);
+
+            //THEN check does flow has default status as expected
+            getResponse.Flow.Statuses.Should().HaveCount(2);
+            newDefaultStatus.IsDefault.Should().BeTrue();
+            oldDefaultStatus.IsDefault.Should().BeFalse();
+        }
+
         #region Data from csv
 
         private StatusFlow GetStatusFlowWithId004002() =>
@@ -212,7 +237,7 @@ namespace Issues.AcceptanceTests.Services
                 GrpcStatusInFlowFactory.Create("005-003", "To do", new List<ConnectedStatuses>()
                 {
                     new() {ConnectedStatusInFlowId = "005-004", ParentStatusInFlowIdId = "005-003"},
-                }),
+                }, true),
                 GrpcStatusInFlowFactory.Create("005-004", "Done", new List<ConnectedStatuses>()
                 {
                     new() {ConnectedStatusInFlowId = "005-003", ParentStatusInFlowIdId = "005-004"},
@@ -224,7 +249,7 @@ namespace Issues.AcceptanceTests.Services
                 GrpcStatusInFlowFactory.Create("005-005", "To do", new List<ConnectedStatuses>()
                 {
                     new() {ConnectedStatusInFlowId = "005-006", ParentStatusInFlowIdId = "005-005"},
-                }),
+                }, true),
                 GrpcStatusInFlowFactory.Create("005-006", "Done", new List<ConnectedStatuses>()
                 {
                     new() {ConnectedStatusInFlowId = "005-005", ParentStatusInFlowIdId = "005-006"},
@@ -237,7 +262,7 @@ namespace Issues.AcceptanceTests.Services
                 GrpcStatusInFlowFactory.Create("005-007", "To do", new List<ConnectedStatuses>()
                 {
                     new() {ConnectedStatusInFlowId = "005-008", ParentStatusInFlowIdId = "005-007"},
-                }),
+                }, true),
                 GrpcStatusInFlowFactory.Create("005-008", "Done", new List<ConnectedStatuses>()
                 {
                     new() {ConnectedStatusInFlowId = "005-007", ParentStatusInFlowIdId = "005-008"},
