@@ -39,7 +39,8 @@ namespace Issues.Application.CQRS.StatusFlow.Commands.DeleteStatus
             ValidateStatusInFlowWithRequestedParameters(statusToDelete, request);
 
             var statusFlow = await _statusFlowRepository.GetFlowById(statusToDelete.StatusFlow.Id);
-            statusFlow.DeleteStatusFromFlow(request.StatusInFlowId);
+            statusFlow.DeleteStatusFromFlow(statusToDelete);
+
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;

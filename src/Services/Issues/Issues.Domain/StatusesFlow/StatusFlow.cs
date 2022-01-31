@@ -61,14 +61,14 @@ namespace Issues.Domain.StatusesFlow
         public bool IsDefault { get; protected set; }
         public GroupOfIssues ConnectedGroupOfIssues { get; protected set; }
 
-        protected List<StatusInFlow> _statusesInFlow;
+        protected readonly List<StatusInFlow> _statusesInFlow;
         public IReadOnlyCollection<StatusInFlow> StatusesInFlow => _statusesInFlow;
 
         public bool IsDeleted { get; protected set; }
 
         public StatusInFlow AddNewStatusToFlow(string statusName)
         {
-            var statusCurrentlyExistInFlow = StatusesInFlow.Any(s => string.Equals(s.Name, statusName, StringComparison.CurrentCultureIgnoreCase));
+            var statusCurrentlyExistInFlow = _statusesInFlow.Any(s => string.Equals(s.Name, statusName, StringComparison.CurrentCultureIgnoreCase));
             if (statusCurrentlyExistInFlow)
                 throw new DomainException(ErrorMessages.StatusWithNameIsAlreadyInFlow(statusName, Id));
 
@@ -85,7 +85,7 @@ namespace Issues.Domain.StatusesFlow
             if (statusInFlowToDelete.IsDefault)
                 throw new DomainException(ErrorMessages.CouldNotDeleteDefaultStatusWithId(statusInFlowToDelete.Id));
 
-            foreach (var statusInFlow in StatusesInFlow)
+            foreach (var statusInFlow in _statusesInFlow)
             {
                 if (statusInFlow.ConnectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == statusInFlowToDelete.Id))
                     statusInFlow.DeleteConnectedStatus(statusInFlowToDelete);

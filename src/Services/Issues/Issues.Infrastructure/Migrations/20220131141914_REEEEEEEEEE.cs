@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Issues.Infrastructure.Migrations
 {
-    public partial class first : Migration
+    public partial class REEEEEEEEEE : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -106,8 +106,7 @@ namespace Issues.Infrastructure.Migrations
                         name: "FK_StatusInFlowConnections_StatusesInFlow__parentStatusInFlowId",
                         column: x => x._parentStatusInFlowId,
                         principalTable: "StatusesInFlow",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

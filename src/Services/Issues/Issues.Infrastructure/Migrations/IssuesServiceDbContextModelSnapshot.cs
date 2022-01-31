@@ -280,7 +280,7 @@ namespace Issues.Infrastructure.Migrations
                     b.HasOne("Issues.Domain.StatusesFlow.StatusInFlow", "ParentStatusInFlow")
                         .WithMany("ConnectedStatuses")
                         .HasForeignKey("_parentStatusInFlowId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("ConnectedStatusInFlow");

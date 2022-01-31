@@ -28,29 +28,34 @@ namespace Issues.API.Infrastructure.Grpc.Interceptors
             }
             catch (DomainException domainException)
             {
+                _logger.LogError(domainException, "Error thrown by {context.Method}. Exception:{ex}.", context.Method, domainException);
                 throw new RpcException(new Status(StatusCode.Internal, domainException.Message));
             }
             catch (NotFoundException notFoundException)
             {
+                _logger.LogError(notFoundException, "Error thrown by {context.Method}. Exception:{ex}.", context.Method, notFoundException);
                 throw new RpcException(new Status(StatusCode.NotFound, notFoundException.Message));
             }
             catch (PermissionDeniedException permissionDeniedException)
             {
+                _logger.LogError(permissionDeniedException, "Error thrown by {context.Method}. Exception:{ex}.", context.Method, permissionDeniedException);
+
                 throw new RpcException(new Status(StatusCode.PermissionDenied, permissionDeniedException.Message));
             }
             catch (AlreadyExistException alreadyExistException)
             {
+                _logger.LogError(alreadyExistException, "Error thrown by {context.Method}. Exception:{ex}.", context.Method, alreadyExistException);
+
                 throw new RpcException(new Status(StatusCode.AlreadyExists, alreadyExistException.Message));
             }
             catch (InvalidArgumentException invalidArgumentException)
             {
+                _logger.LogError(invalidArgumentException, "Error thrown by {context.Method}. Exception:{ex}.", context.Method, invalidArgumentException);
                 throw new RpcException(new Status(StatusCode.InvalidArgument, invalidArgumentException.Message));
             }
             catch (Exception ex)
             {
-                // Note: The gRPC framework also logs exceptions thrown by handlers to .NET Core logging.
                 _logger.LogError(ex, "Error thrown by {context.Method}. Exception:{ex}.", context.Method, ex);
-
                 throw new RpcException(new Status(StatusCode.Internal, ex.Message));
             }
         }

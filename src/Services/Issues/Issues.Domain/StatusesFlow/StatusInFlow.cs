@@ -18,7 +18,7 @@ namespace Issues.Domain.StatusesFlow
         }
         protected StatusInFlow()
         {
-            ConnectedStatuses = new List<StatusInFlowConnection>();
+            _connectedStatuses = new List<StatusInFlowConnection>();
         }
 
         internal static StatusInFlow CreateWholeObject(string id, string statusFlowId, string name, bool isDefault)
@@ -37,27 +37,28 @@ namespace Issues.Domain.StatusesFlow
         public string Name { get; protected set; }
         public bool IsDefault { get; protected set; }
 
-        public List<StatusInFlowConnection> ConnectedStatuses { get; private set; }
+        protected readonly List<StatusInFlowConnection> _connectedStatuses;
+        public IReadOnlyCollection<StatusInFlowConnection> ConnectedStatuses => _connectedStatuses;
 
         public void AddConnectedStatus(StatusInFlow status)
         {
-            if (ConnectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == status.Id))
+            if (_connectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == status.Id))
                 throw new DomainException(ErrorMessages.StatusIsAlreadyConnectedToParentStatus(status.Id, Id));
 
             if (status.StatusFlow.Id != StatusFlow.Id)
                 throw new DomainException(ErrorMessages.GivenStatusToConnectIsInDifferentStatusFlow(status.StatusFlow.Id, _statusFlowId));
 
             var connectedStatus = new StatusInFlowConnection(this, status);
-            ConnectedStatuses.Add(connectedStatus);
+            _connectedStatuses.Add(connectedStatus);
         }
 
         public void DeleteConnectedStatus(StatusInFlow status)
         {
-            var connectionToDelete = ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id);
+            var connectionToDelete = _connectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id);
             if (connectionToDelete is null)
                 throw new DomainException(ErrorMessages.ConnectionBetweenStatusesDoNotExist(Id, status.Id));
-            
-            ConnectedStatuses.Remove(connectionToDelete);
+
+            _connectedStatuses.Remove(connectionToDelete);
 
         }
 

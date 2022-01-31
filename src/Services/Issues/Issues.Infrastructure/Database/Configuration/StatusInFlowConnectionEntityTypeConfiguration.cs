@@ -12,7 +12,7 @@ namespace Issues.Infrastructure.Database.Configuration
             builder.Property<string>("_parentStatusInFlowId").UsePropertyAccessMode(PropertyAccessMode.Field).HasMaxLength(63).IsRequired();
             builder.Property<string>("_connectedStatusInFlowId").UsePropertyAccessMode(PropertyAccessMode.Field).HasMaxLength(63);
             builder.HasOne(d => d.ConnectedStatusInFlow).WithMany().HasForeignKey("_connectedStatusInFlowId").OnDelete(DeleteBehavior.ClientNoAction);
-            builder.HasOne(d => d.ParentStatusInFlow).WithMany().HasForeignKey("_parentStatusInFlowId").OnDelete(DeleteBehavior.ClientCascade);
+            //builder.HasOne(d => d.ParentStatusInFlow).WithMany().HasForeignKey("_parentStatusInFlowId").OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }
