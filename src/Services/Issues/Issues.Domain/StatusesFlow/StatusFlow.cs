@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Architecture.DDD.Exceptions;
 using Architecture.DDD.Repositories;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow.DomainEvents;
@@ -69,26 +70,21 @@ namespace Issues.Domain.StatusesFlow
         {
             var statusCurrentlyExistInFlow = StatusesInFlow.Any(s => string.Equals(s.Name, statusName, StringComparison.CurrentCultureIgnoreCase));
             if (statusCurrentlyExistInFlow)
-                throw new InvalidOperationException(
-                    $"Requested status to add with name: {statusName} currently exist in flow with id: {Id}");
+                throw new DomainException(ErrorMessages.StatusWithNameIsAlreadyInFlow(statusName, Id));
 
             var status = new StatusInFlow(this, statusName, false);
             _statusesInFlow.Add(status);
             return status;
         }
 
-        public void DeleteStatusFromFlow(string statusInFlowId)
+        public void DeleteStatusFromFlow(StatusInFlow statusInFlowToDelete)
         {
-            var statusInFlowToDelete = StatusesInFlow.FirstOrDefault(a => string.Equals(a.Id, statusInFlowId, StringComparison.CurrentCultureIgnoreCase));
-            if (statusInFlowToDelete == null)
-                throw new InvalidOperationException(
-                    $"Requested status to delete with id: {statusInFlowId} doesn't exist in flow with id: {Id}");
+            if (statusInFlowToDelete.StatusFlow.Id != Id)
+                throw new DomainException(ErrorMessages.GivenStatusIsNotInThisFlow(statusInFlowToDelete.StatusFlow.Id, Id));
 
             if (statusInFlowToDelete.IsDefault)
-                throw new InvalidOperationException($"Could not delete default status with id: {statusInFlowId}");
+                throw new DomainException(ErrorMessages.CouldNotDeleteDefaultStatusWithId(statusInFlowToDelete.Id));
 
-            //AddDomainEvent(new StatusInFlowDeletedDomainEvent(statusInFlowToDelete, StatusesInFlow));
-            
             foreach (var statusInFlow in StatusesInFlow)
             {
                 if (statusInFlow.ConnectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == statusInFlowToDelete.Id))
@@ -98,19 +94,19 @@ namespace Issues.Domain.StatusesFlow
             _statusesInFlow.Remove(statusInFlowToDelete);
         }
 
-        public void ChangeDefaultStatusInFlow(string newDefaultName)
+        public void ChangeDefaultStatusInFlow(StatusInFlow newDefault)
         {
-            var newDefault = _statusesInFlow.FirstOrDefault(s => s.Name == newDefaultName);
-            if (newDefault == null)
-                throw new InvalidOperationException($"Requested status to set to default with name: {newDefaultName} don't exist");
+            if (newDefault.StatusFlow.Id != Id)
+                throw new DomainException(ErrorMessages.GivenStatusIsNotInThisFlow(newDefault.Id, Id));
 
             if (newDefault.IsDefault)
-                throw new InvalidOperationException("Given status is already default");
+                throw new DomainException(ErrorMessages.GivenStatusIsAlreadyDefault(newDefault.Id));
 
             var currentDefault = _statusesInFlow.FirstOrDefault(s => s.IsDefault);
 
+            //Should not happen
             if (currentDefault == null)
-                throw new Exception("There is not default status in flow"); //Should not happen
+                throw new DomainException(ErrorMessages.ThereIsNoDefaultStatusInFlow(Id)); 
 
             currentDefault.SetDefaultToFalse();
             newDefault.SetDefaultToTrue();
@@ -121,7 +117,7 @@ namespace Issues.Domain.StatusesFlow
         public void Delete()
         {
             if (IsDefault)
-                throw new InvalidOperationException("Default status flow could not be deleted");
+                throw new DomainException(ErrorMessages.DefaultStatusFlowCouldNotBeDeleted(Id));
 
             IsDeleted = true;
         }
@@ -139,14 +135,37 @@ namespace Issues.Domain.StatusesFlow
 
         public void AddDefaultStatusesToFlow(IEnumerable<string> statusNames, string nameOfDefault)
         {
-            //TODO have unique values extension
             if (statusNames.Count() == statusNames.Distinct().Count())
                 _statusesInFlow.AddRange(statusNames.Select(s => new StatusInFlow(this, s, nameOfDefault == s)));
             
             else
-                throw new InvalidOperationException("Given status name list to create status flow is not unique");
+                throw new DomainException(ErrorMessages.GivenStatusNameListIsNotUnique(statusNames));
         }
 
         public static string GetNameWithGroupOfIssues(string groupOfIssuesName) => new StringBuilder("Status flow for: ").Append(groupOfIssuesName).ToString();
+
+        public static class ErrorMessages
+        {
+            public static string GivenStatusNameListIsNotUnique(IEnumerable<string> statusNames) =>
+                $"Given status name list is not unique. Given statuses: {string.Join(", ", statusNames)}";
+
+            public static string DefaultStatusFlowCouldNotBeDeleted(string statusFlowId) =>
+                $"Default status flow with id: {statusFlowId} could not be deleted";
+
+            public static string ThereIsNoDefaultStatusInFlow(string statusFlowId) =>
+                $"There is not default status in flow with id: {statusFlowId}";
+
+            public static string GivenStatusIsAlreadyDefault(string statusInFlowId) =>
+                $"Given status with id: {statusInFlowId} is already default";
+
+            public static string GivenStatusIsNotInThisFlow(string statusInFlowId, string flowId) =>
+                $"Given status with id: {statusInFlowId} is not in the status flow with id: {flowId}";
+
+            public static string CouldNotDeleteDefaultStatusWithId(string statusInFlowId) =>
+                $"Could not delete default status with id: {statusInFlowId}";
+
+            public static string StatusWithNameIsAlreadyInFlow(string name, string flowId) =>
+                $"Status with name: {name} currently exist in flow with id: {flowId}";
+        }
     }
 }

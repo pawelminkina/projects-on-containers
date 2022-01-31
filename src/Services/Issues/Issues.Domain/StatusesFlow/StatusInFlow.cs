@@ -3,6 +3,7 @@ using Issues.Domain.StatusesFlow.DomainEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Architecture.DDD.Exceptions;
 
 namespace Issues.Domain.StatusesFlow
 {
@@ -36,19 +37,15 @@ namespace Issues.Domain.StatusesFlow
         public string Name { get; protected set; }
         public bool IsDefault { get; protected set; }
 
-        public List<StatusInFlowConnection> ConnectedStatuses { get; private set; } //dunno how i will do this xD, functional tests will show
+        public List<StatusInFlowConnection> ConnectedStatuses { get; private set; }
 
         public void AddConnectedStatus(StatusInFlow status)
         {
-            if (status == null)
-                throw new InvalidOperationException("Given status to add is null");
-
             if (ConnectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == status.Id))
-                throw new InvalidOperationException(
-                    $"Status with connectedStatusId: {status.Id} is already added to connected statuses where status in flow has connectedStatusId: {Id}");
+                throw new DomainException(ErrorMessages.StatusIsAlreadyConnectedToParentStatus(status.Id, Id));
 
             if (status.StatusFlow.Id != StatusFlow.Id)
-                throw new InvalidOperationException("Given status in flow to connect is in different status flow");
+                throw new DomainException(ErrorMessages.GivenStatusToConnectIsInDifferentStatusFlow(status.StatusFlow.Id, _statusFlowId));
 
             var connectedStatus = new StatusInFlowConnection(this, status);
             ConnectedStatuses.Add(connectedStatus);
@@ -56,12 +53,9 @@ namespace Issues.Domain.StatusesFlow
 
         public void DeleteConnectedStatus(StatusInFlow status)
         {
-            if (status is null)
-                throw new InvalidOperationException("Given status to delete is null");
-
             var connectionToDelete = ConnectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id);
             if (connectionToDelete is null)
-                throw new InvalidOperationException($"There is no connection between parent status with id: {Id} and connected with id: {status.Id}");
+                throw new DomainException(ErrorMessages.ConnectionBetweenStatusesDoNotExist(Id, status.Id));
             
             ConnectedStatuses.Remove(connectionToDelete);
 
@@ -77,6 +71,18 @@ namespace Issues.Domain.StatusesFlow
         {
             IsDefault = false;
             AddDomainEvent(new StatusInFlowDefaultPropertyChangedToFalseDomainEvent(this));
+        }
+
+        public static class ErrorMessages
+        {
+            public static string StatusIsAlreadyConnectedToParentStatus(string connectedStatusId, string parentStatusInFlowId) =>
+                $"Status with connectedStatusId: {connectedStatusId} is already added to connected statuses where status in flow has id: {parentStatusInFlowId}";
+
+            public static string GivenStatusToConnectIsInDifferentStatusFlow(string givenStatusFlowId, string currentStatusFlowId) =>
+                $"Given status in flow to connect is in different status flow with id: {givenStatusFlowId} then parent status flow id: {currentStatusFlowId}";
+
+            public static string ConnectionBetweenStatusesDoNotExist(string parentStatusId, string connectedStatusId) =>
+                $"There is no connection between parent status with id: {parentStatusId} and connected with id: {connectedStatusId}";
         }
     }
 }
