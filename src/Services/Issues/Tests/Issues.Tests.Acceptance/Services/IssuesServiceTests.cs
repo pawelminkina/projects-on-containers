@@ -47,9 +47,9 @@ namespace Issues.Tests.Acceptance.Services
 
             IEnumerable<IssueReference> GetExpectedIssues() => new[]
             {
-                new IssueReference() {Id = "003-001", Name = "Issue 1", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-001"},
-                new IssueReference() {Id = "003-002", Name = "Issue 2", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-001"},
-                new IssueReference() {Id = "003-005", Name = "Issue 5", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-001"},
+                new IssueReference() {Id = "003-001", Name = "Issue 1", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-001", StatusName = "To do"},
+                new IssueReference() {Id = "003-002", Name = "Issue 2", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-001", StatusName = "To do"},
+                new IssueReference() {Id = "003-005", Name = "Issue 5", CreatingUserId = "BaseUserId", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(), GroupId = "002-001", StatusName = "Done"},
             };
 
             #endregion
@@ -75,8 +75,8 @@ namespace Issues.Tests.Acceptance.Services
 
             IEnumerable<IssueReference> GetExpectedIssues() => new[]
             {
-                new IssueReference() {Id = "003-003", Name = "Issue 3", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(),  GroupId = "002-002"},
-                new IssueReference() {Id = "003-004", Name = "Issue 4", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(),  GroupId = "002-002"},
+                new IssueReference() {Id = "003-003", Name = "Issue 3", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(),  GroupId = "002-002", StatusName = "To do"},
+                new IssueReference() {Id = "003-004", Name = "Issue 4", CreatingUserId = "BaseUserId2", TimeOfCreation = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp(),  GroupId = "002-002", StatusName = "Done"},
             };
 
             #endregion
@@ -111,7 +111,8 @@ namespace Issues.Tests.Acceptance.Services
                 Name = "Issue 3",
                 CreatingUserId = "BaseUserId2",
                 GroupId = "002-002",
-                TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp()
+                TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp(),
+                StatusName = "To do"
             };
 
             IssueContent GetExpectedContent() => new IssueContent()
@@ -163,7 +164,8 @@ namespace Issues.Tests.Acceptance.Services
                 Name = "Issue 6",
                 CreatingUserId = "BaseUserId",
                 TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp(),
-                GroupId = "002-002"
+                GroupId = "002-002",
+                StatusName = "To do"
             };
 
             IssueContent GetExpectedContent() => new IssueContent()

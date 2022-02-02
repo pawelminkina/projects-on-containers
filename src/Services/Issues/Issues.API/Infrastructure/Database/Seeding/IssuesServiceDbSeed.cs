@@ -18,7 +18,6 @@ using Polly.Retry;
 namespace Issues.API.Infrastructure.Database.Seeding
 {
     //If I want to use csv's I should use boolen value added in appsettings
-    //TODO it should be refactored to seed each entity by one
     public class IssuesServiceDbSeed
     {
         private bool _anyItemSeeded;

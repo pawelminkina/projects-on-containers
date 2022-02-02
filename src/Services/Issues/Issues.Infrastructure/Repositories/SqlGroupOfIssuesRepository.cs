@@ -45,7 +45,7 @@ namespace Issues.Infrastructure.Repositories
 
         public async Task<GroupOfIssues> GetGroupOfIssuesByIdAsync(string id)
         {
-            return await _dbContext.GroupsOfIssues.Include(d=>d.TypeOfGroup).Include(s => s.Issues).Include(d=>d.ConnectedStatusFlow).ThenInclude(d=>d.StatusesInFlow).ThenInclude(s=>s.ConnectedStatuses).FirstOrDefaultAsync(s => s.Id == id);
+            return await _dbContext.GroupsOfIssues.Include(d=>d.TypeOfGroup).Include(s => s.Issues).ThenInclude(s=>s.StatusInFlow).Include(d=>d.ConnectedStatusFlow).ThenInclude(d=>d.StatusesInFlow).ThenInclude(s=>s.ConnectedStatuses).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<bool> AnyOfGroupHasGivenShortNameAsync(string shortName, string organizationId)

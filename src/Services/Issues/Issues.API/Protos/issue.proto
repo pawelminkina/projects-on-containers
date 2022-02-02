@@ -79,6 +79,7 @@ message IssueReference{
 	google.protobuf.Timestamp timeOfCreation = 4;
 	string groupId = 5;
 	bool isDeleted = 6;
+	string statusName = 7;
 }
 
 message IssueContent{

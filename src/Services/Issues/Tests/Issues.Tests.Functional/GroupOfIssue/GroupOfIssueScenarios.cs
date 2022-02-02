@@ -26,7 +26,7 @@ namespace Issues.Tests.Functional.GroupOfIssue
         }
 
         [Test]
-        public async Task ShouldStatusFlowBeCreatedForGroupOfIssuesWithDefaultStatuses()
+        public async Task ShouldCreateStatusFlowForGroupOfIssuesWithDefaultStatuses()
         {
             //GIVEN expected group of issues
             var expectedGroupOfIssue = GetExpectedGroupOfIssue();
@@ -80,5 +80,57 @@ namespace Issues.Tests.Functional.GroupOfIssue
 
             #endregion
         }
+
+        [Test]
+        public async Task ShouldRenameStatusFlowWhenGroupOfIssuesIsRenamed()
+        {
+            //GIVEN expected group of issues
+            var groupOfIssues = GetExpectedGroupOfIssue();
+
+            //AND expected new name for status flow
+            var expectedStatusFlowName = GetExpectedStatusFlowName();
+
+            //WHEN group of issues is renamed
+            var renameRequest = new RenameGroupOfIssuesRequest() {Id = groupOfIssues.Id, NewName = groupOfIssues.Name};
+            var renameResponse = await _grpcGroupOfIssueClient.RenameGroupOfIssuesAsync(renameRequest);
+
+            //AND status flow is retrieved from group of issues
+            var getStatusFlowRequest = new GetStatusFlowForGroupOfIssuesRequest() { GroupOfIssuesId = groupOfIssues.Id };
+            var getStatusFlowResponse = await _grpcStatusFlowClient.GetStatusFlowForGroupOfIssuesAsync(getStatusFlowRequest);
+            var actualStatusFlow = getStatusFlowResponse.Flow;
+
+            //THEN check equality of new status flow name with expected
+            actualStatusFlow.Name.Should().Be(expectedStatusFlowName);
+
+            #region Local methods
+
+            API.Protos.GroupOfIssue GetExpectedGroupOfIssue() =>
+                new() { Name = "New Group Of Issue name", Id  = "002-003" };
+
+            string GetExpectedStatusFlowName() => "Status flow for: " + GetExpectedGroupOfIssue().Name;
+
+            #endregion
+        }
+
+        [Test]
+        public async Task ShouldDeleteStatusFlowWhenGroupOfIssuesIsDeleted()
+        {
+            //GIVEN group of issues to delete
+            var groupOfIssues = "002-003";
+
+            //WHEN group of issues is deleted
+            var deleteRequest = new DeleteGroupOfIssuesRequest() {Id = groupOfIssues};
+            var deleteResponse = await _grpcGroupOfIssueClient.DeleteGroupOfIssuesAsync(deleteRequest);
+
+            //AND status flow for group of issues is retrieved from server
+            var getStatusFlowRequest = new GetStatusFlowForGroupOfIssuesRequest() { GroupOfIssuesId = groupOfIssues };
+            var getStatusFlowResponse = await _grpcStatusFlowClient.GetStatusFlowForGroupOfIssuesAsync(getStatusFlowRequest);
+            var actualStatusFlow = getStatusFlowResponse.Flow;
+
+            //THEN check that status flow has is deleted flag set to true
+            actualStatusFlow.IsDeleted.Should().BeTrue();
+        }
+
+        
     }
 }

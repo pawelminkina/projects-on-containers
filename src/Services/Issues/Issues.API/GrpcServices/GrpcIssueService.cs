@@ -82,7 +82,8 @@ namespace Issues.API.GrpcServices
             Name = issue.Name,
             TimeOfCreation = issue.TimeOfCreation.ToTimestamp(),
             GroupId = issue.GroupOfIssue.Id,
-            IsDeleted = issue.IsDeleted
+            IsDeleted = issue.IsDeleted,
+            StatusName = issue.StatusInFlow.Name
         };
 
         private Protos.IssueContent MapToIssueContent(Domain.Issues.IssueContent content) => new Protos.IssueContent()

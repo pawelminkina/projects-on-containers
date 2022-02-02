@@ -102,6 +102,7 @@ message StatusFlow{
 	string name = 2;
 	repeated StatusInFlow statuses = 3;
 	bool isDefault = 4;
+	bool isDeleted = 5;
 }
 
 message StatusInFlow{

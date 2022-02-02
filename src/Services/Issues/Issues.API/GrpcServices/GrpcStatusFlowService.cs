@@ -91,7 +91,8 @@ namespace Issues.API.GrpcServices
             {
                 Id = flow.Id,
                 Name = flow.Name,
-                IsDefault = flow.IsDefault
+                IsDefault = flow.IsDefault,
+                IsDeleted = flow.IsDeleted
             };
             if (flow.StatusesInFlow.Any())
                 res.Statuses.AddRange(flow.StatusesInFlow.Select(MapToGrpcStatusInFlow));
