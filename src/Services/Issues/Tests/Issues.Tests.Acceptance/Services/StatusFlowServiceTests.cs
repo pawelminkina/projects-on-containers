@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
-using Issues.AcceptanceTests.Base;
 using Issues.API.Infrastructure.Factories;
 using Issues.API.Protos;
+using Issues.Tests.Core.Base;
 using Microsoft.AspNetCore.TestHost;
 using NUnit.Framework;
 
-namespace Issues.AcceptanceTests.Services
+namespace Issues.Tests.Acceptance.Services
 {
     public class StatusFlowServiceTests : IssuesTestServer
     {
@@ -102,6 +99,8 @@ namespace Issues.AcceptanceTests.Services
 
         #endregion
 
+        #region Add Status
+
         [Test]
         public async Task ShouldAddStatusToFlow()
         {
@@ -112,9 +111,9 @@ namespace Issues.AcceptanceTests.Services
             var statusFlow = "004-002";
 
             //WHEN status is added to flow
-            var addStatusRequest = new AddStatusToFlowRequest() {FlowId = statusFlow, StatusName = expectedName};
+            var addStatusRequest = new AddStatusToFlowRequest() { FlowId = statusFlow, StatusName = expectedName };
             var addStatusResponse = await _grpcClient.AddStatusToFlowAsync(addStatusRequest);
-            
+
             //AND flow is retrieved from server
             var getRequest = new GetStatusFlowRequest() { Id = statusFlow };
             var getResponse = await _grpcClient.GetStatusFlowAsync(getRequest);
@@ -123,6 +122,10 @@ namespace Issues.AcceptanceTests.Services
             getResponse.Flow.Statuses.Should().HaveCount(3);
             getResponse.Flow.Statuses.Should().Contain(s => s.Name == expectedName);
         }
+
+        #endregion
+
+        #region Delete status
 
         [Test]
         public async Task ShouldDeleteStatusFromFlowAndAllHisConnections()
@@ -134,7 +137,7 @@ namespace Issues.AcceptanceTests.Services
             var statusFlow = "004-002";
 
             //WHEN status is removed from flow
-            var deleteStatusRequest = new DeleteStatusFromFlowRequest() {StatusInFlowId = statusToDelete};
+            var deleteStatusRequest = new DeleteStatusFromFlowRequest() { StatusInFlowId = statusToDelete };
             var deleteStatusResponse = await _grpcClient.DeleteStatusFromFlowAsync(deleteStatusRequest);
 
             //AND flow is retrieved from server
@@ -145,8 +148,12 @@ namespace Issues.AcceptanceTests.Services
             getResponse.Flow.Statuses.Should().HaveCount(1).And.Contain(s => s.Name == "To do");
 
             //AND that none of statuses contain connection to delete status
-            getResponse.Flow.Statuses.Should().NotContain(s=>s.ConnectedStatuses.Any(d=>d.ConnectedStatusInFlowId == statusToDelete));
+            getResponse.Flow.Statuses.Should().NotContain(s => s.ConnectedStatuses.Any(d => d.ConnectedStatusInFlowId == statusToDelete));
         }
+
+        #endregion
+
+        #region Add Connection
 
         [Test]
         public async Task ShouldAddConnectionToStatusInFlow()
@@ -161,7 +168,7 @@ namespace Issues.AcceptanceTests.Services
             var statusFlow = "004-003";
 
             //WHEN connection is added to flow
-            var addConnectionRequest = new AddConnectionToStatusInFlowRequest() {ParentStatusinFlowId = parentStatus, ConnectedStatusInFlowId = connectedStatus};
+            var addConnectionRequest = new AddConnectionToStatusInFlowRequest() { ParentStatusinFlowId = parentStatus, ConnectedStatusInFlowId = connectedStatus };
             var addConnectionResponse = await _grpcClient.AddConnectionToStatusInFlowAsync(addConnectionRequest);
 
             //AND flow is retrieved from server
@@ -177,6 +184,10 @@ namespace Issues.AcceptanceTests.Services
             actualStatus.ConnectedStatuses.First().ConnectedStatusInFlowId.Should().Be(connectedStatus);
         }
 
+        #endregion
+
+        #region Remove Connection
+
         [Test]
         public async Task ShouldRemoveConnectionFromStatusInFlow()
         {
@@ -190,7 +201,7 @@ namespace Issues.AcceptanceTests.Services
             var statusFlow = "004-003";
 
             //WHEN connection is removed from flow
-            var removeConnectionRequest = new RemoveConnectionFromStatusInFlowRequest() {ConnectedStatusInFlowId = connectedStatus, ParentStatusinFlowId = parentStatus};
+            var removeConnectionRequest = new RemoveConnectionFromStatusInFlowRequest() { ConnectedStatusInFlowId = connectedStatus, ParentStatusinFlowId = parentStatus };
             var removeConnectionResponse = await _grpcClient.RemoveConnectionFromStatusInFlowAsync(removeConnectionRequest);
 
             //AND flow is retrieved from server
@@ -204,6 +215,10 @@ namespace Issues.AcceptanceTests.Services
             actualStatus.ConnectedStatuses.Should().BeEmpty();
         }
 
+        #endregion
+
+        #region Change Status to default
+
         [Test]
         public async Task ShouldChangeStatusOfFlowToDefault()
         {
@@ -214,7 +229,7 @@ namespace Issues.AcceptanceTests.Services
             var statusFlow = "004-002";
 
             //WHEN status is changed
-            var changeDefaultStatusRequest = new ChangeDefaultStatusInFlowRequest() { NewDefaultStatusInFlowId = statusToChange};
+            var changeDefaultStatusRequest = new ChangeDefaultStatusInFlowRequest() { NewDefaultStatusInFlowId = statusToChange };
             var changeDefaultStatusResponse = await _grpcClient.ChangeDefaultStatusInFlowAsync(changeDefaultStatusRequest);
 
             //AND flow with statuses is retrieved from server
@@ -228,6 +243,8 @@ namespace Issues.AcceptanceTests.Services
             newDefaultStatus.IsDefault.Should().BeTrue();
             oldDefaultStatus.IsDefault.Should().BeFalse();
         }
+
+        #endregion
 
         #region Data from csv
 
@@ -271,6 +288,5 @@ namespace Issues.AcceptanceTests.Services
 
 
         #endregion
-
     }
 }

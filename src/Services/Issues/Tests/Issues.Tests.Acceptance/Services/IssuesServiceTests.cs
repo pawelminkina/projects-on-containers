@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Issues.AcceptanceTests.Base;
 using Issues.API.Protos;
+using Issues.Tests.Core.Base;
 using Microsoft.AspNetCore.TestHost;
 using NUnit.Framework;
 
-namespace Issues.AcceptanceTests.Services
+namespace Issues.Tests.Acceptance.Services
 {
     public class IssuesServiceTests : IssuesTestServer
     {
@@ -361,6 +359,5 @@ namespace Issues.AcceptanceTests.Services
         }
 
         #endregion
-
     }
 }

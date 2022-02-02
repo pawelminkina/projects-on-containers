@@ -1,21 +1,19 @@
 ﻿using Architecture.DDD;
+using Architecture.DDD.Exceptions;
+using Architecture.DDD.Repositories;
+using Issues.Domain.Dtos;
+using Issues.Domain.GroupsOfIssues;
+using Issues.Domain.StatusesFlow.DomainEvents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
-using Architecture.DDD.Exceptions;
-using Architecture.DDD.Repositories;
-using Issues.Domain.GroupsOfIssues;
-using Issues.Domain.StatusesFlow.DomainEvents;
 
 namespace Issues.Domain.StatusesFlow
 {
     public class StatusFlow : EntityBase, IAggregateRoot
     {
-        public StatusFlow(string name, string organizationId, GroupOfIssues connectedGroupOfIssues, IEnumerable<string> statusInFlowNames, string nameOfDefaultStatus) : this()
+        public StatusFlow(string name, string organizationId, GroupOfIssues connectedGroupOfIssues, IEnumerable<StatusInFlowToCreateDto> statuses) : this()
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -23,7 +21,7 @@ namespace Issues.Domain.StatusesFlow
             IsDeleted = false;
             IsDefault = false;
             ConnectedGroupOfIssues = connectedGroupOfIssues;
-            AddDefaultStatusesToFlow(statusInFlowNames, nameOfDefaultStatus);
+            AddDefaultStatusesToFlow(statuses);
         }
 
         public static StatusFlow CreateDefault(string name, string organizationId)
@@ -106,7 +104,7 @@ namespace Issues.Domain.StatusesFlow
 
             //Should not happen
             if (currentDefault == null)
-                throw new DomainException(ErrorMessages.ThereIsNoDefaultStatusInFlow(Id)); 
+                throw new DomainException(ErrorMessages.ThereIsNoDefaultStatusInFlow(Id));
 
             currentDefault.SetDefaultToFalse();
             newDefault.SetDefaultToTrue();
@@ -131,24 +129,36 @@ namespace Issues.Domain.StatusesFlow
         {
             IsDefault = true;
             AddDomainEvent(new DefaultPropertyInStatusFlowChangedToTrueDomainEvent(this));
-;       }
+            ;
+        }
 
-        public void AddDefaultStatusesToFlow(IEnumerable<string> statusNames, string nameOfDefault)
+        public void AddDefaultStatusesToFlow(IEnumerable<StatusInFlowToCreateDto> statuses)
         {
-            if (statusNames.Count() == statusNames.Distinct().Count())
-                _statusesInFlow.AddRange(statusNames.Select(s => new StatusInFlow(this, s, nameOfDefault == s)));
+            if (!StatusInFlowToCreateDto.IsCollectionOfStatusesValid(statuses, out var reasonWhyNot))
+                throw new DomainException(reasonWhyNot);
             
-            else
-                throw new DomainException(ErrorMessages.GivenStatusNameListIsNotUnique(statusNames));
+            _statusesInFlow.AddRange(statuses.Select(s => new StatusInFlow(this, s.StatusName, s.IsDefault)));
+
+            foreach (var status in statuses)
+            {
+                if (!status.ConnectedStatuses.Any())
+                    continue;
+
+                var addedStatus = _statusesInFlow.First(s => s.Name == status.StatusName);
+
+                foreach (var connectedStatus in status.ConnectedStatuses)
+                {
+                    var connectedStatusInFlow = _statusesInFlow.First(s => s.Name == connectedStatus);
+                    addedStatus.AddConnectedStatus(connectedStatusInFlow);
+                }
+            }
+
         }
 
         public static string GetNameWithGroupOfIssues(string groupOfIssuesName) => new StringBuilder("Status flow for: ").Append(groupOfIssuesName).ToString();
 
         public static class ErrorMessages
         {
-            public static string GivenStatusNameListIsNotUnique(IEnumerable<string> statusNames) =>
-                $"Given status name list is not unique. Given statuses: {string.Join(", ", statusNames)}";
-
             public static string DefaultStatusFlowCouldNotBeDeleted(string statusFlowId) =>
                 $"Default status flow with id: {statusFlowId} could not be deleted";
 

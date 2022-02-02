@@ -1,23 +1,17 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Issues.API;
 using Issues.API.Infrastructure.Database.Seeding;
 using Issues.Infrastructure.Database;
-using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
-using Microsoft.Extensions.DependencyInjection;
 using WebHost.Customization;
-
 
 var configuration = GetConfiguration();
 
@@ -25,10 +19,10 @@ Log.Logger = CreateSerilogLogger(configuration);
 
 try
 {
-    Log.Information("Configuring web host ({ApplicationContext})...", Program.AppName);
+    Log.Information("Configuring web host ({ApplicationContext})...", Issues.API.Program.AppName);
     var host = BuildWebHost(configuration, args);
 
-    Log.Information("Applying migrations ({ApplicationContext})...", Program.AppName);
+    Log.Information("Applying migrations ({ApplicationContext})...", Issues.API.Program.AppName);
     host.MigrateDbContext<IssuesServiceDbContext>((context, services) =>
     {
         var env = services.GetService<IWebHostEnvironment>();
@@ -41,14 +35,14 @@ try
             .Wait();
     });
 
-    Log.Information("Starting web host ({ApplicationContext})...", Program.AppName);
+    Log.Information("Starting web host ({ApplicationContext})...", Issues.API.Program.AppName);
     host.Run();
 
     return 0;
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
+    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Issues.API.Program.AppName);
     return 1;
 }
 finally
@@ -97,7 +91,7 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
     var logstashUrl = configuration["Serilog:LogStashUrl"];
     return new LoggerConfiguration()
         .MinimumLevel.Verbose()
-        .Enrich.WithProperty("ApplicationContext", Program.AppName)
+        .Enrich.WithProperty("ApplicationContext", Issues.API.Program.AppName)
         .Enrich.FromLogContext()
         .WriteTo.Console()
         .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
@@ -113,8 +107,11 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
     return (port, grpcPort);
 }
 
-public partial class Program
+namespace Issues.API
 {
-    public static string Namespace = typeof(Startup).Namespace;
-    public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+    public partial class Program
+    {
+        public static string Namespace = typeof(Startup).Namespace;
+        public static string AppName = Namespace.Substring(Namespace.LastIndexOf('.', Namespace.LastIndexOf('.') - 1) + 1);
+    }
 }

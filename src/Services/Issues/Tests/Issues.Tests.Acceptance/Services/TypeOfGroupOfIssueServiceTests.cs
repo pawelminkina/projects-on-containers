@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Google.Protobuf;
 using Grpc.Core;
-using Issues.AcceptanceTests.Base;
 using Issues.API.Protos;
 using Issues.Application.Common.Exceptions;
+using Issues.Tests.Core.Base;
 using Microsoft.AspNetCore.TestHost;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Issues.AcceptanceTests.Services
+namespace Issues.Tests.Acceptance.Services
 {
     public class TypeOfGroupOfIssueServiceTests : IssuesTestServer
     {
@@ -101,10 +96,10 @@ namespace Issues.AcceptanceTests.Services
             var getResponse = await _grpcClient.GetTypeOfGroupOfIssuesAsync(getRequest);
             var actual = getResponse.TypeOfGroup;
 
-            //THEN assign id of created item to expected
+            //AND id of created is assigned to expected
             expectedToBeCreated.Id = createResponse.Id;
 
-            //AND check equality of expected and actual item
+            //THEN check equality of expected and actual item
             actual.Should().BeEquivalentTo(expectedToBeCreated);
 
             #region Local methods

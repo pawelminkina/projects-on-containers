@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Architecture.DDD.Exceptions;
 using Issues.Application.Common.Exceptions;
+using Issues.Domain.Dtos;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
 using Issues.Domain.StatusesFlow;
@@ -35,10 +36,15 @@ namespace Issues.Application.DomainEvents.GroupOfIssues
                 throw new AlreadyExistException(Domain.GroupsOfIssues.GroupOfIssues.ErrorMessages.SomeGroupAlreadyExistWithName(createdGroupOfIssues.Name));
 
             var defaultStatusFlow = await _statusFlowRepository.GetDefaultStatusFlowAsync(organizationId);
-            var statusNames = defaultStatusFlow.StatusesInFlow.Select(d => d.Name);
-            var defaultStatusInFlowName = defaultStatusFlow.StatusesInFlow.First(d => d.IsDefault).Name;
+            
+            var statusesToAdd = defaultStatusFlow.StatusesInFlow.Select(s => new StatusInFlowToCreateDto()
+            {
+                IsDefault = s.IsDefault,
+                StatusName = s.Name,
+                ConnectedStatuses = s.ConnectedStatuses.Select(d => d.ConnectedStatusInFlow.Name)
+            });
 
-            var statusFlow = new Domain.StatusesFlow.StatusFlow(Domain.StatusesFlow.StatusFlow.GetNameWithGroupOfIssues(createdGroupOfIssues.Name), organizationId, createdGroupOfIssues, statusNames, defaultStatusInFlowName);
+            var statusFlow = new Domain.StatusesFlow.StatusFlow(Domain.StatusesFlow.StatusFlow.GetNameWithGroupOfIssues(createdGroupOfIssues.Name), organizationId, createdGroupOfIssues, statusesToAdd);
 
             await _statusFlowRepository.AddNewStatusFlowAsync(statusFlow);
         }

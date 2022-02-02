@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Base\appsettings.json" />
+		<None Remove="TestSetup\GroupsOfIssues.csv" />
+		<None Remove="TestSetup\Issues.csv" />
+		<None Remove="TestSetup\StatusesInFlow.csv" />
+		<None Remove="TestSetup\StatusesInFlowConnection.csv" />
+		<None Remove="TestSetup\StatusFlows.csv" />
+		<None Remove="TestSetup\TypesOfGroupOfIssues.csv" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Base\appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestSetup\GroupsOfIssues.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestSetup\Issues.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestSetup\StatusesInFlow.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestSetup\StatusesInFlowConnection.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestSetup\StatusFlows.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestSetup\TypesOfGroupOfIssues.csv">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="6.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+		<PackageReference Include="coverlet.collector" Version="3.1.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit" Version="3.13.2" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Issues.API\Issues.API.csproj" />
+	</ItemGroup>
+
+</Project>

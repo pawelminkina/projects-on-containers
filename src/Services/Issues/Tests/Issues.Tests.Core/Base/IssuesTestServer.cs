@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Grpc.Net.Client;
 using Issues.API.Infrastructure.Database.Seeding;
 using Issues.Infrastructure.Database;
@@ -15,10 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Serilog;
 using WebHost.Customization;
 
-namespace Issues.AcceptanceTests.Base
+namespace Issues.Tests.Core.Base
 {
     public class IssuesTestServer
     {
@@ -31,7 +23,7 @@ namespace Issues.AcceptanceTests.Base
                 .ConfigureAppConfiguration(cb =>
                 {
                     cb.AddJsonFile("Base/appsettings.json", optional: false)
-                    .AddEnvironmentVariables();
+                        .AddEnvironmentVariables();
                 }).UseStartup<IssuesTestStartup>()
                 .ConfigureLogging(s =>
                 {

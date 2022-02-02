@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CsvHelper;
 using FluentAssertions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Issues.AcceptanceTests.Base;
 using Issues.API.Protos;
+using Issues.Tests.Core.Base;
 using Microsoft.AspNetCore.TestHost;
 using NUnit.Framework;
 
-namespace Issues.AcceptanceTests.Services
+namespace Issues.Tests.Acceptance.Services
 {
     public class GroupOfIssuesServiceTests : IssuesTestServer
     {
@@ -102,10 +99,10 @@ namespace Issues.AcceptanceTests.Services
             var getResponse = await _grpcClient.GetGroupOfIssuesAsync(getRequest);
             var actual = getResponse.Group;
 
-            //THEN assign id from get to expected
+            //AND id of created is assigned to expected
             expected.Id = actual.Id;
 
-            //check equality of expected and actual group
+            //THEN check equality of expected and actual group
             actual.Should().BeEquivalentTo(expected);
 
             #region Local methods
@@ -168,7 +165,6 @@ namespace Issues.AcceptanceTests.Services
 
         #endregion
 
-
         #region Rename
 
         [Test]
@@ -215,7 +211,6 @@ namespace Issues.AcceptanceTests.Services
         }
 
         #endregion
-
 
         #region Change Short Name
 
