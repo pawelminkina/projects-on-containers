@@ -3,12 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Architecture.DDD.Exceptions;
 using Architecture.DDD.Repositories;
 using Issues.Domain.GroupsOfIssues.DomainEvents;
-using Issues.Domain.StatusesFlow.DomainEvents;
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] //For moq purpose 
 
