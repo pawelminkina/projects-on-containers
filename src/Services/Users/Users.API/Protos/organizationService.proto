@@ -1,0 +1,48 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Users.API.Protos";
+
+service OrganizationService{
+	rpc AddOrganization (AddOrganizationRequest) returns (AddOrganizationResponse);
+	rpc GetOrganization (GetOrganizationRequest) returns (OrganizationResponse);
+	rpc ListOrganizations (ListOrganizationsRequest) returns (ListOrganizationsResponse);
+	rpc DeleteOrganization (DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
+}
+
+message AddOrganizationRequest{
+	string name = 1;
+	string ownerId = 2;
+}
+
+message AddOrganizationResponse{
+	string organizationId = 1;
+}
+
+message GetOrganizationRequest{
+	string organizationId = 1;
+}
+
+message ListOrganizationsRequest{}
+
+message ListOrganizationsResponse{
+	repeated OrganizationResponse Organizations = 1;
+}
+
+message OrganizationResponse{
+	string id = 1;
+	string name = 2;
+	bool enabled = 3;
+	google.protobuf.Timestamp creationDate = 4;
+}
+
+
+message DeleteOrganizationRequest{
+	string organizationId = 1;
+}
+
+message DeleteOrganizationResponse{
+	
+}
+
+

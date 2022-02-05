@@ -2,14 +2,10 @@
 using Issues.Domain.Issues;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
- using Architecture.DDD.Exceptions;
- using Issues.Domain.GroupsOfIssues.DomainEvents;
- using Issues.Domain.StatusesFlow;
+using Architecture.DDD.Exceptions;
+using Issues.Domain.GroupsOfIssues.DomainEvents;
+using Issues.Domain.StatusesFlow;
 
 namespace Issues.Domain.GroupsOfIssues
 {

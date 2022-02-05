@@ -1,0 +1,76 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Users.API.Protos";
+
+service UserService{
+	rpc GetUserByUsername (GetUserByUsernameRequest) returns (UserResponse);
+	rpc GetUserById (GetUserByIdRequest) returns (UserResponse);
+	rpc GetUsersForOrganization (GetUsersForOrganizationRequest) returns (GetUsersForOrganizationResponse);
+	rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+	rpc CheckEmailAvailability (CheckEmailAvailabilityRequest) returns (CheckEmailvAilabilityResponse);
+	rpc CheckIdAndPasswordMatches (CheckIdAndPasswordMatchesRequest) returns (CheckIdAndPasswordMatchesResponse);
+}
+
+message GetUserByUsernameRequest{
+	string username = 1;
+}
+
+message GetUserByIdRequest{
+	string userId = 1;
+}
+
+message GetUsersForOrganizationRequest{
+	string organizationId =1;
+}
+
+message GetUsersForOrganizationResponse{
+	repeated UserResponse users = 1;
+}
+
+message UserResponse {
+	string id = 1;
+	string username = 2;
+	string fullname = 3;
+	string organizationId = 4;
+	google.protobuf.Timestamp createdDate = 5;
+}
+
+message GetUserProfileRequest{
+	string userId = 1;
+}
+
+
+message CheckIdAndPasswordMatchesRequest{
+	string userId = 1;
+	string password = 2;
+}
+
+message CheckIdAndPasswordMatchesResponse{
+	bool passwordMatches = 1;
+}
+
+message CreateUserRequest{
+	string email = 1;
+	string password = 2;
+	string organizationId = 3;
+}
+
+message CreateUserResponse{
+	string userId = 1;
+}
+
+message CheckEmailAvailabilityRequest{
+	string email = 1;
+}
+
+message CheckEmailvAilabilityResponse{
+	bool isAvailable = 1;
+}
+
+message DeleteUserRequest{
+	string userId = 1;
+}
+
+message DeleteUserResponse{
+}
