@@ -25,6 +25,13 @@ services:
       - "15000:80"
       - "15001:81"
 
+  users-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "15005:80"
+      - "15010:81"
 volumes:
 
   poc-sqlserver:

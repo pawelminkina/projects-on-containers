@@ -14,3 +14,11 @@ services:
       dockerfile: Services/Issues/Issues.API/Dockerfile
     depends_on:
       - sqlserver 
+
+  users-api:
+    image: ${DOCKER_REGISTRY-poc}/users.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Users/Users.API/Dockerfile
+    depends_on:
+      - sqlserver

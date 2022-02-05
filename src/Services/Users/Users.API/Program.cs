@@ -1,7 +1,13 @@
 using System.Net;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Users.API;
+using Users.API.Infrastructure.Database;
+using Users.DAL;
+using Users.DAL.DataAccessObjects;
+using WebHost.Customization;
 
 var configuration = GetConfiguration();
 
@@ -13,17 +19,15 @@ try
     var host = BuildWebHost(configuration, args);
 
     Log.Information("Applying migrations ({ApplicationContext})...", Users.API.Program.AppName);
-    //host.MigrateDbContext<IssuesServiceDbContext>((context, services) =>
-    //{
-    //    var env = services.GetService<IWebHostEnvironment>();
-    //    var logger = services.GetService<ILogger<IssuesServiceDbSeed>>();
-    //    var seedItemService = services.GetService<IIssueSeedItemService>();
-    //    var options = services.GetService<IOptions<IssueServiceSeedingOptions>>();
+    host.MigrateDbContext<UserServiceDbContext>((context, services) =>
+    {
+        var logger = services.GetService<ILogger<DefaultUserServiceDbSeeder>>();
+        var passwordHasher = services.GetService<IPasswordHasher<UserDAO>>();
 
-    //    new IssuesServiceDbSeed()
-    //        .SeedAsync(context, env, logger, seedItemService, options.Value)
-    //        .Wait();
-    //});
+        new DefaultUserServiceDbSeeder(context, passwordHasher, logger)
+            .SeedAsync()
+            .Wait();
+    });
 
     Log.Information("Starting web host ({ApplicationContext})...", Users.API.Program.AppName);
     host.Run();

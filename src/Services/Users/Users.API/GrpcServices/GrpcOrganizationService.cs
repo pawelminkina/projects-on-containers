@@ -1,28 +1,53 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using User.Core.CQS.Organizations.Commands.AddOrganization;
+using User.Core.CQS.Organizations.Commands.DeleteOrganization;
+using User.Core.CQS.Organizations.Queries.ListOrganizations;
 using Users.API.Protos;
 
 namespace Users.API.GrpcServices
 {
+    [Authorize]
     public class GrpcOrganizationService : Protos.OrganizationService.OrganizationServiceBase
     {
+        private readonly IMediator _mediator;
+
+        public GrpcOrganizationService(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
         public override async Task<AddOrganizationResponse> AddOrganization(AddOrganizationRequest request, ServerCallContext context)
         {
-            return await base.AddOrganization(request, context);
+            var organizationId = await _mediator.Send(new AddOrganizationCommand(request.Name));
+            return new AddOrganizationResponse() { OrganizationId = organizationId };
         }
 
         public override async Task<DeleteOrganizationResponse> DeleteOrganization(DeleteOrganizationRequest request, ServerCallContext context)
         {
-            return await base.DeleteOrganization(request, context);
+            await _mediator.Send(new DeleteOrganizationCommand(request.OrganizationId));
+            return new DeleteOrganizationResponse();
         }
 
         public override async Task<OrganizationResponse> GetOrganization(GetOrganizationRequest request, ServerCallContext context)
         {
-            return await base.GetOrganization(request, context);
+            throw new RpcException(new Status(StatusCode.Unimplemented, ""));
         }
 
         public override async Task<ListOrganizationsResponse> ListOrganizations(ListOrganizationsRequest request, ServerCallContext context)
         {
-            return await base.ListOrganizations(request, context);
+            var organizations = await _mediator.Send(new ListOrganizationsQuery());
+            return new ListOrganizationsResponse()
+            {
+                Organizations = { organizations.Select(o => new OrganizationResponse()
+                {
+                    Enabled = o.IsEnabled,
+                    Id = o.Id,
+                    Name = o.Name,
+                    CreationDate = Timestamp.FromDateTimeOffset(o.TimeOfCreation)
+                })}
+            };
         }
     }
 }
