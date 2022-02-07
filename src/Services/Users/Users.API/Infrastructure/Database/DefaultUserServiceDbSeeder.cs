@@ -6,14 +6,14 @@ namespace Users.API.Infrastructure.Database
 {
     public class DefaultUserServiceDbSeeder
     {
-        private readonly IPasswordHasher<UserDAO> _passwordHasher;
         private readonly UserServiceDbContext _dbContext;
+        private readonly IUserSeedItemService _seedItemService;
         private readonly ILogger<DefaultUserServiceDbSeeder> _logger;
 
-        public DefaultUserServiceDbSeeder(UserServiceDbContext dbContext, IPasswordHasher<UserDAO> passwordHasher, ILogger<DefaultUserServiceDbSeeder> logger)
+        public DefaultUserServiceDbSeeder(UserServiceDbContext dbContext, IUserSeedItemService seedItemService, ILogger<DefaultUserServiceDbSeeder> logger)
         {
-            _passwordHasher = passwordHasher;
             _dbContext = dbContext;
+            _seedItemService = seedItemService;
             _logger = logger;
         }
 
@@ -26,43 +26,9 @@ namespace Users.API.Infrastructure.Database
             else
             {
                 _logger.LogInformation($"Seeding database with {this.GetType().Name} seeder.");
-                _dbContext.Organizations.Add(GetDefaultOrganization());
+                _dbContext.Organizations.AddRange(_seedItemService.GetOrganizationsFromSeed());
                 await _dbContext.SaveChangesAsync();
             }
-        }
-
-        private OrganizationDAO GetDefaultOrganization()
-        {
-            return new OrganizationDAO()
-            {
-                Id = "BaseOrganizationId",
-                Enabled = true,
-                Name = "Some organization 1",
-                TimeOfCreationUtc = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                Users = new List<UserDAO>()
-                {
-                    GetDefaultUser()
-                }
-            };
-        }
-
-        private UserDAO GetDefaultUser()
-        {
-            var user = new UserDAO()
-            {
-                Id = "BaseUserId",
-                Email = "support@projectoncontainers.com",
-                UserName = "support@projectoncontainers.com",
-                NormalizedEmail = "support@projectoncontainers.com".ToUpper(),
-                NormalizedUserName = "user@projectoncontainers.com".ToUpper(),
-                SecurityStamp = Guid.NewGuid().ToString("D"),
-                TimeOfCreationUtc = new DateTime(2022, 1, 1, 0, 0, 0, 1, DateTimeKind.Utc),
-                Fullname = "Some user"
-            };
-
-            user.PasswordHash = _passwordHasher.HashPassword(user, "1234");
-
-            return user;
         }
     }
 }

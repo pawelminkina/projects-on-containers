@@ -8,6 +8,7 @@ using Users.Core.CQS.Users.Commands.CreateUser;
 using Users.Core.CQS.Users.Queries.GetUserById;
 using Users.Core.Infrastructure.MappingProfiles;
 using Users.API.GrpcServices;
+using Users.API.Infrastructure.Database;
 using Users.API.Infrastructure.Grpc.Interceptors;
 using Users.API.Infrastructure.Validation;
 using Users.DAL;
@@ -39,6 +40,7 @@ namespace Users.API
 
             //DI
             services.AddTransient<GrpcErrorInterceptor>();
+            services.AddScoped<IUserSeedItemService, UserCsvSeedItemService>();
 
             //Validators
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
@@ -46,7 +48,14 @@ namespace Users.API
 
             ConfigureIdentity(services);
             AddDatabase(services);
-            
+            AddCustomConfiguration(services);   
+
+        }
+
+        private void AddCustomConfiguration(IServiceCollection services)
+        {
+            services.AddOptions();
+            services.Configure<UserServiceDbSeedingOptions>(Configuration);
 
         }
         public void AddDatabase(IServiceCollection services)

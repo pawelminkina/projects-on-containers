@@ -12,10 +12,22 @@
   <ItemGroup>
     <None Remove="Protos\organizationService.proto" />
     <None Remove="Protos\userService.proto" />
+    <None Remove="Setup\Organizations.csv" />
+    <None Remove="Setup\Users.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Setup\Organizations.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\Users.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+	  <PackageReference Include="CsvHelper" Version="27.2.1" />
 	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.3" />
 	  <PackageReference Include="Grpc.AspNetCore" Version="2.41.0" />
 	  <PackageReference Include="Grpc.Tools" Version="2.42.0">

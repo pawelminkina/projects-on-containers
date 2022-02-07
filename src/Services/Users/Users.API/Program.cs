@@ -22,9 +22,8 @@ try
     host.MigrateDbContext<UserServiceDbContext>((context, services) =>
     {
         var logger = services.GetService<ILogger<DefaultUserServiceDbSeeder>>();
-        var passwordHasher = services.GetService<IPasswordHasher<UserDAO>>();
-
-        new DefaultUserServiceDbSeeder(context, passwordHasher, logger)
+        var seedService = services.GetService<IUserSeedItemService>();
+        new DefaultUserServiceDbSeeder(context, seedService, logger)
             .SeedAsync()
             .Wait();
     });
