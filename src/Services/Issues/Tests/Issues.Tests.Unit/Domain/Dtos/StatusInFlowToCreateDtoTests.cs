@@ -8,7 +8,7 @@ using FluentAssertions;
 using Issues.Domain.Dtos;
 using NUnit.Framework;
 
-namespace Issue.Tests.Unit.Domain.Dtos
+namespace Issues.Tests.Unit.Domain.Dtos
 {
     public class StatusInFlowToCreateDtoTests
     {

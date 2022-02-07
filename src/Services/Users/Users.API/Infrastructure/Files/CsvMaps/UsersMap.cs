@@ -15,6 +15,7 @@ namespace Users.API.Infrastructure.Files.CsvMaps
             Map(s => s.SecurityStamp).Name("SecurityStamp");
             Map(s => s.TimeOfCreationUtc).Name("TimeOfCreationUtc");
             Map(s => s.Fullname).Name("Fullname");
+            Map(s => s.PasswordHash).Name("PasswordHash");
             Map(s => s.OrganizationId).Name("OrganizationId");
         }
     }

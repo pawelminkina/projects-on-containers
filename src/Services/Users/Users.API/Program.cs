@@ -21,10 +21,10 @@ try
     Log.Information("Applying migrations ({ApplicationContext})...", Users.API.Program.AppName);
     host.MigrateDbContext<UserServiceDbContext>((context, services) =>
     {
-        var logger = services.GetService<ILogger<DefaultUserServiceDbSeeder>>();
-        var seedService = services.GetService<IUserSeedItemService>();
-        new DefaultUserServiceDbSeeder(context, seedService, logger)
-            .SeedAsync()
+        var logger = services.GetRequiredService<ILogger<DefaultUserServiceDbSeeder>>();
+        var seedService = services.GetRequiredService<IUserSeedItemService>();
+        new DefaultUserServiceDbSeeder()
+            .SeedAsync(context, seedService, logger)
             .Wait();
     });
 

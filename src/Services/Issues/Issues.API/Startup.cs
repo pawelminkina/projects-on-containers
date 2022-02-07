@@ -37,8 +37,6 @@ namespace Issues.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        //TODO TypeOfIssueInTypeOfGroup and GroupOfIssues also contain flow, there should be one way to assign flows, or they need to correctly synchronized!
-        //TODO Add validatiors for all cqs
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc(options =>

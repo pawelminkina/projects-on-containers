@@ -33,16 +33,18 @@ namespace Users.API
                 options.Interceptors.Add<GrpcErrorInterceptor>();
             });
 
-            services.AddControllers();
+            services.AddControllers().AddApplicationPart(typeof(Startup).Assembly);
+            services.AddMediatR(
+                typeof(UserServiceDbContext).Assembly, //DAL
+                typeof(CreateUserCommandHandler).Assembly); //Core
+
             services.AddMediatR(typeof(CreateUserCommandHandler).Assembly);
             services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
             services.AddHttpContextAccessor();
 
-            //DI
             services.AddTransient<GrpcErrorInterceptor>();
             services.AddScoped<IUserSeedItemService, UserCsvSeedItemService>();
 
-            //Validators
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(GetUserByIdQueryValidator).Assembly);
 

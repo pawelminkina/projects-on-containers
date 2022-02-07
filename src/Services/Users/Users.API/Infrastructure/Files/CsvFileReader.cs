@@ -8,8 +8,6 @@ namespace Users.API.Infrastructure.Files
 {
     public class CsvFileReader
     {
-        private Dictionary<Type, Type> _entityBase;
-
         public IEnumerable<T> ReadEntity<T>(byte[] content)
         {
             var entities = new List<T>();
@@ -20,7 +18,7 @@ namespace Users.API.Infrastructure.Files
 
                 reader.Context.RegisterClassMap(csvDtoMapType);
 
-                var currentCsvType = _entityBase.GetValueOrDefault(typeof(T));
+                var currentCsvType = typeof(T);
                 while (reader.Read())
                 {
                     var recordAsCsvDto = reader.GetRecord(currentCsvType);

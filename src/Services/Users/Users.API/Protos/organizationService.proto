@@ -5,8 +5,8 @@ option csharp_namespace = "Users.API.Protos";
 
 service OrganizationService{
 	rpc AddOrganization (AddOrganizationRequest) returns (AddOrganizationResponse);
-	rpc GetOrganization (GetOrganizationRequest) returns (OrganizationResponse);
-	rpc ListOrganizations (ListOrganizationsRequest) returns (ListOrganizationsResponse);
+	rpc GetOrganization (GetOrganizationRequest) returns (GetOrganizationResponse);
+	rpc GetOrganizations (GetOrganizationsRequest) returns (GetOrganizationsResponse);
 	rpc DeleteOrganization (DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
 }
 
@@ -23,13 +23,17 @@ message GetOrganizationRequest{
 	string organizationId = 1;
 }
 
-message ListOrganizationsRequest{}
+message GetOrganizationsRequest{}
 
-message ListOrganizationsResponse{
-	repeated OrganizationResponse Organizations = 1;
+message GetOrganizationsResponse{
+	repeated Organization Organizations = 1;
 }
 
-message OrganizationResponse{
+message GetOrganizationResponse{
+	Organization Organization = 1;
+}
+
+message Organization{
 	string id = 1;
 	string name = 2;
 	bool enabled = 3;
