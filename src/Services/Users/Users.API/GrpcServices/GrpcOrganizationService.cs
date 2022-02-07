@@ -2,9 +2,9 @@
 using Grpc.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using User.Core.CQS.Organizations.Commands.AddOrganization;
-using User.Core.CQS.Organizations.Commands.DeleteOrganization;
-using User.Core.CQS.Organizations.Queries.ListOrganizations;
+using Users.Core.CQS.Organizations.Commands.AddOrganization;
+using Users.Core.CQS.Organizations.Commands.DeleteOrganization;
+using Users.Core.CQS.Organizations.Queries.ListOrganizations;
 using Users.API.Protos;
 
 namespace Users.API.GrpcServices

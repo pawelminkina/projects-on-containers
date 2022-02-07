@@ -1,7 +1,7 @@
 ﻿using Architecture.DDD.Exceptions;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using User.Core.Exceptions;
+using Users.Core.Exceptions;
 
 namespace Users.API.Infrastructure.Grpc.Interceptors
 {

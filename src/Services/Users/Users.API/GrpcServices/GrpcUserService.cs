@@ -2,12 +2,12 @@
 using Grpc.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using User.Core.CQS.Users.Commands.CreateUser;
-using User.Core.CQS.Users.Commands.DeleteUser;
-using User.Core.CQS.Users.Queries.CheckIdAndPasswordMatches;
-using User.Core.CQS.Users.Queries.GetUserById;
-using User.Core.CQS.Users.Queries.GetUserByUsername;
-using User.Core.CQS.Users.Queries.GetUsersForOrganization;
+using Users.Core.CQS.Users.Commands.CreateUser;
+using Users.Core.CQS.Users.Commands.DeleteUser;
+using Users.Core.CQS.Users.Queries.CheckIdAndPasswordMatches;
+using Users.Core.CQS.Users.Queries.GetUserById;
+using Users.Core.CQS.Users.Queries.GetUserByUsername;
+using Users.Core.CQS.Users.Queries.GetUsersForOrganization;
 using Users.API.Protos;
 
 namespace Users.API.GrpcServices
@@ -68,7 +68,7 @@ namespace Users.API.GrpcServices
             };
         }
 
-        private UserResponse MapToUserResponse(User.Core.Domain.User user)
+        private UserResponse MapToUserResponse(Users.Core.Domain.User user)
         {
             return new UserResponse()
             {
