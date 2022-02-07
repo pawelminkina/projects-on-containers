@@ -2,11 +2,11 @@
 using Grpc.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Users.Core.CQS.Organizations.Commands.AddOrganization;
-using Users.Core.CQS.Organizations.Commands.DeleteOrganization;
+using Users.Core.CQRS.Organizations.Commands.AddOrganization;
+using Users.Core.CQRS.Organizations.Commands.DeleteOrganization;
 using Users.API.Protos;
-using Users.Core.CQS.Organizations.Queries.GetOrganization;
-using Users.Core.CQS.Organizations.Queries.GetOrganizations;
+using Users.Core.CQRS.Organizations.Queries.GetOrganization;
+using Users.Core.CQRS.Organizations.Queries.GetOrganizations;
 using Users.Core.Domain;
 
 namespace Users.API.GrpcServices

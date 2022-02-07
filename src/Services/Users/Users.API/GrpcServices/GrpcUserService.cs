@@ -2,14 +2,14 @@
 using Grpc.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Users.Core.CQS.Users.Commands.CreateUser;
-using Users.Core.CQS.Users.Commands.DeleteUser;
-using Users.Core.CQS.Users.Queries.CheckIdAndPasswordMatches;
-using Users.Core.CQS.Users.Queries.GetUserById;
-using Users.Core.CQS.Users.Queries.GetUserByUsername;
-using Users.Core.CQS.Users.Queries.GetUsersForOrganization;
+using Users.Core.CQRS.Users.Commands.CreateUser;
+using Users.Core.CQRS.Users.Commands.DeleteUser;
+using Users.Core.CQRS.Users.Queries.CheckIdAndPasswordMatches;
+using Users.Core.CQRS.Users.Queries.GetUserById;
+using Users.Core.CQRS.Users.Queries.GetUserByUsername;
+using Users.Core.CQRS.Users.Queries.GetUsersForOrganization;
 using Users.API.Protos;
-using Users.Core.CQS.Users.Queries.CheckEmailAvailability;
+using Users.Core.CQRS.Users.Queries.CheckEmailAvailability;
 
 namespace Users.API.GrpcServices
 {
