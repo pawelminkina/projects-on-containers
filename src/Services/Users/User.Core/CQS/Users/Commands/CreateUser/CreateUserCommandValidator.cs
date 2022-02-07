@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
+using User.Core.Exceptions;
 
 namespace User.Core.CQS.Users.Commands.CreateUser
 {
@@ -17,7 +18,7 @@ namespace User.Core.CQS.Users.Commands.CreateUser
 
             RuleFor(command => command.Password)
                 .Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,}$")
-                .WithMessage("Password should contains 8 characters and consist of at least one upper case, one number and one special number");
+                .WithMessage(ApplicationErrorMessages.PasswordIsNotPassingRequiredCriteria);
         }
     }
 }

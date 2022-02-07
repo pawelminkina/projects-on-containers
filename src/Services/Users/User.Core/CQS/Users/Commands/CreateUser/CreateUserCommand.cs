@@ -47,7 +47,7 @@ namespace User.Core.CQS.Users.Commands.CreateUser
             var organization = await _dbContext.Organizations.FirstAsync(o => o.Id.Equals(request.OrganizationId), cancellationToken);
 
             if (organization is null)
-                throw new NotFoundException($"No organization found for id {request.OrganizationId}");
+                throw new NotFoundException($"No organization found with id: {request.OrganizationId}");
 
             var identityResult = await _userManager.CreateAsync(new UserDAO()
             {
@@ -57,14 +57,12 @@ namespace User.Core.CQS.Users.Commands.CreateUser
                 TimeOfCreationUtc = DateTime.UtcNow
             }, request.Password);
 
-            if (identityResult.Succeeded)
-            {
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName.Equals(request.Email), cancellationToken);
+            if (!identityResult.Succeeded)
+                throw IdentityResultException.IdentityResultFailed(identityResult);
+            
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName.Equals(request.Email), cancellationToken);
 
-                return _mapper.Map<Domain.User>(user);
-            }
-
-            throw new Exception($"Identity result not succeeded. {identityResult.ToString()}");
+            return _mapper.Map<Domain.User>(user);
 
         }
     }

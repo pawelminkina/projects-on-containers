@@ -39,7 +39,7 @@ namespace User.Core.CQS.Users.Commands.DeleteUser
             var userToRemove = await _userManager.Users.FirstOrDefaultAsync(u => u.Id.Equals(request.UserId), cancellationToken);
 
             if (userToRemove is null)
-                throw new NotFoundException($"Not found user id: {request.UserId}");
+                throw new NotFoundException($"Not found user with id: {request.UserId}");
 
             await _userManager.DeleteAsync(_mapper.Map<UserDAO>(userToRemove));
 

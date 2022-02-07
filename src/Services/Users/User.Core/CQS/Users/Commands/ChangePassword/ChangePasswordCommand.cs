@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using User.Core.Exceptions;
 using Users.DAL.DataAccessObjects;
 
 namespace User.Core.CQS.Users.Commands.ChangePassword
@@ -33,7 +34,8 @@ namespace User.Core.CQS.Users.Commands.ChangePassword
         {
             var identityResult = await _userManager.ChangePasswordAsync(await _userManager.FindByIdAsync(request.UserId), request.OldPassword, request.NewPassword);
             if (identityResult.Succeeded == false)
-                throw new Exception($"IdentityResult not succeeded {identityResult.ToString()}");
+                throw IdentityResultException.IdentityResultFailed(identityResult);
+
             return Unit.Value;
         }
     }

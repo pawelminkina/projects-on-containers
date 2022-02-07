@@ -37,7 +37,7 @@ namespace User.Core.CQS.Users.Queries.GetUserById
         {
             var userDao = await _userManager.Users.Include(u => u.Organization).FirstOrDefaultAsync(u => u.Id == query.UserId, cancellationToken);
             if (userDao is null)
-                throw new NotFoundException($"User with id {query.UserId} not found");
+                throw new NotFoundException($"Not found user with id {query.UserId}");
 
             return _mapper.Map<Domain.User>(userDao);
         }

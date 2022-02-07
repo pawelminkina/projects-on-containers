@@ -41,7 +41,7 @@ namespace User.Core.CQS.Users.Queries.GetUserByUsername
                 .FirstOrDefaultAsync(u => u.Email.ToUpper().Equals(request.Username.ToUpper()), cancellationToken);
 
             if (userDao is null)
-                throw new NotFoundException($"User with username {request.Username} not found");
+                throw new NotFoundException($"User with username {request.Username} was not found");
 
             return _mapper.Map<Domain.User>(userDao);
         }
