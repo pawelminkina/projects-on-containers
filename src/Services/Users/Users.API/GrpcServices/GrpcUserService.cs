@@ -9,10 +9,10 @@ using Users.Core.CQS.Users.Queries.GetUserById;
 using Users.Core.CQS.Users.Queries.GetUserByUsername;
 using Users.Core.CQS.Users.Queries.GetUsersForOrganization;
 using Users.API.Protos;
+using Users.Core.CQS.Users.Queries.CheckEmailAvailability;
 
 namespace Users.API.GrpcServices
 {
-    [Authorize]
     public class GrpcUserService : Protos.UserService.UserServiceBase
     {
         private readonly IMediator _mediator;
@@ -23,7 +23,8 @@ namespace Users.API.GrpcServices
         }
         public override async Task<CheckEmailvAilabilityResponse> CheckEmailAvailability(CheckEmailAvailabilityRequest request, ServerCallContext context)
         {
-            throw new RpcException(new Status(StatusCode.Unimplemented, ""));
+            var isAvailable = await _mediator.Send(new CheckEmailAvailabilityQuery(request.Email));
+            return new CheckEmailvAilabilityResponse() {IsAvailable = isAvailable};
         }
 
         public override async Task<CheckIdAndPasswordMatchesResponse> CheckIdAndPasswordMatches(CheckIdAndPasswordMatchesRequest request, ServerCallContext context)

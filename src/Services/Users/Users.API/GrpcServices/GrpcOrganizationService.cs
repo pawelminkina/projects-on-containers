@@ -6,10 +6,11 @@ using Users.Core.CQS.Organizations.Commands.AddOrganization;
 using Users.Core.CQS.Organizations.Commands.DeleteOrganization;
 using Users.Core.CQS.Organizations.Queries.ListOrganizations;
 using Users.API.Protos;
+using Users.Core.CQS.Organizations.Queries.GetOrganization;
+using Users.Core.Domain;
 
 namespace Users.API.GrpcServices
 {
-    [Authorize]
     public class GrpcOrganizationService : Protos.OrganizationService.OrganizationServiceBase
     {
         private readonly IMediator _mediator;
@@ -32,7 +33,8 @@ namespace Users.API.GrpcServices
 
         public override async Task<OrganizationResponse> GetOrganization(GetOrganizationRequest request, ServerCallContext context)
         {
-            throw new RpcException(new Status(StatusCode.Unimplemented, ""));
+            var organization = await _mediator.Send(new GetOrganizationQuery(request.OrganizationId));
+            return MapToResponse(organization);
         }
 
         public override async Task<ListOrganizationsResponse> ListOrganizations(ListOrganizationsRequest request, ServerCallContext context)
@@ -40,14 +42,16 @@ namespace Users.API.GrpcServices
             var organizations = await _mediator.Send(new ListOrganizationsQuery());
             return new ListOrganizationsResponse()
             {
-                Organizations = { organizations.Select(o => new OrganizationResponse()
-                {
-                    Enabled = o.IsEnabled,
-                    Id = o.Id,
-                    Name = o.Name,
-                    CreationDate = Timestamp.FromDateTimeOffset(o.TimeOfCreation)
-                })}
+                Organizations = { organizations.Select(MapToResponse)}
             };
         }
+
+        private OrganizationResponse MapToResponse(Organization organization) => new OrganizationResponse()
+        {
+            Enabled = organization.IsEnabled,
+            Id = organization.Id,
+            Name = organization.Name,
+            CreationDate = Timestamp.FromDateTimeOffset(organization.TimeOfCreation)
+        };
     }
 }
