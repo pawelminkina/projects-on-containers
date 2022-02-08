@@ -1,4 +1,7 @@
 ﻿using System.Reflection;
+using EventBus;
+using EventBus.Abstraction;
+using EventBus.InMemory;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -51,7 +54,18 @@ namespace Users.API
             ConfigureIdentity(services);
             AddDatabase(services);
             AddCustomConfiguration(services);   
+            AddEventBus(services);
+            ConfigureEventBus(services);
+        }
 
+        protected virtual void AddEventBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, InMemoryEventBus>();
+        }
+
+        protected virtual void ConfigureEventBus(IServiceCollection services)
+        {
         }
 
         private void AddCustomConfiguration(IServiceCollection services)

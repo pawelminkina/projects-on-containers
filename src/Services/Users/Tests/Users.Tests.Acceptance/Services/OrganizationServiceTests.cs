@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using NUnit.Framework;
 using Users.API.Protos;
 using Users.Tests.Core.Base;
@@ -49,6 +51,90 @@ namespace Users.Tests.Acceptance.Services
              };
 
             #endregion
+        }
+
+        [Test]
+        public async Task ShouldReturnOrganization()
+        {
+            //GIVEN expected organization
+            var expected = GetExpectedOrganization();
+
+            //WHEN organization is retrieved from server
+            var getRequest = new GetOrganizationRequest() {OrganizationId = expected.Id};
+            var getResponse = await _grpcClient.GetOrganizationAsync(getRequest);
+            var actual = getResponse.Organization;
+
+            //THEN check equality of expected and actual organization
+            actual.Should().BeEquivalentTo(expected);
+
+            #region Local methods
+
+            Organization GetExpectedOrganization() =>
+                new()
+                {
+                    Enabled = true,
+                    Id = "BaseOrganization1",
+                    Name = "Base Organization 1",
+                    CreationDate = new DateTimeOffset(new DateTime(2020, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp()
+                };
+
+            #endregion
+        }
+
+        [Test]
+        public async Task ShouldCreateOrganization()
+        {
+            //GIVEN expected organization to create
+            var expected = GetExpectedOrganization();
+
+            //WHEN organization is created
+            var createRequest = new AddOrganizationRequest() {Name = expected.Name};
+            var createResponse = await _grpcClient.AddOrganizationAsync(createRequest);
+
+            //AND retrieved from server
+            var getRequest = new GetOrganizationRequest() { OrganizationId = createResponse.OrganizationId };
+            var getResponse = await _grpcClient.GetOrganizationAsync(getRequest);
+            var actual = getResponse.Organization;
+
+            //AND id and date of created is assigned to expected
+            expected.Id = actual.Id;
+            expected.CreationDate = actual.CreationDate;
+
+            //THEN check equality of expected and actual organization
+            actual.Should().BeEquivalentTo(expected);
+
+            //AND check that date of creation is today
+            actual.CreationDate.ToDateTime().Date.Should().Be(DateTime.UtcNow.Date);
+
+            #region Local methods
+
+            Organization GetExpectedOrganization() =>
+                new()
+                {
+                    Enabled = true,
+                    Name = "New Organization",
+                    CreationDate = DateTimeOffset.UtcNow.ToTimestamp()
+                };
+
+            #endregion
+        }
+
+        [Test]
+        public async Task ShouldDeleteOrganization()
+        {
+            //GIVEN organization to delete
+            var organizationToDelete = "BaseOrganization1";
+
+            //WHEN organization is deleted
+            var deleteRequest = new DeleteOrganizationRequest() {OrganizationId = organizationToDelete};
+            var deleteResponse = await _grpcClient.DeleteOrganizationAsync(deleteRequest);
+
+            //AND it's retrieved from server
+            var getRequest = new GetOrganizationRequest() { OrganizationId = organizationToDelete };
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.GetOrganizationAsync(getRequest));
+
+            //THEN check does it exist
+            exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
         }
 
     }

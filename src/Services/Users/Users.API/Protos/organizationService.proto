@@ -12,7 +12,6 @@ service OrganizationService{
 
 message AddOrganizationRequest{
 	string name = 1;
-	string ownerId = 2;
 }
 
 message AddOrganizationResponse{
