@@ -17,7 +17,7 @@ namespace Users.Core.CQRS.Users.Commands.ChangePassword
             RuleFor(command => command.OldPassword).NotEmpty();
 
             RuleFor(command => command.NewPassword)
-                .Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,}$")
+                .Matches(Constants.Regex.PasswordRule)
                 .WithMessage(ApplicationErrorMessages.PasswordIsNotPassingRequiredCriteria);
         }
     }

@@ -19,7 +19,7 @@ namespace Users.Core.CQRS.Users.Commands.CreateUser
             RuleFor(command => command.Email).EmailAddress();
 
             RuleFor(command => command.Password)
-                .Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,}$")
+                .Matches(Constants.Regex.PasswordRule)
                 .WithMessage(ApplicationErrorMessages.PasswordIsNotPassingRequiredCriteria);
         }
     }
