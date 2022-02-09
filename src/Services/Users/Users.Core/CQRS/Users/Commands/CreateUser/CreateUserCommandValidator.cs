@@ -14,6 +14,8 @@ namespace Users.Core.CQRS.Users.Commands.CreateUser
         {
             RuleFor(command => command.OrganizationId).NotEmpty();
 
+            RuleFor(command => command.Fullname).NotEmpty();
+
             RuleFor(command => command.Email).EmailAddress();
 
             RuleFor(command => command.Password)

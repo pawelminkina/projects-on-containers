@@ -3,8 +3,8 @@ import "google/protobuf/timestamp.proto";
 option csharp_namespace = "Users.API.Protos";
 
 service UserService{
-	rpc GetUserByUsername (GetUserByUsernameRequest) returns (UserResponse);
-	rpc GetUserById (GetUserByIdRequest) returns (UserResponse);
+	rpc GetUserByUsername (GetUserByUsernameRequest) returns (GetUserResponse);
+	rpc GetUserById (GetUserByIdRequest) returns (GetUserResponse);
 	rpc GetUsersForOrganization (GetUsersForOrganizationRequest) returns (GetUsersForOrganizationResponse);
 	rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
 	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
@@ -25,10 +25,14 @@ message GetUsersForOrganizationRequest{
 }
 
 message GetUsersForOrganizationResponse{
-	repeated UserResponse users = 1;
+	repeated User users = 1;
 }
 
-message UserResponse {
+message GetUserResponse{
+	User user = 1;
+}
+
+message User {
 	string id = 1;
 	string username = 2;
 	string fullname = 3;
@@ -54,6 +58,7 @@ message CreateUserRequest{
 	string email = 1;
 	string password = 2;
 	string organizationId = 3;
+	string fullname = 4;
 }
 
 message CreateUserResponse{

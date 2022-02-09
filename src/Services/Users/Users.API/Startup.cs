@@ -36,6 +36,8 @@ namespace Users.API
                 options.Interceptors.Add<GrpcErrorInterceptor>();
             });
 
+            services.AddAuthentication();
+
             services.AddControllers().AddApplicationPart(typeof(Startup).Assembly);
             services.AddMediatR(
                 typeof(UserServiceDbContext).Assembly, //DAL
@@ -50,6 +52,8 @@ namespace Users.API
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(GetUserByIdQueryValidator).Assembly);
+
+            services.AddHttpContextAccessor();
 
             ConfigureIdentity(services);
             AddDatabase(services);
@@ -105,8 +109,8 @@ namespace Users.API
 
         private void ConfigureIdentity(IServiceCollection services)
         {
-            //This method is copy of content from .AddIdentity method from Microsoft.AspNetCore.Identity
-            //It is added this way because default implementation is not allowing to authenticate user using JWT token
+            //This method is part of content from .AddIdentity method from Microsoft.AspNetCore.Identity
+            //It is added this way because default implementation is adding authentication with cookie and custom login path, which is a problem with external identity service
             services.TryAddScoped<IUserValidator<UserDAO>, UserValidator<UserDAO>>();
             services.TryAddScoped<IPasswordValidator<UserDAO>, PasswordValidator<UserDAO>>();
             services.TryAddScoped<IPasswordHasher<UserDAO>, PasswordHasher<UserDAO>>();

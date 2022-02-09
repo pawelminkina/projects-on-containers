@@ -15,11 +15,12 @@ namespace Users.Core.CQRS.Users.Commands.CreateUser
 {
     public sealed class CreateUserCommand : IRequest<Domain.User>
     {
-        public CreateUserCommand(string email, string organizationId, string password)
+        public CreateUserCommand(string email, string organizationId, string password, string fullname)
         {
             Email = email;
             OrganizationId = organizationId;
             Password = password;
+            Fullname = fullname;
         }
 
         public string Email { get; }
@@ -27,6 +28,7 @@ namespace Users.Core.CQRS.Users.Commands.CreateUser
         public string OrganizationId { get; }
 
         public string Password { get; }
+        public string Fullname { get; }
     }
 
     public sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Domain.User>
@@ -54,7 +56,8 @@ namespace Users.Core.CQRS.Users.Commands.CreateUser
                 UserName = request.Email,
                 Email = request.Email,
                 Organization = organization,
-                TimeOfCreationUtc = DateTime.UtcNow
+                TimeOfCreationUtc = DateTime.UtcNow,
+                Fullname = request.Fullname
             }, request.Password);
 
             if (!identityResult.Succeeded)

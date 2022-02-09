@@ -30,7 +30,7 @@ namespace Users.Core.CQRS.Users.Queries.CheckEmailAvailability
         }
         public async Task<bool> Handle(CheckEmailAvailabilityQuery request, CancellationToken cancellationToken)
         {
-            var userDao = await _userManager.FindByIdAsync(request.Email);
+            var userDao = await _userManager.FindByNameAsync(request.Email);
 
             return userDao is null;
         }

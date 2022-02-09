@@ -38,7 +38,7 @@ namespace Users.API.GrpcServices
 
         public override async Task<CreateUserResponse> CreateUser(CreateUserRequest request, ServerCallContext context)
         {
-            var user = await _mediator.Send(new CreateUserCommand(request.Email, request.OrganizationId, request.Password));
+            var user = await _mediator.Send(new CreateUserCommand(request.Email, request.OrganizationId, request.Password, request.Fullname));
             return new CreateUserResponse() {UserId = user.Id};
         }
 
@@ -48,16 +48,16 @@ namespace Users.API.GrpcServices
             return new DeleteUserResponse();
         }
 
-        public override async Task<UserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
+        public override async Task<GetUserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
         {
             var user = await _mediator.Send(new GetUserByIdQuery(request.UserId));
-            return MapToUserResponse(user);
+            return new GetUserResponse() {User = MapToUser(user)};
         }
 
-        public override async Task<UserResponse> GetUserByUsername(GetUserByUsernameRequest request, ServerCallContext context)
+        public override async Task<GetUserResponse> GetUserByUsername(GetUserByUsernameRequest request, ServerCallContext context)
         {
             var user = await _mediator.Send(new GetUserByUsernameQuery(request.Username));
-            return MapToUserResponse(user);
+            return new GetUserResponse() { User = MapToUser(user) };
         }
 
         public override async Task<GetUsersForOrganizationResponse> GetUsersForOrganization(GetUsersForOrganizationRequest request, ServerCallContext context)
@@ -65,13 +65,13 @@ namespace Users.API.GrpcServices
             var users = await _mediator.Send(new GetUsersForOrganizationQuery(request.OrganizationId));
             return new GetUsersForOrganizationResponse()
             {
-                Users = { users.Select(MapToUserResponse) }
+                Users = { users.Select(MapToUser) }
             };
         }
 
-        private UserResponse MapToUserResponse(Users.Core.Domain.User user)
+        private User MapToUser(Users.Core.Domain.User user)
         {
-            return new UserResponse()
+            return new User()
             {
                 Id = user.Id,
                 Username = user.UserName,
