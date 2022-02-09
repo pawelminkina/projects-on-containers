@@ -10,6 +10,7 @@ service UserService{
 	rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 	rpc CheckEmailAvailability (CheckEmailAvailabilityRequest) returns (CheckEmailvAilabilityResponse);
 	rpc CheckIdAndPasswordMatches (CheckIdAndPasswordMatchesRequest) returns (CheckIdAndPasswordMatchesResponse);
+	rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse);
 }
 
 message GetUserByUsernameRequest{
@@ -78,4 +79,14 @@ message DeleteUserRequest{
 }
 
 message DeleteUserResponse{
+}
+
+message ChangePasswordRequest{
+	string userId = 1;
+	string oldPassword = 2;
+	string newPassword = 3;
+}
+
+message ChangePasswordResponse{
+
 }

@@ -30,9 +30,17 @@ namespace Users.Core.CQRS.Users.Commands.ChangePassword
     {
         private readonly UserManager<UserDAO> _userManager;
 
+        public ChangePasswordCommandHandler(UserManager<UserDAO> userManager)
+        {
+            _userManager = userManager;
+        }
         public async Task<Unit> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            var identityResult = await _userManager.ChangePasswordAsync(await _userManager.FindByIdAsync(request.UserId), request.OldPassword, request.NewPassword);
+            var user = await _userManager.FindByIdAsync(request.UserId);
+            if (user is null)
+                throw new NotFoundException($"User with id: {request.UserId} not found");
+
+            var identityResult = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
             if (identityResult.Succeeded == false)
                 throw IdentityResultException.IdentityResultFailed(identityResult);
 

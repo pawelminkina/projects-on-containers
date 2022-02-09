@@ -9,6 +9,7 @@ using Users.Core.CQRS.Users.Queries.GetUserById;
 using Users.Core.CQRS.Users.Queries.GetUserByUsername;
 using Users.Core.CQRS.Users.Queries.GetUsersForOrganization;
 using Users.API.Protos;
+using Users.Core.CQRS.Users.Commands.ChangePassword;
 using Users.Core.CQRS.Users.Queries.CheckEmailAvailability;
 
 namespace Users.API.GrpcServices
@@ -67,6 +68,12 @@ namespace Users.API.GrpcServices
             {
                 Users = { users.Select(MapToUser) }
             };
+        }
+
+        public override async Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequest request, ServerCallContext context)
+        {
+            await _mediator.Send(new ChangePasswordCommand(request.UserId, request.OldPassword, request.NewPassword));
+            return new ChangePasswordResponse();
         }
 
         private User MapToUser(Users.Core.Domain.User user)

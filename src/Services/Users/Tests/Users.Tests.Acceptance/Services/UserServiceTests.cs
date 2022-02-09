@@ -151,6 +151,30 @@ namespace Users.Tests.Acceptance.Services
         }
 
         [Test]
+        public async Task ShouldChangeUserPassword()
+        {
+            //GIVEN user for which password will be changed
+            var userToChange = "BaseUser1";
+
+            //AND old password
+            var oldPassword = "1234";
+
+            //AND new password
+            var newPassword = "TurboNewPassword123!@#";
+
+            //WHEN password is changed
+            var changePasswordRequest = new ChangePasswordRequest() {NewPassword = newPassword, OldPassword = oldPassword, UserId = userToChange};
+            var changePasswordResponse = await _grpcClient.ChangePasswordAsync(changePasswordRequest);
+
+            //AND check id with password match request is send to server
+            var checkRequest = new CheckIdAndPasswordMatchesRequest() { Password = newPassword, UserId = userToChange };
+            var checkResponse = await _grpcClient.CheckIdAndPasswordMatchesAsync(checkRequest);
+
+            //THEN check response is true
+            checkResponse.PasswordMatches.Should().BeTrue();
+        }
+
+        [Test]
         public async Task ShouldReturnTrueForCheckEmailAvailability()
         {
             //GIVEN unique email to check
