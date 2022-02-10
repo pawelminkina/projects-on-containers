@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AC589D28
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Infrastructure", "Services\Issues\Issues.Infrastructure\Issues.Infrastructure.csproj", "{1706BCEB-40E5-41CA-93D3-844291FDEDCE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{A07D147F-4351-4394-A0D3-277F083EBA15}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Issues.Tests.Acceptance", "Services\Issues\Tests\Issues.Tests.Acceptance\Issues.Tests.Acceptance.csproj", "{9E284A0E-3556-4A40-8195-E00251D499B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{60273230-476B-487B-8CB0-AC416EB3AFD6}"
@@ -57,7 +55,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Tests.Acceptance", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.InMemory", "BuildingBlocks\EventBus.InMemory\EventBus.InMemory.csproj", "{1026AE83-B11F-47D9-AA61-73DEBF3E06C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Tests.Unit", "Services\Users\Tests\Users.Tests.Unit\Users.Tests.Unit.csproj", "{8C9A4B61-F590-4767-A336-DF4593FA9EF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Tests.Unit", "Services\Users\Tests\Users.Tests.Unit\Users.Tests.Unit.csproj", "{8C9A4B61-F590-4767-A336-DF4593FA9EF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Core", "Services\Auth\Auth.Core\Auth.Core.csproj", "{A9B1E42D-C733-41DD-9174-5FB6B86A4BF8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.API", "Services\Auth\Auth.API\Auth.API.csproj", "{2AF0883F-D3BD-4CED-BC43-4E7B6CF2FA9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0114D4E4-3567-47B9-B322-7325EE63874B}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +148,14 @@ Global
 		{8C9A4B61-F590-4767-A336-DF4593FA9EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C9A4B61-F590-4767-A336-DF4593FA9EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C9A4B61-F590-4767-A336-DF4593FA9EF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9B1E42D-C733-41DD-9174-5FB6B86A4BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9B1E42D-C733-41DD-9174-5FB6B86A4BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9B1E42D-C733-41DD-9174-5FB6B86A4BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9B1E42D-C733-41DD-9174-5FB6B86A4BF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF0883F-D3BD-4CED-BC43-4E7B6CF2FA9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF0883F-D3BD-4CED-BC43-4E7B6CF2FA9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF0883F-D3BD-4CED-BC43-4E7B6CF2FA9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF0883F-D3BD-4CED-BC43-4E7B6CF2FA9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +184,8 @@ Global
 		{30677303-92EC-415B-8E28-A37652B5B4B4} = {E4C90B0F-B5F6-467D-8DED-08EB46C903FB}
 		{1026AE83-B11F-47D9-AA61-73DEBF3E06C3} = {60273230-476B-487B-8CB0-AC416EB3AFD6}
 		{8C9A4B61-F590-4767-A336-DF4593FA9EF0} = {E4C90B0F-B5F6-467D-8DED-08EB46C903FB}
+		{A9B1E42D-C733-41DD-9174-5FB6B86A4BF8} = {492B659A-947D-4411-8141-71BFCA8F5F97}
+		{2AF0883F-D3BD-4CED-BC43-4E7B6CF2FA9A} = {492B659A-947D-4411-8141-71BFCA8F5F97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE4CC04-3FAE-4D6E-BB1A-B76AD5C8F2E4}

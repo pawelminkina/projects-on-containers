@@ -21,6 +21,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - AuthServiceHttpExternalUrl=http://${POC_EXTERNAL_DNS_NAME_OR_IP}:15010
     ports:
       - "15000:80"
       - "15001:81"
@@ -29,9 +30,20 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - AuthServiceHttpExternalUrl=http://${POC_EXTERNAL_DNS_NAME_OR_IP}:15010
     ports:
       - "15005:80"
-      - "15010:81"
+      - "15006:81"
+
+  auth-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - UserServiceGrpcUrl=http://users-api:81
+      - AuthServiceHttpExternalUrl=http://${POC_EXTERNAL_DNS_NAME_OR_IP}:15010
+    ports:
+      - "15010:80"
+
 volumes:
 
   poc-sqlserver:
