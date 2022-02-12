@@ -10,8 +10,6 @@ namespace Users.DAL.DataAccessObjects
     {
         public string Id { get; set; }
 
-        public bool Enabled { get; set; }
-
         public string Name { get; set; }
 
         public DateTime TimeOfCreationUtc { get; set; }

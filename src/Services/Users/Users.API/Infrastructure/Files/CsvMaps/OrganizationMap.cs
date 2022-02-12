@@ -9,7 +9,6 @@ namespace Users.API.Infrastructure.Files.CsvMaps
         {
             Map(s => s.Name).Name("Name");
             Map(s => s.Id).Name("Id");
-            Map(s => s.Enabled).Name("Enabled");
             Map(s => s.TimeOfCreationUtc).Name("TimeOfCreationUtc");
         }
     }

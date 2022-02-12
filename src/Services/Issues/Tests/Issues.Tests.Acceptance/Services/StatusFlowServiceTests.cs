@@ -148,7 +148,7 @@ namespace Issues.Tests.Acceptance.Services
             getResponse.Flow.Statuses.Should().HaveCount(1).And.Contain(s => s.Name == "To do");
 
             //AND that none of statuses contain connection to delete status
-            getResponse.Flow.Statuses.Should().NotContain(s => s.ConnectedStatuses.Any(d => d.ConnectedStatusInFlowId == statusToDelete));
+            getResponse.Flow.Statuses.Should().NotContain(s => s.ConnectedStatusesId.Any(d => d == statusToDelete));
         }
 
         #endregion
@@ -180,8 +180,8 @@ namespace Issues.Tests.Acceptance.Services
 
             //THEN check does flow contain added connection
             actualStatus.Should().NotBeNull();
-            actualStatus.ConnectedStatuses.Should().HaveCount(1);
-            actualStatus.ConnectedStatuses.First().ConnectedStatusInFlowId.Should().Be(connectedStatus);
+            actualStatus.ConnectedStatusesId.Should().HaveCount(1);
+            actualStatus.ConnectedStatusesId.First().Should().Be(connectedStatus);
         }
 
         #endregion
@@ -212,7 +212,7 @@ namespace Issues.Tests.Acceptance.Services
             var actualStatus = getResponse.Flow.Statuses.FirstOrDefault(d => d.Id == parentStatus);
 
             //THEN check does flow contain removed connection
-            actualStatus.ConnectedStatuses.Should().BeEmpty();
+            actualStatus.ConnectedStatusesId.Should().BeEmpty();
         }
 
         #endregion
@@ -251,38 +251,38 @@ namespace Issues.Tests.Acceptance.Services
         private StatusFlow GetStatusFlowWithId004002() =>
             GrpcStatusFlowFactory.Create("004-002", "Status Flow 2", new List<StatusInFlow>()
             {
-                GrpcStatusInFlowFactory.Create("005-003", "To do", new List<ConnectedStatuses>()
+                GrpcStatusInFlowFactory.Create("005-003", "To do", new List<string>()
                 {
-                    new() {ConnectedStatusInFlowId = "005-004", ParentStatusInFlowIdId = "005-003"},
+                    "005-004"
                 }, true),
-                GrpcStatusInFlowFactory.Create("005-004", "Done", new List<ConnectedStatuses>()
+                GrpcStatusInFlowFactory.Create("005-004", "Done", new List<string>()
                 {
-                    new() {ConnectedStatusInFlowId = "005-003", ParentStatusInFlowIdId = "005-004"},
+                    "005-003"
                 })
             });
         private StatusFlow GetStatusFlowWithId004003() =>
             GrpcStatusFlowFactory.Create("004-003", "Status Flow 3", new List<StatusInFlow>()
             {
-                GrpcStatusInFlowFactory.Create("005-005", "To do", new List<ConnectedStatuses>()
+                GrpcStatusInFlowFactory.Create("005-005", "To do", new List<string>()
                 {
-                    new() {ConnectedStatusInFlowId = "005-006", ParentStatusInFlowIdId = "005-005"},
+                    "005-006"
                 }, true),
-                GrpcStatusInFlowFactory.Create("005-006", "Done", new List<ConnectedStatuses>()
+                GrpcStatusInFlowFactory.Create("005-006", "Done", new List<string>()
                 {
-                    new() {ConnectedStatusInFlowId = "005-005", ParentStatusInFlowIdId = "005-006"},
+                    "005-005"
                 }),
-                GrpcStatusInFlowFactory.Create("005-011", "Some status", new List<ConnectedStatuses>())
+                GrpcStatusInFlowFactory.Create("005-011", "Some status", new List<string>())
             });
         private StatusFlow GetStatusFlowWithId004004() =>
             GrpcStatusFlowFactory.Create("004-004", "Status Flow 4", new List<StatusInFlow>()
             {
-                GrpcStatusInFlowFactory.Create("005-007", "To do", new List<ConnectedStatuses>()
+                GrpcStatusInFlowFactory.Create("005-007", "To do", new List<string>()
                 {
-                    new() {ConnectedStatusInFlowId = "005-008", ParentStatusInFlowIdId = "005-007"},
+                    "005-008"
                 }, true),
-                GrpcStatusInFlowFactory.Create("005-008", "Done", new List<ConnectedStatuses>()
+                GrpcStatusInFlowFactory.Create("005-008", "Done", new List<string>()
                 {
-                    new() {ConnectedStatusInFlowId = "005-007", ParentStatusInFlowIdId = "005-008"},
+                    "005-007"
                 })
             }, true);
 

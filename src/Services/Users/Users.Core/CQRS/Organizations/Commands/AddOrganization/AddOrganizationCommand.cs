@@ -39,7 +39,6 @@ namespace Users.Core.CQRS.Organizations.Commands.AddOrganization
             await _dbContext.Organizations.AddAsync(new OrganizationDAO()
             {
                 Id = organizationId,
-                Enabled = true,
                 Name = request.OrganizationName,
                 TimeOfCreationUtc = DateTime.UtcNow
             }, cancellationToken);

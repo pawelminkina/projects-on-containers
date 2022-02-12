@@ -63,11 +63,11 @@ namespace Issues.Tests.Functional.GroupOfIssue
             doneStatus.Should().NotBeNull();
             
             //AND check status connections
-            toDoStatus.ConnectedStatuses.Should().HaveCount(1);
-            toDoStatus.ConnectedStatuses.Should().ContainSingle(s=>s.ConnectedStatusInFlowId == doneStatus.Id, "To do status has no connection to done status");
+            toDoStatus.ConnectedStatusesId.Should().HaveCount(1);
+            toDoStatus.ConnectedStatusesId.Should().ContainSingle(s=>s == doneStatus.Id, "To do status has no connection to done status");
 
-            doneStatus.ConnectedStatuses.Should().HaveCount(1);
-            doneStatus.ConnectedStatuses.Should().ContainSingle(s => s.ConnectedStatusInFlowId == toDoStatus.Id, "Done status has no connection to to do status");
+            doneStatus.ConnectedStatusesId.Should().HaveCount(1);
+            doneStatus.ConnectedStatusesId.Should().ContainSingle(s => s == toDoStatus.Id, "Done status has no connection to to do status");
             
             
             #region Local methods

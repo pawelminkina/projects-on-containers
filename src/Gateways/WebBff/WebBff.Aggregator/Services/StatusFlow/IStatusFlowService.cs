@@ -11,6 +11,6 @@ namespace WebBff.Aggregator.Services.StatusFlow
         Task DeleteStatusFromFlow(string statusInFlowId);
         Task AddConnectionToStatusInFlow(string parentStatusInFlowId, string connectedStatusInFlowId);
         Task RemoveConnectionFromStatusInFlow(string parentStatusInFlowId, string connectedStatusInFlowId);
-        Task ChangeDefaultStatusInFlowId(string newStatusInFlowId);
+        Task ChangeDefaultStatusInFlow(string newStatusInFlowId);
     }
 }

@@ -48,8 +48,8 @@ namespace Users.Tests.Acceptance.Services
             IEnumerable<Organization> GetExpectedOrganizations() =>
                 new[]
                 {
-                    new Organization() {Enabled = true, Id = "BaseOrganization1", Name = "Base Organization 1", CreationDate = new DateTimeOffset(new DateTime(2020,12,22), new TimeSpan(0,1,0,0)).ToTimestamp()},
-                    new Organization() {Enabled = true, Id = "BaseOrganization2", Name = "Base Organization 2", CreationDate = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp()}
+                    new Organization() {Id = "BaseOrganization1", Name = "Base Organization 1", CreationDate = new DateTimeOffset(new DateTime(2020,12,22), new TimeSpan(0,1,0,0)).ToTimestamp()},
+                    new Organization() {Id = "BaseOrganization2", Name = "Base Organization 2", CreationDate = new DateTimeOffset(new DateTime(2021,12,22), new TimeSpan(0,1,0,0)).ToTimestamp()}
                 };
 
             #endregion
@@ -78,7 +78,6 @@ namespace Users.Tests.Acceptance.Services
             Organization GetExpectedOrganization() =>
                 new()
                 {
-                    Enabled = true,
                     Id = "BaseOrganization1",
                     Name = "Base Organization 1",
                     CreationDate = new DateTimeOffset(new DateTime(2020, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp()
@@ -121,7 +120,6 @@ namespace Users.Tests.Acceptance.Services
             Organization GetExpectedOrganization() =>
                 new()
                 {
-                    Enabled = true,
                     Name = "New Organization",
                     CreationDate = DateTimeOffset.UtcNow.ToTimestamp()
                 };
