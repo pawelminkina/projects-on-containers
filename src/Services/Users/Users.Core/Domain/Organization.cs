@@ -11,8 +11,6 @@ namespace Users.Core.Domain
     {
         public string Name { get; set; }
 
-        public bool IsEnabled { get; set; }
-
         public DateTimeOffset TimeOfCreation { get; set; }
     }
 }

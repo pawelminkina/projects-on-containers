@@ -109,11 +109,7 @@ namespace Issues.API.GrpcServices
             };
 
             if (statusInFlow.ConnectedStatuses.Any())
-                res.ConnectedStatuses.AddRange(statusInFlow.ConnectedStatuses.Select(d => new ConnectedStatuses()
-                {
-                    ConnectedStatusInFlowId = d.ConnectedStatusInFlow.Id,
-                    ParentStatusInFlowIdId = d.ParentStatusInFlow.Id,
-                }));
+                res.ConnectedStatusesId.AddRange(statusInFlow.ConnectedStatuses.Select(s=>s.ConnectedStatusInFlow.Id));
                 
             return res;
         }

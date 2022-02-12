@@ -108,12 +108,7 @@ message StatusFlow{
 message StatusInFlow{
 	string id = 1;
 	string Name = 2;
-	repeated ConnectedStatuses connectedStatuses = 3;
+	repeated string connectedStatusesId = 3;
 	bool isDefault = 4;
-}
-
-message ConnectedStatuses{
-	string parentStatusInFlowIdId = 1;
-	string connectedStatusInFlowId = 2;
 }
 

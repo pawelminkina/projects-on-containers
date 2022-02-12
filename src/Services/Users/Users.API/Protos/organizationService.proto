@@ -35,8 +35,7 @@ message GetOrganizationResponse{
 message Organization{
 	string id = 1;
 	string name = 2;
-	bool enabled = 3;
-	google.protobuf.Timestamp creationDate = 4;
+	google.protobuf.Timestamp creationDate = 3;
 }
 
 

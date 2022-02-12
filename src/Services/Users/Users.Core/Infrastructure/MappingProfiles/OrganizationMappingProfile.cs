@@ -15,7 +15,6 @@ namespace Users.Core.Infrastructure.MappingProfiles
         {
             CreateMap<OrganizationDAO, Organization>()
                 .ForMember(o => o.Id, cfg => cfg.MapFrom(src => src.Id))
-                .ForMember(o => o.IsEnabled, cfg => cfg.MapFrom(src => src.Enabled))
                 .ForMember(o => o.Name, cfg => cfg.MapFrom(src => src.Name))
                 .ForMember(o => o.TimeOfCreation, cfg => cfg.MapFrom(src => new DateTimeOffset(src.TimeOfCreationUtc)));
         }

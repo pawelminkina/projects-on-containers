@@ -48,7 +48,6 @@ namespace Users.API.GrpcServices
 
         private Protos.Organization MapToResponse(Core.Domain.Organization organization) => new()
         {
-            Enabled = organization.IsEnabled,
             Id = organization.Id,
             Name = organization.Name,
             CreationDate = Timestamp.FromDateTimeOffset(organization.TimeOfCreation),

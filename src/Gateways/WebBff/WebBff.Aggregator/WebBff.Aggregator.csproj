@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="Services\GroupOfIssues\" />
+    <Folder Include="Services\Issues\" />
   </ItemGroup>
 
 </Project>
