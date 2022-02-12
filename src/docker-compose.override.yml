@@ -17,7 +17,7 @@ services:
     volumes:
       - poc-sqlserver:/var/opt/mssql
 
-  issues.api:
+  issues-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -50,7 +50,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - UserServiceGrpcUrl=http://users-api:81
-      - IssuesServiceGrpcUrl=http://issues-api:81
+      - IssueServiceGrpcUrl=http://issues-api:81
       - AuthServiceHttpExternalUrl=http://${POC_EXTERNAL_DNS_NAME_OR_IP}:15010
     ports:
       - "15015:80"

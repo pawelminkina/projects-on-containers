@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebBff.Aggregator.Models.Issues;
 using WebBff.Aggregator.Services.Issues;
 
 namespace WebBff.Aggregator.Controllers;
 
+[Authorize]
+[Controller]
+[Route("Issues")]
 public class IssuesController : ControllerBase
 {
     private readonly IIssuesService _issuesService;
@@ -31,7 +35,7 @@ public class IssuesController : ControllerBase
     public async Task<ActionResult<IssueWithContentDto>> CreateIssue([FromBody] IssueForCreationDto dto)
     {
         var newIssueId = await _issuesService.CreateIssue(dto);
-        return CreatedAtAction(nameof(GetIssueWithContent), new {id = newIssueId}, new {id = newIssueId});
+        return CreatedAtAction(nameof(GetIssueWithContent), new { id = newIssueId }, new { id = newIssueId });
     }
 
     [HttpPut("rename")]

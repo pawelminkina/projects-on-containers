@@ -7,7 +7,7 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
 
-  issues.api:
+  issues-api:
     image: ${DOCKER_REGISTRY-poc}/issues.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -40,4 +40,4 @@ services:
     depends_on:
       - users-api
       - auth-api
-      - issues.api
+      - issues-api

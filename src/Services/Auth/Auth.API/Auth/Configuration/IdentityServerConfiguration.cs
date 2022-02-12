@@ -54,5 +54,13 @@ namespace Auth.API.Auth.Configuration
             new ApiResource("issues_api", "Issues API") { Scopes = new string[] { "issues_api" } },
             new ApiResource("web_bff_aggregator", "Web BFF Aggregator") { Scopes = new string[] { "web_bff_aggregator" } },
         };
+
+        public static IEnumerable<ApiScope> ApiScopes => new List<ApiScope>()
+        {
+            new ApiScope("internal_communication_scope"),
+            new ApiScope("user_api"),
+            new ApiScope("issues_api"),
+            new ApiScope("web_bff_aggregator"),
+        };
     }
 }

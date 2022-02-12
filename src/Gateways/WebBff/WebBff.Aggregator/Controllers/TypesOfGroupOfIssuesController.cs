@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebBff.Aggregator.Models.TypeOfGroupOfIssues;
 using WebBff.Aggregator.Services.GroupOfIssues;
@@ -6,12 +7,15 @@ using WebBff.Aggregator.Services.TypeOfGroupOfIssues;
 
 namespace WebBff.Aggregator.Controllers;
 
-public class TypeOfGroupOfIssuesController : ControllerBase
+[Authorize]
+[Controller]
+[Route("TypesOfGroupOfIssues")]
+public class TypesOfGroupOfIssuesController : ControllerBase
 {
     private readonly ITypeOfGroupOfIssuesService _typeOfGroupOfIssuesService;
     private readonly IGroupOfIssuesService _groupOfIssuesService;
 
-    public TypeOfGroupOfIssuesController(ITypeOfGroupOfIssuesService typeOfGroupOfIssuesService, IGroupOfIssuesService groupOfIssuesService)
+    public TypesOfGroupOfIssuesController(ITypeOfGroupOfIssuesService typeOfGroupOfIssuesService, IGroupOfIssuesService groupOfIssuesService)
     {
         _typeOfGroupOfIssuesService = typeOfGroupOfIssuesService;
         _groupOfIssuesService = groupOfIssuesService;

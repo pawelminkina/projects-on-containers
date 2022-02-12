@@ -46,6 +46,8 @@ namespace WebBff.Aggregator
             services.AddTransient<IInternalJwtTokenFactory, InternalJwtTokenFactory>();
 
             //Grpc
+            services.AddTransient<JwtTokenForwardingInterceptor>();
+
             services.AddGrpcClient<GroupOfIssueService.GroupOfIssueServiceClient>((services, options) =>
             {
                 options.Address = new Uri(Configuration["IssueServiceGrpcUrl"]);

@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebBff.Aggregator.Models.GroupOfIssues;
 using WebBff.Aggregator.Services.GroupOfIssues;
 using WebBff.Aggregator.Services.Issues;
 
 namespace WebBff.Aggregator.Controllers;
 
-public class GroupOfIssuesController : ControllerBase
+[Authorize]
+[Controller]
+[Route("GroupsOfIssues")]
+public class GroupsOfIssuesController : ControllerBase
 {
     private readonly IGroupOfIssuesService _groupOfIssuesService;
     private readonly IIssuesService _issuesService;
 
-    public GroupOfIssuesController(IGroupOfIssuesService groupOfIssuesService, IIssuesService issuesService)
+    public GroupsOfIssuesController(IGroupOfIssuesService groupOfIssuesService, IIssuesService issuesService)
     {
         _groupOfIssuesService = groupOfIssuesService;
         _issuesService = issuesService;

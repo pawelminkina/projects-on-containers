@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebBff.Aggregator.Models.Organization;
 using WebBff.Aggregator.Services.Organization;
 
 namespace WebBff.Aggregator.Controllers;
 
-public class OrganizationController : ControllerBase
+[Authorize]
+[Controller]
+[Route("Organizations")]
+public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationService _organizationService;
 
-    public OrganizationController(IOrganizationService organizationService)
+    public OrganizationsController(IOrganizationService organizationService)
     {
         _organizationService = organizationService;
     }

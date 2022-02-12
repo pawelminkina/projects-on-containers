@@ -38,6 +38,7 @@ namespace Auth.API
             .AddDeveloperSigningCredential()
             .AddInMemoryClients(IdentityServerConfiguration.GetClients(GetClientUrls()))
             .AddInMemoryApiResources(IdentityServerConfiguration.ApiResources)
+            .AddInMemoryApiScopes(IdentityServerConfiguration.ApiScopes)
             .AddInMemoryIdentityResources(IdentityServerConfiguration.IdentityResources)
             .AddExtensionGrantValidator<InternalCommunicationGrantValidator>();
 

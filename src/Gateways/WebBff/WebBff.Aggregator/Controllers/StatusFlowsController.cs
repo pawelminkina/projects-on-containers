@@ -1,14 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebBff.Aggregator.Models.StatusFlow;
 using WebBff.Aggregator.Services.StatusFlow;
 
 namespace WebBff.Aggregator.Controllers;
 
-public class StatusFlowController : ControllerBase
+
+[Authorize]
+[Controller]
+[Route("StatusFlows")]
+public class StatusFlowsController : ControllerBase
 {
     private readonly IStatusFlowService _statusFlowService;
 
-    public StatusFlowController(IStatusFlowService statusFlowService)
+    public StatusFlowsController(IStatusFlowService statusFlowService)
     {
         _statusFlowService = statusFlowService;
     }

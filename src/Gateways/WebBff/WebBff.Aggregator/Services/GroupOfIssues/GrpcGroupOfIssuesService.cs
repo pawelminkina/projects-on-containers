@@ -58,7 +58,7 @@ namespace WebBff.Aggregator.Services.GroupOfIssues
                 IsInTrash = group.IsInThrash,
                 Name = group.Name,
                 ShortName = group.ShortName,
-                TimeOfDelete = group.TimeOfDelete.ToDateTimeOffset(),
+                TimeOfDelete = group.TimeOfDelete?.ToDateTimeOffset(),
                 TypeOfGroupId = group.TypeOfGroupId
             };
         }
