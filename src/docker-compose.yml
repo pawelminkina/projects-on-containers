@@ -31,3 +31,13 @@ services:
       dockerfile: Services/Auth/Auth.API/Dockerfile
     depends_on:
       - users-api
+
+  webbff-aggregator:
+    image: ${DOCKER_REGISTRY-poc}/webbff.aggregator:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Gateways/WebBff/WebBff.Aggregator/Dockerfile
+    depends_on:
+      - users-api
+      - auth-api
+      - issues.api

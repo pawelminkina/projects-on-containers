@@ -22,6 +22,21 @@ namespace Auth.API.Auth.Configuration
                         "internal_communication_scope"
                     }
                 },
+                new Client
+                {
+                    ClientId = "webbffaggregatorswaggerui",
+                    ClientName = "Web BFF Aggregator Swagger UI",
+                    AllowedGrantTypes =  IdentityServer4.Models.GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["WebBFFAggregator"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["WebBFFAggregator"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "web_bff_aggregator"
+                    }
+                },
 
             };
         }
@@ -37,6 +52,7 @@ namespace Auth.API.Auth.Configuration
             new ApiResource("internal_communication_scope", "Internal Communication") { Scopes = new string[] { "internal_communication_scope" } },
             new ApiResource("user_api", "User API") { Scopes = new string[] { "user_api" } },
             new ApiResource("issues_api", "Issues API") { Scopes = new string[] { "issues_api" } },
+            new ApiResource("web_bff_aggregator", "Web BFF Aggregator") { Scopes = new string[] { "web_bff_aggregator" } },
         };
     }
 }

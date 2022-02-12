@@ -93,6 +93,7 @@ namespace Auth.API
         protected virtual Dictionary<string, string> GetClientUrls()
         {
             var clientUrls = new Dictionary<string, string>();
+            clientUrls.Add("WebBFFAggregator", Configuration.GetValue<string>("WebBffAggregatorHttpExternalUrl"));
             return clientUrls;
 
         }
