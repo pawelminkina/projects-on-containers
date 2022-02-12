@@ -14,21 +14,21 @@ public class IssuesController : ControllerBase
     }
 
     [HttpGet("user/{id}")]
-    public async Task<ActionResult<IEnumerable<IssueDto>>> GetIssuesForUser([FromRoute] string id)
+    public async Task<ActionResult<IEnumerable<IssueReferenceDto>>> GetIssuesForUser([FromRoute] string id)
     {
         var issues = await _issuesService.GetIssuesForUser(id);
         return Ok(issues);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<IssueDto>> GetIssueWithContent([FromRoute] string id)
+    public async Task<ActionResult<IssueWithContentDto>> GetIssueWithContent([FromRoute] string id)
     {
         var issue = await _issuesService.GetIssueWithContent(id);
         return Ok(issue);
     }
 
     [HttpPost]
-    public async Task<ActionResult<IssueDto>> CreateIssue([FromBody] IssueForCreationDto dto)
+    public async Task<ActionResult<IssueWithContentDto>> CreateIssue([FromBody] IssueForCreationDto dto)
     {
         var newIssueId = await _issuesService.CreateIssue(dto);
         return CreatedAtAction(nameof(GetIssueWithContent), new {id = newIssueId}, new {id = newIssueId});

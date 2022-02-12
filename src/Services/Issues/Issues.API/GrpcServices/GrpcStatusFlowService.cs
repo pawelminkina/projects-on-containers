@@ -35,7 +35,7 @@ namespace Issues.API.GrpcServices
             if (flows.Any())
             {
                 var res = new GetStatusFlowsResponse();
-                res.Flow.AddRange(flows.Select(MapToGrpcFlow));
+                res.Flows.AddRange(flows.Select(MapToGrpcFlow));
                 return res;
             }
 

@@ -1,8 +1,17 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Issues.API.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Users.API.Protos;
 using WebBff.Aggregator.Infrastructure.Auth;
 using WebBff.Aggregator.Infrastructure.Grpc.ExceptionMapping;
+using WebBff.Aggregator.Infrastructure.Grpc.Interceptors;
 using WebBff.Aggregator.Infrastructure.Swagger;
+using WebBff.Aggregator.Services.GroupOfIssues;
+using WebBff.Aggregator.Services.Issues;
+using WebBff.Aggregator.Services.Organization;
+using WebBff.Aggregator.Services.StatusFlow;
+using WebBff.Aggregator.Services.TypeOfGroupOfIssues;
+using WebBff.Aggregator.Services.User;
 
 namespace WebBff.Aggregator
 {
@@ -21,11 +30,51 @@ namespace WebBff.Aggregator
             services.AddControllers();
             services.AddSwagger(Configuration);
 
+
+            //Services
+            services.AddScoped<IGroupOfIssuesService, GrpcGroupOfIssuesService>();
+            services.AddScoped<IIssuesService, GrpcIssuesService>();
+            services.AddScoped<IOrganizationService, GrpcOrganizationService>();
+            services.AddScoped<IStatusFlowService, GrpcStatusFlowService>();
+            services.AddScoped<ITypeOfGroupOfIssuesService, GrpcTypeOfGroupOfIssuesService>();
+            services.AddScoped<IUsersService, GrpcUsersService>();
+
             //Auth
             ConfigureAuthService(services);
 
             //Factories
             services.AddTransient<IInternalJwtTokenFactory, InternalJwtTokenFactory>();
+
+            //Grpc
+            services.AddGrpcClient<GroupOfIssueService.GroupOfIssueServiceClient>((services, options) =>
+            {
+                options.Address = new Uri(Configuration["IssueServiceGrpcUrl"]);
+            }).AddInterceptor<JwtTokenForwardingInterceptor>();
+
+            services.AddGrpcClient<IssueService.IssueServiceClient>((services, options) =>
+            {
+                options.Address = new Uri(Configuration["IssueServiceGrpcUrl"]);
+            }).AddInterceptor<JwtTokenForwardingInterceptor>();
+
+            services.AddGrpcClient<OrganizationService.OrganizationServiceClient>((services, options) =>
+            {
+                options.Address = new Uri(Configuration["UserServiceGrpcUrl"]);
+            }).AddInterceptor<JwtTokenForwardingInterceptor>();
+
+            services.AddGrpcClient<StatusFlowService.StatusFlowServiceClient>((services, options) =>
+            {
+                options.Address = new Uri(Configuration["IssueServiceGrpcUrl"]);
+            }).AddInterceptor<JwtTokenForwardingInterceptor>();
+
+            services.AddGrpcClient<TypeOfGroupOfIssueService.TypeOfGroupOfIssueServiceClient>((services, options) =>
+            {
+                options.Address = new Uri(Configuration["IssueServiceGrpcUrl"]);
+            }).AddInterceptor<JwtTokenForwardingInterceptor>();
+
+            services.AddGrpcClient<UserService.UserServiceClient>((services, options) =>
+            {
+                options.Address = new Uri(Configuration["UserServiceGrpcUrl"]);
+            }).AddInterceptor<JwtTokenForwardingInterceptor>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

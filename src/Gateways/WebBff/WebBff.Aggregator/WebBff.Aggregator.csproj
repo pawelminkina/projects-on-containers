@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.Core.Api" Version="2.41.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.39.0" />
     <PackageReference Include="IdentityModel" Version="4.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
@@ -20,7 +20,26 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
   </ItemGroup>
-
+	<ItemGroup>
+		<Protobuf Include="..\..\..\Services\Issues\Issues.API\Protos\typeofgroupofissue.proto" GrpcServices="Client">
+			<Link>Protos\typeofgroupofissue.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\..\..\Services\Issues\Issues.API\Protos\groupofissue.proto" GrpcServices="Client">
+			<Link>Protos\groupofissue.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\..\..\Services\Issues\Issues.API\Protos\issue.proto" GrpcServices="Client">
+			<Link>Protos\issue.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\..\..\Services\Issues\Issues.API\Protos\statusflow.proto" GrpcServices="Client">
+			<Link>Protos\statusflow.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\..\..\Services\Users\Users.API\Protos\organizationService.proto" GrpcServices="Client">
+			<Link>Protos\organizationService.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\..\..\Services\Users\Users.API\Protos\userService.proto" GrpcServices="Client">
+			<Link>Protos\userService.proto</Link>
+		</Protobuf>
+	</ItemGroup>
   <ItemGroup>
     <Folder Include="Services\GroupOfIssues\" />
     <Folder Include="Services\Issues\" />

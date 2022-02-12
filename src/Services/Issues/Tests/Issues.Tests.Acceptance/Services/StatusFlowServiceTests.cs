@@ -36,7 +36,7 @@ namespace Issues.Tests.Acceptance.Services
             var getResponse = await _grpcClient.GetStatusFlowsAsync(getRequest);
 
             //THEN check equality of actual and expected items
-            getResponse.Flow.Should().BeEquivalentTo(expected);
+            getResponse.Flows.Should().BeEquivalentTo(expected);
 
             #region Local methods
 

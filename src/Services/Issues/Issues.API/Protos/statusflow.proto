@@ -19,7 +19,7 @@ message GetStatusFlowsRequest{
 }
 
 message GetStatusFlowsResponse{
-	repeated StatusFlow flow = 1;
+	repeated StatusFlow flows = 1;
 }
 
 message GetStatusFlowRequest{

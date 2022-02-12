@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebBff.Aggregator.Models.GroupOfIssues;
 using WebBff.Aggregator.Services.GroupOfIssues;
+using WebBff.Aggregator.Services.Issues;
 
 namespace WebBff.Aggregator.Controllers;
 
 public class GroupOfIssuesController : ControllerBase
 {
     private readonly IGroupOfIssuesService _groupOfIssuesService;
+    private readonly IIssuesService _issuesService;
 
-    public GroupOfIssuesController(IGroupOfIssuesService groupOfIssuesService)
+    public GroupOfIssuesController(IGroupOfIssuesService groupOfIssuesService, IIssuesService issuesService)
     {
         _groupOfIssuesService = groupOfIssuesService;
+        _issuesService = issuesService;
     }
 
     [HttpGet]
@@ -24,7 +27,11 @@ public class GroupOfIssuesController : ControllerBase
     public async Task<ActionResult<GroupOfIssuesWithIssuesDto>> GetGroupOfIssuesWithIssues([FromRoute] string id)
     {
         var group = await _groupOfIssuesService.GetGroupOfIssues(id);
-        return Ok(group);
+
+        var issues = await _issuesService.GetIssuesForGroup(group.Id);
+        var groupToReturn = new GroupOfIssuesWithIssuesDto(group) {Issues = issues};
+        
+        return Ok(groupToReturn);
     }
 
     [HttpPost]

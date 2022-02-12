@@ -2,7 +2,7 @@
 {
     public class AddStatusToFlowDto
     {
-        public string Id { get; set; }
+        public string FlowId { get; set; }
         public string StatusName { get; set; }
     }
 }
