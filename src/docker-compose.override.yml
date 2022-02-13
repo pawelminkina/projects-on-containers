@@ -7,6 +7,8 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "15040:80"
+    volumes:
+      - poc-seq:/data
 
   sqlserver:
     environment:
@@ -16,6 +18,13 @@ services:
       - "1533:1433"
     volumes:
       - poc-sqlserver:/var/opt/mssql
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "poc-rabbitmq:/var/lib/rabbitmq"
 
   issues-api:
     environment:
@@ -58,4 +67,10 @@ services:
 volumes:
 
   poc-sqlserver:
+    external: false
+
+  poc-seq:
+    external: false
+
+  poc-rabbitmq:
     external: false

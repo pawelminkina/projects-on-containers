@@ -12,6 +12,7 @@ using Issues.Application.CQRS.GroupOfIssues.Commands.DeleteGroup;
 using Issues.Application.CQRS.GroupOfIssues.Commands.RenameGroup;
 using Issues.Application.CQRS.GroupOfIssues.Queries.GetGroup;
 using Issues.Application.CQRS.GroupOfIssues.Queries.GetGroupsForOrganization;
+using Microsoft.AspNetCore.Authorization;
 using Status = Grpc.Core.Status;
 
 namespace Issues.API.GrpcServices

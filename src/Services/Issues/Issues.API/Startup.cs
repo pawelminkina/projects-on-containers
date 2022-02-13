@@ -8,6 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 using Architecture.DDD.Repositories;
+using EventBus;
+using EventBus.Abstraction;
+using EventBus.RabbitMQ;
+using EventBus.RabbitMQ.PersistentConnection;
 using FluentValidation;
 using Issues.API.Infrastructure.Database.Seeding;
 using Issues.API.Infrastructure.Grpc.Interceptors;
@@ -15,6 +19,8 @@ using Issues.API.Infrastructure.Validation;
 using Issues.Application.Common.Services.Files;
 using Issues.Application.CQRS.Issues.Commands.CreateIssue;
 using Issues.Application.CQRS.TypeOfGroupOfIssues.Commands.CreateType;
+using Issues.Application.IntegrationEvents.EventHandlers;
+using Issues.Application.IntegrationEvents.Events;
 using Issues.Domain.GroupsOfIssues;
 using Issues.Domain.StatusesFlow;
 using Issues.Infrastructure;
@@ -71,6 +77,12 @@ namespace Issues.API
             services.AddScoped<IIssueSeedItemService, IssueCsvSeedItemService>();
 
             AddCustomConfiguration(services);
+
+            //Event handlers
+            services.AddScoped<OrganizationCreatedIntegrationEventHandler>();
+            services.AddScoped<OrganizationDeletedIntegrationEventHandler>();
+
+            AddEventBus(services);
         }
 
         private void AddCustomConfiguration(IServiceCollection services)
@@ -78,6 +90,22 @@ namespace Issues.API
             services.AddOptions();
             services.Configure<IssueServiceSeedingOptions>(Configuration);
 
+        }
+
+        protected virtual void AddEventBus(IServiceCollection services)
+        {
+            //Eventbus
+            services.Configure<RabbitMQOptions>(Configuration.GetSection("RabbitMQOptions"));
+            services.AddSingleton<IRabbitMQPersistentConnection, DefaultRabbitMQPersistentConnection>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBus, RabbitMQEventBus>();
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<OrganizationCreatedIntegrationEvent, OrganizationCreatedIntegrationEventHandler>();
+            eventBus.Subscribe<OrganizationDeletedIntegrationEvent, OrganizationDeletedIntegrationEventHandler>();
         }
 
         public void AddDatabase(IServiceCollection services)
@@ -110,6 +138,9 @@ namespace Issues.API
                 endpoints.MapGrpcService<GrpcStatusFlowService>();
                 endpoints.MapGrpcService<GrpcTypeOfGroupOfIssueService>();
             });
+
+            ConfigureEventBus(app);
+
         }
     }
 }

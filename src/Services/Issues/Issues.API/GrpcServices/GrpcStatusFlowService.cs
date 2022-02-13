@@ -15,6 +15,7 @@ using Issues.Application.CQRS.StatusFlow.Queries.GetFlowsForOrganization;
 using Issues.Application.CQRS.StatusFlow.Queries.GetStatusFlowForGroup;
 using Issues.Domain.StatusesFlow;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Status = Grpc.Core.Status;
 using StatusFlow = Issues.API.Protos.StatusFlow;
 using StatusInFlow = Issues.API.Protos.StatusInFlow;

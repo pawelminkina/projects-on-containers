@@ -2,6 +2,8 @@
 using EventBus;
 using EventBus.Abstraction;
 using EventBus.InMemory;
+using EventBus.RabbitMQ;
+using EventBus.RabbitMQ.PersistentConnection;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -59,19 +61,15 @@ namespace Users.API
             AddDatabase(services);
             AddCustomConfiguration(services);   
             AddEventBus(services);
-            ConfigureEventBus(services);
         }
 
         protected virtual void AddEventBus(IServiceCollection services)
         {
+            services.Configure<RabbitMQOptions>(Configuration.GetSection("RabbitMQOptions"));
+            services.AddSingleton<IRabbitMQPersistentConnection, DefaultRabbitMQPersistentConnection>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            services.AddSingleton<IEventBus, InMemoryEventBus>();
+            services.AddSingleton<IEventBus, RabbitMQEventBus>();
         }
-
-        protected virtual void ConfigureEventBus(IServiceCollection services)
-        {
-        }
-
         private void AddCustomConfiguration(IServiceCollection services)
         {
             services.AddOptions();

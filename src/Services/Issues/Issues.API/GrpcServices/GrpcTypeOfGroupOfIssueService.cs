@@ -10,6 +10,7 @@ using Issues.Application.CQRS.TypeOfGroupOfIssues.Commands.RenameType;
 using Issues.Application.CQRS.TypeOfGroupOfIssues.Queries.GetType;
 using Issues.Application.CQRS.TypeOfGroupOfIssues.Queries.GetTypes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Status = Grpc.Core.Status;
 
 namespace Issues.API.GrpcServices

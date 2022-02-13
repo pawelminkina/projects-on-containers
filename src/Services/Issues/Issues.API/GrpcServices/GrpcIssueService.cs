@@ -15,6 +15,7 @@ using Issues.Application.CQRS.Issues.Queries.GetIssuesForUser;
 using Issues.Application.CQRS.Issues.Queries.GetIssueWithContent;
 using Issues.Domain.Issues;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Issues.API.GrpcServices
 {

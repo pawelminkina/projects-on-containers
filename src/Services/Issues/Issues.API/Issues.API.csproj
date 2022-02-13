@@ -24,6 +24,7 @@
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus.RabbitMQ\EventBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\WebHost\WebHost.Customization\WebHost.Customization.csproj" />
     <ProjectReference Include="..\Issues.Application\Issues.Application.csproj" />
     <ProjectReference Include="..\Issues.Domain\Issues.Domain.csproj" />

@@ -7,6 +7,9 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
   issues-api:
     image: ${DOCKER_REGISTRY-poc}/issues.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
@@ -15,6 +18,7 @@ services:
     depends_on:
       - sqlserver 
       - auth-api
+      - rabbitmq
 
   users-api:
     image: ${DOCKER_REGISTRY-poc}/users.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -23,6 +27,7 @@ services:
       dockerfile: Services/Users/Users.API/Dockerfile
     depends_on:
       - sqlserver
+      - rabbitmq
 
   auth-api:
     image: ${DOCKER_REGISTRY-poc}/auth.api:${PLATFORM:-linux}-${TAG:-latest}
