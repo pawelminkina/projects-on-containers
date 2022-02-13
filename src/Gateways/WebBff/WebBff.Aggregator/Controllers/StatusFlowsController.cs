@@ -67,7 +67,7 @@ public class StatusFlowsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("changeDefaultStatusFlow")]
+    [HttpPut("changeDefaultStatusInFlow")]
     public async Task<ActionResult> ChangeDefaultStatusInFlow([FromQuery] string newStatusInFlowId)
     {
         await _statusFlowService.ChangeDefaultStatusInFlow(newStatusInFlowId);

@@ -69,6 +69,6 @@ message GroupOfIssue{
 	string name = 2;
 	string typeOfGroupId = 3;
 	string shortName = 4;
-	bool isInThrash = 5;
+	bool isDeleted = 5;
 	google.protobuf.Timestamp timeOfDelete = 6;
 }

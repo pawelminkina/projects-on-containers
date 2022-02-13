@@ -52,7 +52,7 @@ public class IssuesController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteIssue([FromRoute] string id)
     {
         await _issuesService.DeleteIssue(id);

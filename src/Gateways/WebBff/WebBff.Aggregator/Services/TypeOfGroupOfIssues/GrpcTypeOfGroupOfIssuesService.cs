@@ -44,7 +44,8 @@ public class GrpcTypeOfGroupOfIssuesService : ITypeOfGroupOfIssuesService
         return new TypeOfGroupOfIssuesDto()
         {
             Id = typeOfGroupOfIssues.Id,
-            Name = typeOfGroupOfIssues.Name
+            Name = typeOfGroupOfIssues.Name,
+            IsDefault = typeOfGroupOfIssues.IsDefault
         };
     }
 }

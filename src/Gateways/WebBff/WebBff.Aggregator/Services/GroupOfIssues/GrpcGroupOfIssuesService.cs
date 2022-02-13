@@ -55,7 +55,7 @@ namespace WebBff.Aggregator.Services.GroupOfIssues
             return new GroupOfIssuesDto()
             {
                 Id = group.Id,
-                IsInTrash = group.IsInThrash,
+                IsDeleted = group.IsDeleted,
                 Name = group.Name,
                 ShortName = group.ShortName,
                 TimeOfDelete = group.TimeOfDelete?.ToDateTimeOffset(),

@@ -10,7 +10,7 @@ public class GroupOfIssuesWithIssuesDto : GroupOfIssuesDto
         Name= dto.Name;
         TypeOfGroupId = dto.TypeOfGroupId;
         ShortName = dto.ShortName;
-        IsInTrash = dto.IsInTrash;
+        IsDeleted = dto.IsDeleted;
         TimeOfDelete = dto.TimeOfDelete;
     }
 

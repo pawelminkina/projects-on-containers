@@ -116,9 +116,6 @@ namespace Issues.Domain.GroupsOfIssues
             AddDomainEvent(new GroupOfIssuesUndoDeletedDomainEvent(this));
         }
 
-        public bool IsInThrash() => TimeOfDeleteUtc?.AddDays(TimeInDaysKeptInThrash) > DateTimeOffset.UtcNow;
-
-
         #endregion
 
         public static class ErrorMessages

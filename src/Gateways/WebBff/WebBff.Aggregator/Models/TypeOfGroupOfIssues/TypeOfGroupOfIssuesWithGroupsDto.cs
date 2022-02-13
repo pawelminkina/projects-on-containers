@@ -8,6 +8,7 @@ namespace WebBff.Aggregator.Models.TypeOfGroupOfIssues
         {
             Id = typeOfGroupOfIssues.Id;
             Name = typeOfGroupOfIssues.Name;
+            IsDefault = typeOfGroupOfIssues.IsDefault;
         }
         public IEnumerable<GroupOfIssuesDto> GroupsOfIssues { get; set; }
     }

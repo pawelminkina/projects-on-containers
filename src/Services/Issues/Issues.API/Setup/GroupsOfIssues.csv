@@ -2,3 +2,4 @@ Id,Name,ShortName,TypeOfGroupId,ConnectedStatusFlowId,IsDeleted,TimeOfDeleteUtc
 002-001,Group Of Issues 1,GOF1,001-001,004-001,false,null,
 002-002,Group Of Issues 2,GOF2,001-001,004-002,false,null,
 002-003,Group Of Issues 3,GOF3,001-002,004-003,false,null,
+002-004,Group Of Issues 4,GOF4,001-002,004-005,true,12/22/2020,

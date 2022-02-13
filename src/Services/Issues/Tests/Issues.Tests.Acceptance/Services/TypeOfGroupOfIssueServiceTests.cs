@@ -43,9 +43,9 @@ namespace Issues.Tests.Acceptance.Services
 
             IEnumerable<TypeOfGroupOfIssues> GetExpectedTypesOfGroupOfIssues() => new[]
             {
-                new TypeOfGroupOfIssues() {Id = "001-001", Name = "Type Of Group Of Issues 1"},
-                new TypeOfGroupOfIssues() {Id = "001-002", Name = "Type Of Group Of Issues 2"},
-                new TypeOfGroupOfIssues() {Id = "001-003", Name = "Type Of Group Of Issues 3"},
+                new TypeOfGroupOfIssues() {Id = "001-001", Name = "Type Of Group Of Issues 1", IsDefault = true},
+                new TypeOfGroupOfIssues() {Id = "001-002", Name = "Type Of Group Of Issues 2", IsDefault = false},
+                new TypeOfGroupOfIssues() {Id = "001-003", Name = "Type Of Group Of Issues 3", IsDefault = false},
             };
 
             #endregion

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Issues.Domain.Issues;
@@ -22,7 +23,7 @@ namespace Issues.Infrastructure.Repositories
 
         public Task<IEnumerable<Issue>> GetIssueReferencesForUserAsync(string userId)
         {
-            return Task.FromResult(_dbContext.Issues.Where(s => s.CreatingUserId == userId).Include(s=>s.GroupOfIssue).Include(s=>s.StatusInFlow).AsEnumerable());
+            return Task.FromResult(_dbContext.Issues.Where(s => s.CreatingUserId.ToLower() == userId.ToLower()).Include(s=>s.GroupOfIssue).Include(s=>s.StatusInFlow).AsEnumerable());
         }
     }
 }

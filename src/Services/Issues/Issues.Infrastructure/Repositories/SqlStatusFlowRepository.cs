@@ -30,7 +30,7 @@ namespace Issues.Infrastructure.Repositories
         public Task<StatusInFlow> GetStatusInFlowById(string id)
         {
             return Task.FromResult(_dbContext.StatusesInFlow.Include(s => s.ConnectedStatuses).ThenInclude(d => d.ConnectedStatusInFlow)
-                .Include(d=>d.StatusFlow)
+                .Include(d=>d.StatusFlow).ThenInclude(s=>s.StatusesInFlow)
                 .FirstOrDefault(s => s.Id == id));
         }
 

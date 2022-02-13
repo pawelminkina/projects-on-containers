@@ -48,7 +48,7 @@ namespace Issues.Tests.Acceptance.Services
                 new GroupOfIssue() {Id = "002-001", Name = "Group Of Issues 1", ShortName = "GOF1", TypeOfGroupId = "001-001"},
                 new GroupOfIssue() {Id = "002-002", Name = "Group Of Issues 2", ShortName = "GOF2", TypeOfGroupId = "001-001"},
                 new GroupOfIssue() {Id = "002-003", Name = "Group Of Issues 3", ShortName = "GOF3", TypeOfGroupId = "001-002"},
-                new GroupOfIssue() {Id = "002-004", Name = "Group Of Issues 4", ShortName = "GOF4", TypeOfGroupId = "001-002", TimeOfDelete = new DateTimeOffset(new DateTime(2020, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp()},
+                new GroupOfIssue() {Id = "002-004", Name = "Group Of Issues 4", ShortName = "GOF4", TypeOfGroupId = "001-002", IsDeleted =true, TimeOfDelete = new DateTimeOffset(new DateTime(2020, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp()},
             };
 
             #endregion
@@ -277,7 +277,7 @@ namespace Issues.Tests.Acceptance.Services
             var deletedGroup = getResponse.Group;
 
             //THEN check that item is in thrash
-            deletedGroup.IsInThrash.Should().Be(true);
+            deletedGroup.IsDeleted.Should().Be(true);
 
             //AND check that date of delete is today
             deletedGroup.TimeOfDelete.ToDateTime().Date.Should().Be(DateTime.Today.Date);
