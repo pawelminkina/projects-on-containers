@@ -14,6 +14,7 @@ using Users.Core.CQRS.Users.Queries.CheckEmailAvailability;
 
 namespace Users.API.GrpcServices
 {
+    [Authorize]
     public class GrpcUserService : Protos.UserService.UserServiceBase
     {
         private readonly IMediator _mediator;

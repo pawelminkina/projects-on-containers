@@ -45,6 +45,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\BuildingBlocks\EventBus.InMemory\EventBus.InMemory.csproj" />
 		<ProjectReference Include="..\..\Issues.API\Issues.API.csproj" />
 	</ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using EventBus;
 using EventBus.Abstraction;
 using EventBus.InMemory;
@@ -6,6 +7,7 @@ using EventBus.RabbitMQ;
 using EventBus.RabbitMQ.PersistentConnection;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -38,8 +40,6 @@ namespace Users.API
                 options.Interceptors.Add<GrpcErrorInterceptor>();
             });
 
-            services.AddAuthentication();
-
             services.AddControllers().AddApplicationPart(typeof(Startup).Assembly);
             services.AddMediatR(
                 typeof(UserServiceDbContext).Assembly, //DAL
@@ -54,8 +54,10 @@ namespace Users.API
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(typeof(GetUserByIdQueryValidator).Assembly);
-
+            
             services.AddHttpContextAccessor();
+
+            ConfigureAuthService(services);
 
             ConfigureIdentity(services);
             AddDatabase(services);
@@ -94,6 +96,7 @@ namespace Users.API
         {
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -102,6 +105,35 @@ namespace Users.API
 
                 endpoints.MapGrpcService<GrpcOrganizationService>();
                 endpoints.MapGrpcService<GrpcUserService>();
+            });
+        }
+
+        private void ConfigureAuthService(IServiceCollection services)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+            var identityUrl = Configuration.GetValue<string>("AuthServiceHttpExternalUrl");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidAudiences = new System.Collections.Generic.List<string>()
+                    {
+                        "user_api",
+                        "internal_communication_scope"
+                    }
+                };
             });
         }
 

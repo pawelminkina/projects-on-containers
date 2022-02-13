@@ -11,6 +11,7 @@ using Users.Core.Domain;
 
 namespace Users.API.GrpcServices
 {
+    [Authorize]
     public class GrpcOrganizationService : Protos.OrganizationService.OrganizationServiceBase
     {
         private readonly IMediator _mediator;

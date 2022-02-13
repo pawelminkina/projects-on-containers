@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Issues.API.GrpcServices
 {
+    [Authorize]
     public class GrpcIssueService : Protos.IssueService.IssueServiceBase
     {
         private readonly IMediator _mediator;

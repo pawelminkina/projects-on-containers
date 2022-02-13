@@ -17,6 +17,7 @@ using Status = Grpc.Core.Status;
 
 namespace Issues.API.GrpcServices
 {
+    [Authorize]
     public class GrpcGroupOfIssueService : Protos.GroupOfIssueService.GroupOfIssueServiceBase
     {
         private readonly IMediator _mediator;

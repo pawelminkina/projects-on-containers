@@ -22,6 +22,7 @@ using StatusInFlow = Issues.API.Protos.StatusInFlow;
 
 namespace Issues.API.GrpcServices
 {
+    [Authorize]
     public class GrpcStatusFlowService : Protos.StatusFlowService.StatusFlowServiceBase
     {
         private readonly IMediator _mediator;

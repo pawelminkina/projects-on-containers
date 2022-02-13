@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using Architecture.DDD.Repositories;
 using EventBus;
@@ -28,6 +29,7 @@ using Issues.Infrastructure.Database;
 using Issues.Infrastructure.Processing;
 using Issues.Infrastructure.Repositories;
 using Issues.Infrastructure.Services.Files;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -66,8 +68,6 @@ namespace Issues.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
-            services.AddControllers();
-
             //Validators
             //behaviour which will log every cqs request would be nice
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
@@ -77,6 +77,7 @@ namespace Issues.API
             services.AddScoped<IIssueSeedItemService, IssueCsvSeedItemService>();
 
             AddCustomConfiguration(services);
+            ConfigureAuthService(services);
 
             //Event handlers
             services.AddScoped<OrganizationCreatedIntegrationEventHandler>();
@@ -101,7 +102,7 @@ namespace Issues.API
             services.AddSingleton<IEventBus, RabbitMQEventBus>();
         }
 
-        private void ConfigureEventBus(IApplicationBuilder app)
+        protected void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<OrganizationCreatedIntegrationEvent, OrganizationCreatedIntegrationEventHandler>();
@@ -123,11 +124,40 @@ namespace Issues.API
             );
         }
 
+        protected virtual void ConfigureAuthService(IServiceCollection services)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+            var identityUrl = Configuration.GetValue<string>("AuthServiceHttpExternalUrl");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidAudiences = new System.Collections.Generic.List<string>()
+                    {
+                        "issues_api",
+                        "internal_communication_scope"
+                    }
+                };
+            });
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
 
-            app.UseAuthorization();
+            ConfigureAuth(app);
 
             app.UseEndpoints(endpoints =>
             {
@@ -140,6 +170,13 @@ namespace Issues.API
             });
 
             ConfigureEventBus(app);
+
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
 
         }
     }
