@@ -23,10 +23,12 @@ namespace Issues.Domain.GroupsOfIssues
             AddDomainEvent(new TypeOfGroupOfIssuesCreatedDomainEvent(this));
         }
 
-        public static TypeOfGroupOfIssues CreateDefault(string organizationId, string name)
+        internal static TypeOfGroupOfIssues CreateDefault(string name, string organizationId)
         {
-            var typeOfGroupOfIssues = new TypeOfGroupOfIssues(organizationId, name);
-            typeOfGroupOfIssues.SetDefaultToTrue();
+            var typeOfGroupOfIssues = new TypeOfGroupOfIssues(organizationId, name)
+            {
+                IsDefault = true
+            };
             return typeOfGroupOfIssues;
         }
 

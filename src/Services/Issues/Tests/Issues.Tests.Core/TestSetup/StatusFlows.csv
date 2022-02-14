@@ -1,6 +1,6 @@
 Id,Name,OrganizationId,IsDefault,ConnectedGroupOfIssuesId,IsDeleted
-004-001,Status Flow 1,BaseOrganizationId,false,002-001,true,
-004-002,Status Flow 2,BaseOrganizationId,false,002-002,false,
-004-003,Status Flow 3,BaseOrganizationId,false,002-003,false,
-004-004,Status Flow 4,BaseOrganizationId,true,null,false,
-004-005,Status Flow 5,BaseOrganizationId,false,002-004,true,
+004-001,Status Flow 1,BaseOrganization1,false,002-001,true,
+004-002,Status Flow 2,BaseOrganization1,false,002-002,false,
+004-003,Status Flow 3,BaseOrganization1,false,002-003,false,
+004-004,Status Flow 4,BaseOrganization1,true,null,false,
+004-005,Status Flow 5,BaseOrganization1,false,002-004,true,

@@ -8,6 +8,7 @@ using Users.API.Protos;
 using Users.Core.CQRS.Organizations.Queries.GetOrganization;
 using Users.Core.CQRS.Organizations.Queries.GetOrganizations;
 using Users.Core.Domain;
+using AddOrganizationResponse = Users.API.Protos.AddOrganizationResponse;
 
 namespace Users.API.GrpcServices
 {
@@ -22,8 +23,13 @@ namespace Users.API.GrpcServices
         }
         public override async Task<AddOrganizationResponse> AddOrganization(AddOrganizationRequest request, ServerCallContext context)
         {
-            var organizationId = await _mediator.Send(new AddOrganizationCommand(request.Name));
-            return new AddOrganizationResponse() { OrganizationId = organizationId };
+            var response = await _mediator.Send(new AddOrganizationCommand(request.Name));
+            return new AddOrganizationResponse()
+            {
+                DefaultUserName = response.DefaultUserName,
+                DefaultUserPassword = response.DefaultUserPassword,
+                OrganizationId = response.OrganizationId
+            };
         }
 
         public override async Task<DeleteOrganizationResponse> DeleteOrganization(DeleteOrganizationRequest request, ServerCallContext context)

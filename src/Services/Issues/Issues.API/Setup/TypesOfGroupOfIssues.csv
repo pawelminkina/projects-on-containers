@@ -1,4 +1,4 @@
 Id,Name,OrganizationId,IsDefault
-001-001,Type Of Group Of Issues 1,BaseOrganizationId,true,
-001-002,Type Of Group Of Issues 2,BaseOrganizationId,false,
-001-003,Type Of Group Of Issues 3,BaseOrganizationId,false,
+001-001,Type Of Group Of Issues 1,BaseOrganization1,true,
+001-002,Type Of Group Of Issues 2,BaseOrganization1,false,
+001-003,Type Of Group Of Issues 3,BaseOrganization1,false,

@@ -16,6 +16,8 @@ message AddOrganizationRequest{
 
 message AddOrganizationResponse{
 	string organizationId = 1;
+	string defaultUserName = 2;
+	string defaultUserPassword = 3;
 }
 
 message GetOrganizationRequest{

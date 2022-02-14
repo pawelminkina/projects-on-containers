@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Common\Services\DataCleaners\" />
     <Folder Include="IntegrationEvents\Events\" />
   </ItemGroup>
 

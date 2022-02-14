@@ -23,10 +23,15 @@ public class GrpcOrganizationService : IOrganizationService
         return MapToDto(response.Organization);
     }
 
-    public async Task<string> AddOrganization(OrganizationForCreationDto dto)
+    public async Task<AddOrganizationResponseDto> AddOrganization(OrganizationForCreationDto dto)
     {
         var response = await _grpcClient.AddOrganizationAsync(new AddOrganizationRequest() {Name = dto.Name});
-        return response.OrganizationId;
+        return new AddOrganizationResponseDto()
+        {
+            DefaultUserName = response.DefaultUserName,
+            DefaultUserPassword = response.DefaultUserPassword,
+            OrganizationId = response.OrganizationId
+        };
     }
 
     public async Task DeleteOrganization(string id)

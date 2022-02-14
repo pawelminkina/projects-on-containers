@@ -32,10 +32,10 @@ public class OrganizationsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<OrganizationDto>> CreateOrganization(OrganizationForCreationDto dto)
+    public async Task<ActionResult<AddOrganizationResponseDto>> CreateOrganization(OrganizationForCreationDto dto)
     {
-        var newOrganizationId = await _organizationService.AddOrganization(dto);
-        return CreatedAtAction(nameof(GetOrganization), new {id = newOrganizationId}, new {id = newOrganizationId});
+        var newOrganization = await _organizationService.AddOrganization(dto);
+        return Ok(newOrganization);
     }
 
     [HttpDelete("{id}")]

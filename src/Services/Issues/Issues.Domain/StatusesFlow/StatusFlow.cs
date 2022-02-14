@@ -24,16 +24,16 @@ namespace Issues.Domain.StatusesFlow
             AddDefaultStatusesToFlow(statuses);
         }
 
-        public static StatusFlow CreateDefault(string name, string organizationId)
+        internal static StatusFlow CreateDefault(string name, string organizationId, IEnumerable<StatusInFlowToCreateDto> statuses)
         {
             var statusFlow = new StatusFlow()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = name,
                 OrganizationId = organizationId,
-                IsDeleted = false
+                IsDefault = true
             };
-            statusFlow.SetDefaultToTrue();
+            statusFlow.AddDefaultStatusesToFlow(statuses);
             return statusFlow;
         }
 
@@ -132,7 +132,7 @@ namespace Issues.Domain.StatusesFlow
             ;
         }
 
-        public void AddDefaultStatusesToFlow(IEnumerable<StatusInFlowToCreateDto> statuses)
+        private void AddDefaultStatusesToFlow(IEnumerable<StatusInFlowToCreateDto> statuses)
         {
             if (!StatusInFlowToCreateDto.IsCollectionOfStatusesValid(statuses, out var reasonWhyNot))
                 throw new DomainException(reasonWhyNot);

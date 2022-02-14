@@ -24,6 +24,12 @@
             </div>
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Log in</button>
         </form>
+        <form asp-route="Login" class="form-signin">
+            <input type="hidden" asp-for="ReturnUrl" />
+            <input type="hidden" asp-for="Username" value="baseuser1@poc.com">
+            <input type="hidden" asp-for="Password" value="1234">
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Dev: Log with default credentials</button>
+        </form>
         <a href="#" class="forgot-password">
             Forgot password?
         </a>
