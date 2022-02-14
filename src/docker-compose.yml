@@ -46,3 +46,14 @@ services:
       - users-api
       - auth-api
       - issues-api
+
+  webstatus:
+    image: ${DOCKER_REGISTRY-poc}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Web/WebStatus/Dockerfile
+    depends_on:
+      - auth-api
+      - webbff-aggregator
+      - users-api
+      - issues-api

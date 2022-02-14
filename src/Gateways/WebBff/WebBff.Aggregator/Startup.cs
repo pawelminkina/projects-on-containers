@@ -1,6 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using HealthChecks.UI.Client;
 using Issues.API.Protos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Users.API.Protos;
 using WebBff.Aggregator.Infrastructure.Auth;
 using WebBff.Aggregator.Infrastructure.Grpc.ExceptionMapping;
@@ -77,6 +80,14 @@ namespace WebBff.Aggregator
             {
                 options.Address = new Uri(Configuration["UserServiceGrpcUrl"]);
             }).AddInterceptor<JwtTokenForwardingInterceptor>();
+
+            //Health check
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddUrlGroup(new Uri(Configuration["UserServiceHttpUrl"] + "/hc"), name: "userservice-check", tags: new[] { "userservice" })
+                .AddUrlGroup(new Uri(Configuration["IssueServiceHttpUrl"] + "/hc"), name: "issueservice-check", tags: new[] { "issueservice" })
+                .AddUrlGroup(new Uri(Configuration["AuthServiceHttpExternalUrl"] + "/hc"), name: "authservice-check", tags: new[] { "authservice" });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -105,6 +116,12 @@ namespace WebBff.Aggregator
                 {
                     context.Response.Redirect("/swagger");
                     return Task.CompletedTask;
+                });
+
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
             });
         }

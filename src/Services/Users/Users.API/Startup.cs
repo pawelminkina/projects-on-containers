@@ -6,11 +6,14 @@ using EventBus.InMemory;
 using EventBus.RabbitMQ;
 using EventBus.RabbitMQ.PersistentConnection;
 using FluentValidation;
+using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Users.Core.CQRS.Users.Commands.CreateUser;
 using Users.Core.CQRS.Users.Queries.GetUserById;
 using Users.Core.Infrastructure.MappingProfiles;
@@ -63,6 +66,13 @@ namespace Users.API
             AddDatabase(services);
             AddCustomConfiguration(services);   
             AddEventBus(services);
+
+            //Health check
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddSqlServer(Configuration["ConnectionString"], name: "UserService-DB-check", tags: new string[] { "UserServiceDB" })
+                .AddRabbitMQ($"amqp://{Configuration["RabbitMQOptions:HostName"]}", name: "UserService-RabbitMQ-check", tags: new string[] { "rabbitmq" });
+
         }
 
         protected virtual void AddEventBus(IServiceCollection services)
@@ -102,6 +112,12 @@ namespace Users.API
 
                 endpoints.MapGrpcService<GrpcOrganizationService>();
                 endpoints.MapGrpcService<GrpcUserService>();
+
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
 

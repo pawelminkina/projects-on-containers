@@ -14,6 +14,7 @@ using EventBus.Abstraction;
 using EventBus.RabbitMQ;
 using EventBus.RabbitMQ.PersistentConnection;
 using FluentValidation;
+using HealthChecks.UI.Client;
 using Issues.API.Infrastructure.Database.Seeding;
 using Issues.API.Infrastructure.Grpc.Interceptors;
 using Issues.API.Infrastructure.Validation;
@@ -30,7 +31,9 @@ using Issues.Infrastructure.Processing;
 using Issues.Infrastructure.Repositories;
 using Issues.Infrastructure.Services.Files;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 
 namespace Issues.API
@@ -84,6 +87,14 @@ namespace Issues.API
             services.AddScoped<OrganizationDeletedIntegrationEventHandler>();
 
             AddEventBus(services);
+
+            //Health check
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddSqlServer(Configuration["ConnectionString"], name: "IssueService-DB-check", tags: new string[] { "IssueServiceDB" })
+                .AddUrlGroup(new Uri(Configuration["AuthServiceHttpExternalUrl"] + "/hc"), name: "authservice-check", tags: new[] { "authservice" })
+                .AddRabbitMQ($"amqp://{Configuration["RabbitMQOptions:HostName"]}", name: "IssueService-RabbitMQ-check", tags: new string[] { "rabbitmq" });
+
         }
 
         private void AddCustomConfiguration(IServiceCollection services)
@@ -167,6 +178,12 @@ namespace Issues.API
                 endpoints.MapGrpcService<GrpcGroupOfIssueService>();
                 endpoints.MapGrpcService<GrpcStatusFlowService>();
                 endpoints.MapGrpcService<GrpcTypeOfGroupOfIssueService>();
+
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
 
             ConfigureEventBus(app);

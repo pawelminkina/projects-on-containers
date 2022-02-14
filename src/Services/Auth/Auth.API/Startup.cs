@@ -5,8 +5,10 @@ using Auth.API.Infrastructure.Auth;
 using Auth.API.Infrastructure.Grpc.Interceptors;
 using Auth.Core.Models;
 using Auth.Core.Services;
+using HealthChecks.UI.Client;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Users.API.Protos;
 
 namespace Auth.API
@@ -59,6 +61,11 @@ namespace Auth.API
                 })
                 .AddInterceptor<JwtTokenForwardingInterceptor>()
                 .AddInterceptor<GrpcExceptionInterceptor>();
+
+            //Health check
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddUrlGroup(new Uri(Configuration["UserServiceHttpUrl"] + "/hc"), name: "userservice-check", tags: new[] { "userservice" });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -89,6 +96,12 @@ namespace Auth.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
 
