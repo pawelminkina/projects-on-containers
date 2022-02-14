@@ -33,4 +33,8 @@
     <ProjectReference Include="..\..\Users.API\Users.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth\" />
+  </ItemGroup>
+
 </Project>

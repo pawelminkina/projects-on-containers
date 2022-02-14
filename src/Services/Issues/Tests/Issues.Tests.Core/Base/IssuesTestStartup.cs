@@ -25,7 +25,6 @@ namespace Issues.Tests.Core.Base
 
         protected override void ConfigureAuthService(IServiceCollection services)
         {
-            services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
         }
 
         protected override void AddEventBus(IServiceCollection services)

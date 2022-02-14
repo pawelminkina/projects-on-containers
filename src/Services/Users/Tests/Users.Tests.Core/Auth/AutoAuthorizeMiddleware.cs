@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace Issues.Tests.Core.Auth;
+namespace Users.Tests.Core.Auth;
+
 public class AutoAuthorizeMiddleware
 {
     public const string ORGANIZATION_ID = "BaseOrganizationId";
@@ -26,4 +28,3 @@ public class AutoAuthorizeMiddleware
         await _next.Invoke(context);
     }
 }
-

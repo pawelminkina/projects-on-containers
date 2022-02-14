@@ -95,10 +95,7 @@ namespace Users.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
+            ConfigureAuth(app);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -108,7 +105,14 @@ namespace Users.API
             });
         }
 
-        private void ConfigureAuthService(IServiceCollection services)
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
+        }
+
+        protected virtual void ConfigureAuthService(IServiceCollection services)
         {
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
