@@ -18,7 +18,12 @@ namespace Issues.Infrastructure.Repositories
         }
         public async Task<Issue> GetIssueByIdAsync(string id)
         {
-            return await _dbContext.Issues.Include(s => s.Content).Include(s => s.GroupOfIssue).ThenInclude(d=>d.TypeOfGroup).Include(s=>s.StatusInFlow).FirstOrDefaultAsync(s => s.Id == id);
+            return await _dbContext.Issues.Include(s => s.Content)
+                .Include(s => s.GroupOfIssue).ThenInclude(d=>d.TypeOfGroup)
+                .Include(s=>s.GroupOfIssue).ThenInclude(s=>s.ConnectedStatusFlow).ThenInclude(s=>s.StatusesInFlow)
+                .Include(s=>s.StatusInFlow).ThenInclude(s=>s.StatusFlow)
+                .Include(s=>s.StatusInFlow).ThenInclude(s=>s.ConnectedStatuses).ThenInclude(s=>s.ConnectedStatusInFlow)
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<IEnumerable<Issue>> GetIssueReferencesForUserAsync(string userId)

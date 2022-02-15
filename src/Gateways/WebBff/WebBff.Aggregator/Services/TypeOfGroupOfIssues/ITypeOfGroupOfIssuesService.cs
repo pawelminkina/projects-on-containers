@@ -7,7 +7,7 @@ namespace WebBff.Aggregator.Services.TypeOfGroupOfIssues
         Task<IEnumerable<TypeOfGroupOfIssuesDto>> GetTypes();
         Task<TypeOfGroupOfIssuesDto> GetType(string id);
         Task<string> CreateTypeOfGroupOfIssues(TypeOfGroupOfIssuesForCreationDto dto);
-        Task RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesDto dto);
+        Task RenameTypeOfGroupOfIssues(string id, string newName);
         Task DeleteTypeOfGroupOfIssues(string id);
     }
 }

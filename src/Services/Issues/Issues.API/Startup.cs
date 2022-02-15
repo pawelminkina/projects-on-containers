@@ -32,6 +32,7 @@ using Issues.Infrastructure.Repositories;
 using Issues.Infrastructure.Services.Files;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
@@ -89,12 +90,16 @@ namespace Issues.API
             AddEventBus(services);
 
             //Health check
+            AddHealthChecks(services);
+        }
+
+        protected virtual void AddHealthChecks(IServiceCollection services)
+        {
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddSqlServer(Configuration["ConnectionString"], name: "IssueService-DB-check", tags: new string[] { "IssueServiceDB" })
                 .AddUrlGroup(new Uri(Configuration["AuthServiceHttpExternalUrl"] + "/hc"), name: "authservice-check", tags: new[] { "authservice" })
                 .AddRabbitMQ($"amqp://{Configuration["RabbitMQOptions:HostName"]}", name: "IssueService-RabbitMQ-check", tags: new string[] { "rabbitmq" });
-
         }
 
         private void AddCustomConfiguration(IServiceCollection services)
@@ -179,17 +184,20 @@ namespace Issues.API
                 endpoints.MapGrpcService<GrpcStatusFlowService>();
                 endpoints.MapGrpcService<GrpcTypeOfGroupOfIssueService>();
 
-                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+                MapHealthChecks(endpoints);
             });
 
             ConfigureEventBus(app);
 
         }
-
+        protected virtual void MapHealthChecks(IEndpointRouteBuilder endpoints)
+        {
+            endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+        }
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
             app.UseAuthentication();

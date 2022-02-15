@@ -55,6 +55,18 @@ namespace Issues.Domain.Issues
         private string _statusInFlowId;
         public StatusInFlow StatusInFlow { get; protected set; }
 
+        public void ChangeStatusInFlow(StatusInFlow newStatusInFlow)
+        {
+            if (newStatusInFlow.StatusFlow != GroupOfIssue.ConnectedStatusFlow)
+                throw new DomainException(ErrorMessages.NewStatusInFlowIsNotAssignedToCurrentStatusFlow(newStatusInFlow.Id, GroupOfIssue.ConnectedStatusFlow.Id));
+
+            if (!StatusInFlow.IsConnectedTo(newStatusInFlow))
+                throw new DomainException(ErrorMessages.CurrentStatusDoNotHaveConnectionToNewStatus(StatusInFlow.Id, newStatusInFlow.Id));
+
+            _statusInFlowId = newStatusInFlow.Id;
+            StatusInFlow = newStatusInFlow;
+        }
+
         public void ChangeTextContent(string newTextContent)
         {
             ValidateModifyOperation();
@@ -98,6 +110,12 @@ namespace Issues.Domain.Issues
 
             public static string IssueIsInDeleteGroup(string groupId, string issueId) =>
                 $"Issue with id: {issueId} is in group with id: {groupId} which is deleted, so it could not be modified";
+
+            public static string NewStatusInFlowIsNotAssignedToCurrentStatusFlow(string newStatusInFlowId, string currentStatusFlowId) =>
+                $"New status in flow with id: {newStatusInFlowId} is not assigned to current status flow with id: {currentStatusFlowId}";
+
+            public static string CurrentStatusDoNotHaveConnectionToNewStatus(string currentStatusInFlowId, string newStatusInFlowId) =>
+                $"Current status in flow with id: {currentStatusInFlowId} don't have connection to new status in flow with id: {newStatusInFlowId}";
         }
     }
 }

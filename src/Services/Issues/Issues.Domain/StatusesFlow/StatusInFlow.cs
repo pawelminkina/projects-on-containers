@@ -42,10 +42,10 @@ namespace Issues.Domain.StatusesFlow
 
         public void AddConnectedStatus(StatusInFlow status)
         {
-            if (_connectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == status.Id))
+            if (_connectedStatuses.Any(s => s.ConnectedStatusInFlow == status))
                 throw new DomainException(ErrorMessages.StatusIsAlreadyConnectedToParentStatus(status.Id, Id));
 
-            if (status.StatusFlow.Id != StatusFlow.Id)
+            if (status.StatusFlow != StatusFlow)
                 throw new DomainException(ErrorMessages.GivenStatusToConnectIsInDifferentStatusFlow(status.StatusFlow.Id, _statusFlowId));
 
             var connectedStatus = new StatusInFlowConnection(this, status);
@@ -54,12 +54,17 @@ namespace Issues.Domain.StatusesFlow
 
         public void DeleteConnectedStatus(StatusInFlow status)
         {
-            var connectionToDelete = _connectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow.Id == status.Id);
+            var connectionToDelete = _connectedStatuses.FirstOrDefault(s => s.ConnectedStatusInFlow == status);
             if (connectionToDelete is null)
                 throw new DomainException(ErrorMessages.ConnectionBetweenStatusesDoNotExist(Id, status.Id));
 
             _connectedStatuses.Remove(connectionToDelete);
 
+        }
+
+        public bool IsConnectedTo(StatusInFlow statusInFlow)
+        {
+            return _connectedStatuses.Any(s => s.ConnectedStatusInFlow == statusInFlow);
         }
 
         public void SetDefaultToTrue()

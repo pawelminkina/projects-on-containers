@@ -34,14 +34,14 @@ namespace WebBff.Aggregator.Services.GroupOfIssues
             return response.Id;
         }
 
-        public async Task RenameGroupOfIssues(RenameGroupOfIssuesDto dto)
+        public async Task RenameGroupOfIssues(string id, string newName)
         {
-            await _grpcClient.RenameGroupOfIssuesAsync(new RenameGroupOfIssuesRequest() {Id=dto.Id, NewName = dto.NewName});
+            await _grpcClient.RenameGroupOfIssuesAsync(new RenameGroupOfIssuesRequest() { Id = id, NewName = newName });
         }
 
-        public async Task ChangeShortNameForGroupOfIssues(ChangeShortNameForGroupOfIssuesDto dto)
+        public async Task ChangeShortNameForGroupOfIssues(string id, string newShortName)
         {
-            await _grpcClient.ChangeShortNameForGroupOfIssuesAsync(new ChangeShortNameForGroupOfIssuesRequest() {Id = dto.Id, NewShortName = dto.NewShortName});
+            await _grpcClient.ChangeShortNameForGroupOfIssuesAsync(new ChangeShortNameForGroupOfIssuesRequest() { Id = id, NewShortName = newShortName });
         }
 
         public async Task DeleteGroupOfIssues(string id)

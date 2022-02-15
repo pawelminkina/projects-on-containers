@@ -42,6 +42,7 @@ namespace Issues.Tests.Acceptance.Services
 
             IEnumerable<StatusFlow> GetExpectedFlows() => new[]
             {
+                GetStatusFlowWithId004001(),
                 GetStatusFlowWithId004002(),
                 GetStatusFlowWithId004003(),
                 GetStatusFlowWithId004004(),
@@ -247,7 +248,18 @@ namespace Issues.Tests.Acceptance.Services
         #endregion
 
         #region Data from csv
-
+        private StatusFlow GetStatusFlowWithId004001() =>
+            GrpcStatusFlowFactory.Create("004-001", "Status Flow 1", new List<StatusInFlow>()
+            {
+                GrpcStatusInFlowFactory.Create("005-001", "To do", new List<string>()
+                {
+                    "005-002"
+                }, true),
+                GrpcStatusInFlowFactory.Create("005-002", "Done", new List<string>()
+                {
+                    "005-001"
+                })
+            });
         private StatusFlow GetStatusFlowWithId004002() =>
             GrpcStatusFlowFactory.Create("004-002", "Status Flow 2", new List<StatusInFlow>()
             {

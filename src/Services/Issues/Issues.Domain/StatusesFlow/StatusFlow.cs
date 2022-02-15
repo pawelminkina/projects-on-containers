@@ -77,7 +77,7 @@ namespace Issues.Domain.StatusesFlow
 
         public void DeleteStatusFromFlow(StatusInFlow statusInFlowToDelete)
         {
-            if (statusInFlowToDelete.StatusFlow.Id != Id)
+            if (statusInFlowToDelete.StatusFlow != this)
                 throw new DomainException(ErrorMessages.GivenStatusIsNotInThisFlow(statusInFlowToDelete.StatusFlow.Id, Id));
 
             if (statusInFlowToDelete.IsDefault)
@@ -85,7 +85,7 @@ namespace Issues.Domain.StatusesFlow
 
             foreach (var statusInFlow in _statusesInFlow)
             {
-                if (statusInFlow.ConnectedStatuses.Any(s => s.ConnectedStatusInFlow.Id == statusInFlowToDelete.Id))
+                if (statusInFlow.ConnectedStatuses.Any(s => s.ConnectedStatusInFlow == statusInFlowToDelete))
                     statusInFlow.DeleteConnectedStatus(statusInFlowToDelete);
             }
 
@@ -94,7 +94,7 @@ namespace Issues.Domain.StatusesFlow
 
         public void ChangeDefaultStatusInFlow(StatusInFlow newDefault)
         {
-            if (newDefault.StatusFlow.Id != Id)
+            if (newDefault.StatusFlow != this)
                 throw new DomainException(ErrorMessages.GivenStatusIsNotInThisFlow(newDefault.Id, Id));
 
             if (newDefault.IsDefault)

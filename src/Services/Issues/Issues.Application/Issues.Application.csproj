@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Services\DataCleaners\" />
+    <Folder Include="CQRS\Issues\Commands\ChangeStatus\" />
     <Folder Include="IntegrationEvents\Events\" />
   </ItemGroup>
 

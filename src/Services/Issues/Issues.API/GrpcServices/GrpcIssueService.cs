@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Issues.API.Extensions;
+using Issues.Application.CQRS.Issues.Commands.ChangeStatus;
 using Issues.Application.CQRS.Issues.Commands.CreateIssue;
 using Issues.Application.CQRS.Issues.Commands.DeleteIssue;
 using Issues.Application.CQRS.Issues.Commands.RenameIssue;
@@ -74,6 +75,12 @@ namespace Issues.API.GrpcServices
         {
             await _mediator.Send(new UpdateIssueTextContentCommand(request.Id, request.TextContent, context.GetOrganizationId()));
             return new UpdateIssueTextContentResponse();
+        }
+
+        public override async Task<ChangeStatusOfIssueResponse> ChangeStatusOfIssue(ChangeStatusOfIssueRequest request, ServerCallContext context)
+        {
+            await _mediator.Send(new ChangeStatusOfIssueCommand(request.IssueId, request.NewStatusInFlowId, context.GetOrganizationId()));
+            return new ChangeStatusOfIssueResponse();
         }
 
 

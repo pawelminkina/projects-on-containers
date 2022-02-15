@@ -5,6 +5,7 @@ using Issues.API;
 using Issues.Tests.Core.Auth;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,11 @@ namespace Issues.Tests.Core.Base
     {
         public IssuesTestStartup(IConfiguration configuration) : base(configuration)
         {
+        }
+
+        protected override void AddHealthChecks(IServiceCollection services)
+        {
+            
         }
 
         protected override void ConfigureAuth(IApplicationBuilder app)
@@ -31,6 +37,10 @@ namespace Issues.Tests.Core.Base
         {
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, InMemoryEventBus>();
+        }
+
+        protected override void MapHealthChecks(IEndpointRouteBuilder endpoints)
+        {
         }
     }
 }

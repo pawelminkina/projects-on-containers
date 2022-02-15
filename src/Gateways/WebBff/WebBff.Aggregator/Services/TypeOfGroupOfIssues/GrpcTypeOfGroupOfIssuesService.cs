@@ -29,9 +29,9 @@ public class GrpcTypeOfGroupOfIssuesService : ITypeOfGroupOfIssuesService
         return response.Id;
     }
 
-    public async Task RenameTypeOfGroupOfIssues(RenameTypeOfGroupOfIssuesDto dto)
+    public async Task RenameTypeOfGroupOfIssues(string id, string newName)
     {
-        await _grpcClient.RenameTypeOfGroupOfIssuesAsync(new RenameTypeOfGroupOfIssuesRequest() {Id = dto.Id, NewName = dto.NewName});
+        await _grpcClient.RenameTypeOfGroupOfIssuesAsync(new RenameTypeOfGroupOfIssuesRequest() { Id = id, NewName = newName });
     }
 
     public async Task DeleteTypeOfGroupOfIssues(string id)

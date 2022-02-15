@@ -1,3 +1,5 @@
+# Project and github docs including readme is in progress state, deadline is: 20.02.2022
+
 # .NET Microservices Simple Application
 
 Simple .NET 6.0 application, based on simplified microservices architecture and Docker containers.

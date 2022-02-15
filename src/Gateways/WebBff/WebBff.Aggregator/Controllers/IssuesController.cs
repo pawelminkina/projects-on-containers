@@ -38,17 +38,24 @@ public class IssuesController : ControllerBase
         return CreatedAtAction(nameof(GetIssueWithContent), new { id = newIssueId }, new { id = newIssueId });
     }
 
-    [HttpPut("rename")]
-    public async Task<ActionResult> RenameIssue([FromBody] RenameIssueDto dto)
+    [HttpPut("{id}/rename")]
+    public async Task<ActionResult> RenameIssue([FromRoute] string id, [FromBody] RenameIssueDto dto)
     {
-        await _issuesService.RenameIssue(dto);
+        await _issuesService.RenameIssue(id, dto.NewName);
         return NoContent();
     }
 
-    [HttpPut("textContent")]
-    public async Task<ActionResult> UpdateTextContent([FromBody] UpdateTextContentOfIssueDto dto)
+    [HttpPut("{id}/textContent")]
+    public async Task<ActionResult> UpdateTextContent([FromRoute] string id, [FromBody] UpdateTextContentOfIssueDto dto)
     {
-        await _issuesService.UpdateTextContentOfIssue(dto);
+        await _issuesService.UpdateTextContentOfIssue(id, dto.NewTextContent);
+        return NoContent();
+    }
+
+    [HttpPut("{id}/changestatus")]
+    public async Task<ActionResult> ChangeStatus([FromRoute] string id, [FromQuery] string newStatusInFlowId)
+    {
+        await _issuesService.ChangeStatusOfIssue(id, newStatusInFlowId);
         return NoContent();
     }
 

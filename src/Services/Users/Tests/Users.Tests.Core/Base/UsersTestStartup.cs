@@ -7,6 +7,7 @@ using EventBus;
 using EventBus.Abstraction;
 using EventBus.InMemory;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.API;
@@ -36,6 +37,15 @@ namespace Users.Tests.Core.Base
         protected override void ConfigureAuthService(IServiceCollection services)
         {
             services.AddAuthentication();
+        }
+
+        protected override void AddHealthChecks(IServiceCollection services)
+        {
+            
+        }
+
+        protected override void MapHealthChecks(IEndpointRouteBuilder endpoints)
+        {
         }
     }
 }

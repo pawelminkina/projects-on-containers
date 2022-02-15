@@ -68,6 +68,11 @@ namespace Users.API
             AddEventBus(services);
 
             //Health check
+            AddHealthChecks(services);
+        }
+
+        protected virtual void AddHealthChecks(IServiceCollection services)
+        {
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy())
                 .AddSqlServer(Configuration["ConnectionString"], name: "UserService-DB-check", tags: new string[] { "UserServiceDB" })
@@ -113,14 +118,18 @@ namespace Users.API
                 endpoints.MapGrpcService<GrpcOrganizationService>();
                 endpoints.MapGrpcService<GrpcUserService>();
 
-                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+                MapHealthChecks(endpoints);
             });
         }
 
+        protected virtual void MapHealthChecks(IEndpointRouteBuilder endpoints)
+        {
+            endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+        }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {

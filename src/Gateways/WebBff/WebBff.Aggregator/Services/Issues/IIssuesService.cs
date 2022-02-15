@@ -8,7 +8,8 @@ public interface IIssuesService
     Task<IEnumerable<IssueReferenceDto>> GetIssuesForGroup(string groupId);
     Task<IssueWithContentDto> GetIssueWithContent(string id);
     Task<string> CreateIssue(IssueForCreationDto dto);
-    Task RenameIssue(RenameIssueDto dto);
-    Task UpdateTextContentOfIssue(UpdateTextContentOfIssueDto dto);
+    Task RenameIssue(string id, string newName);
+    Task UpdateTextContentOfIssue(string id, string textContent);
     Task DeleteIssue(string id);
+    Task ChangeStatusOfIssue(string issueId, string newStatusInFlowId);
 }

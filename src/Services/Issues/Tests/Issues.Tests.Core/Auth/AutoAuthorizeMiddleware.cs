@@ -4,7 +4,7 @@ using System.Security.Claims;
 namespace Issues.Tests.Core.Auth;
 public class AutoAuthorizeMiddleware
 {
-    public const string ORGANIZATION_ID = "BaseOrganizationId";
+    public const string ORGANIZATION_ID = "BaseOrganization1";
     public const string USER_ID = "BaseUserId";
 
     private readonly RequestDelegate _next;

@@ -44,10 +44,10 @@ public class TypesOfGroupOfIssuesController : ControllerBase
         return CreatedAtAction(nameof(GetTypeGroupOfIssuesWithGroups), new { id = newTypeId }, new { id = newTypeId });
     }
 
-    [HttpPut("rename")]
-    public async Task<ActionResult> RenameTypeOfGroupOfIssues([FromBody] RenameTypeOfGroupOfIssuesDto dto)
+    [HttpPut("{id}/rename")]
+    public async Task<ActionResult> RenameTypeOfGroupOfIssues([FromRoute] string id, [FromBody] RenameTypeOfGroupOfIssuesDto dto)
     {
-        await _typeOfGroupOfIssuesService.RenameTypeOfGroupOfIssues(dto);
+        await _typeOfGroupOfIssuesService.RenameTypeOfGroupOfIssues(id, dto.NewName);
         return NoContent();
     }
 

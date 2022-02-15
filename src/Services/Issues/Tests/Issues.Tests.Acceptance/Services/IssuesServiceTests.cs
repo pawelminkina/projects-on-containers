@@ -204,7 +204,7 @@ namespace Issues.Tests.Acceptance.Services
 
             IssueReference GetExpectedIssue() => new IssueReference()
             {
-                Name = "Issue 7",
+                Name = "Issue 8",
                 CreatingUserId = "BaseUserId",
                 TimeOfCreation = new DateTimeOffset(new DateTime(2021, 12, 22), new TimeSpan(0, 1, 0, 0)).ToTimestamp(),
                 GroupId = "002-004"
@@ -212,7 +212,7 @@ namespace Issues.Tests.Acceptance.Services
 
             IssueContent GetExpectedContent() => new IssueContent()
             {
-                TextContent = "Issue 7 content"
+                TextContent = "Issue 8 content"
             };
 
             #endregion
@@ -356,6 +356,84 @@ namespace Issues.Tests.Acceptance.Services
 
             //AND message
             var expectedErrorMessage = Domain.Issues.Issue.ErrorMessages.IssueIsInDeleteGroup(groupId, issueId);
+            exception.Status.Detail.Should().Be(expectedErrorMessage);
+
+        }
+
+        #endregion
+
+        #region Change status
+
+        [Test]
+        public async Task ShouldChangeStatusOnIssue()
+        {
+            //GIVEN issue on which status will be changed
+            var issueId = "003-001";
+
+            //AND new status in flow id
+            var statusInFlowId = "005-002";
+
+            //AND expected new status name on issue
+            var expectedStatusName = "Done";
+
+            //WHEN status is changed
+            var changeRequest = new ChangeStatusOfIssueRequest() {IssueId = issueId, NewStatusInFlowId = statusInFlowId};
+            var changeResponse = await _grpcClient.ChangeStatusOfIssueAsync(changeRequest);
+
+            //AND issue is retrieved from server
+            var getRequest = new GetIssueWithContentRequest() { Id = issueId };
+            var getResponse = await _grpcClient.GetIssueWithContentAsync(getRequest);
+            var actual = getResponse.Issue;
+
+            //THEN that issue has new status
+            actual.StatusName.Should().Be(expectedStatusName);
+        }
+
+        [Test]
+        public async Task ShouldNotChangeStatusOnIssueStatusIsInAnotherFlow()
+        {
+            //GIVEN issue on which status will be changed
+            var issueId = "003-001";
+
+            //AND new status in flow id
+            var statusInFlowId = "005-003";
+
+            //AND status flow assigned to issue for checking error message
+            var currentStatusFlowId = "004-001";
+
+            //WHEN status is changed
+            var changeRequest = new ChangeStatusOfIssueRequest() { IssueId = issueId, NewStatusInFlowId = statusInFlowId };
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.ChangeStatusOfIssueAsync(changeRequest));
+
+            //THEN check error status status code
+            exception.Status.StatusCode.Should().Be(StatusCode.Internal);
+
+            //AND message
+            var expectedErrorMessage = Domain.Issues.Issue.ErrorMessages.NewStatusInFlowIsNotAssignedToCurrentStatusFlow(statusInFlowId, currentStatusFlowId);
+            exception.Status.Detail.Should().Be(expectedErrorMessage);
+        }
+
+        [Test]
+        public async Task ShouldNotChangeStatusOnIssueStatusIsNotConnectedToCurrent()
+        {
+            //GIVEN issue on which status will be changed
+            var issueId = "003-007";
+
+            //AND new status in flow id
+            var statusInFlowId = "005-011";
+
+            //AND current status in flow id for checking error message
+            var currentStatusFlowId = "005-005";
+
+            //WHEN status is changed
+            var changeRequest = new ChangeStatusOfIssueRequest() { IssueId = issueId, NewStatusInFlowId = statusInFlowId };
+            var exception = Assert.ThrowsAsync<RpcException>(async () => await _grpcClient.ChangeStatusOfIssueAsync(changeRequest));
+
+            //THEN check error status status code
+            exception.Status.StatusCode.Should().Be(StatusCode.Internal);
+
+            //AND message
+            var expectedErrorMessage = Domain.Issues.Issue.ErrorMessages.CurrentStatusDoNotHaveConnectionToNewStatus(currentStatusFlowId, statusInFlowId);
             exception.Status.Detail.Should().Be(expectedErrorMessage);
 
         }

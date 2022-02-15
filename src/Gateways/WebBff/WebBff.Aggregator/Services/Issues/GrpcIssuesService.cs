@@ -35,19 +35,24 @@ public class GrpcIssuesService : IIssuesService
         return response.Id;
     }
 
-    public async Task RenameIssue(RenameIssueDto dto)
+    public async Task RenameIssue(string id, string newName)
     {
-        await _grpcClient.RenameIssueAsync(new RenameIssueRequest() {Id = dto.Id, NewName = dto.NewName});
+        await _grpcClient.RenameIssueAsync(new RenameIssueRequest() { Id = id, NewName = newName });
     }
 
-    public async Task UpdateTextContentOfIssue(UpdateTextContentOfIssueDto dto)
+    public async Task UpdateTextContentOfIssue(string id, string textContent)
     {
-        await _grpcClient.UpdateIssueTextContentAsync(new UpdateIssueTextContentRequest() {Id = dto.Id, TextContent = dto.NewTextContent});
+        await _grpcClient.UpdateIssueTextContentAsync(new UpdateIssueTextContentRequest() { Id = id, TextContent = textContent });
     }
 
     public async Task DeleteIssue(string id)
     {
         await _grpcClient.DeleteIssueAsync(new DeleteIssueRequest() {Id = id});
+    }
+
+    public async Task ChangeStatusOfIssue(string issueId, string newStatusInFlowId)
+    {
+        await _grpcClient.ChangeStatusOfIssueAsync(new ChangeStatusOfIssueRequest() {IssueId = issueId, NewStatusInFlowId = newStatusInFlowId});
     }
 
     private IssueReferenceDto MapReferenceToDto(IssueReference reference)

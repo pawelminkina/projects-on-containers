@@ -10,6 +10,16 @@ service IssueService{
 	rpc RenameIssue(RenameIssueRequest) returns (RenameIssueResponse);
 	rpc UpdateIssueTextContent(UpdateIssueTextContentRequest) returns (UpdateIssueTextContentResponse);
 	rpc DeleteIssue(DeleteIssueRequest) returns (DeleteIssueResponse);
+	rpc ChangeStatusOfIssue(ChangeStatusOfIssueRequest) returns (ChangeStatusOfIssueResponse);
+}
+
+message ChangeStatusOfIssueResponse{
+	
+}
+
+message ChangeStatusOfIssueRequest{
+	string issueId = 1;
+	string newStatusInFlowId = 2;
 }
 
 message DeleteIssueRequest{
