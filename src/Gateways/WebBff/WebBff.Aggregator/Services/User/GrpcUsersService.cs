@@ -30,9 +30,9 @@ public class GrpcUsersService : IUsersService
         return MapToDto(response.User);
     }
 
-    public async Task<string> CreateUser(UserForCreationDto dto)
+    public async Task<string> CreateUser(UserForCreationDto dto, string organizationId)
     {
-        var response = await _grpcClient.CreateUserAsync(new CreateUserRequest() {Email = dto.Email, Fullname = dto.Fullname, OrganizationId = dto.OrganizationId, Password = dto.Password});
+        var response = await _grpcClient.CreateUserAsync(new CreateUserRequest() {Email = dto.Email, Fullname = dto.Fullname, OrganizationId = organizationId, Password = dto.Password});
         return response.UserId;
     }
 

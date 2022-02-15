@@ -52,7 +52,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserForCreationDto dto)
     {
-        var newUserId = await _usersService.CreateUser(dto);
+        var newUserId = await _usersService.CreateUser(dto, _httpContextAccessor.HttpContext.User.GetOrganizationId());
         return CreatedAtAction(nameof(GetUserById), new { id = newUserId }, new { id = newUserId });
     }
 
