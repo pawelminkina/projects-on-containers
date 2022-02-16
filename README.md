@@ -10,11 +10,9 @@ Simple .NET 6.0 application, based on simplified microservices architecture and 
 
 ## Getting started
 
-Make sure you have [installed docker](https://docs.docker.com/docker-for-windows/install/)
-
 ### Running using Visual Studio
 
-Please follow this instructions: there is link to tutorial
+Please follow this instructions: [Running with Visual Studio 2022 on Windows](https://github.com/pavixonpl/projects-on-containers/wiki/Running-with-Visual-Studio-on-Windows)
 
 ## Architecture overview
 
@@ -22,5 +20,5 @@ There will be image with how architecture is created
 
 ## Read futher
 
-- There is link to page explore the application with swagger
-- There is link to page explore the code
+- [Explore the Application](https://github.com/pavixonpl/projects-on-containers/wiki/Explore-the-application)
+- [Explore the code](https://github.com/pavixonpl/projects-on-containers/wiki/Explore-the-code)
