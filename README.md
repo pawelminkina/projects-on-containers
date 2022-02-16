@@ -16,7 +16,7 @@ Please follow this instructions: [Running with Visual Studio 2022 on Windows](ht
 
 ## Architecture overview
 
-There will be image with how architecture is created
+![](img/Architecture_graph.png)
 
 ## Read futher
 
