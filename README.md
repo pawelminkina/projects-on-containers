@@ -1,7 +1,4 @@
-# Project and github docs including readme is in progress state, deadline is: 20.02.2022
-
 # .NET Microservices Simple Application
-
 
 Application is created around **Issues with Statuses** (like for ex. ToDo, Done). There is a possibility of **creating groups for issues (projects)** and types of groups (for ex. business, development). Each of groups has **Status Flow**, which defines a way, how **status in issue can be changed** (for ex. you can change status from ToDo to Done, but not from Done to ToDo). There is a possibility of **modifying default status flow**, by which new status flows for new groups of issues are created. More about possiblities in: [How to explore application](https://github.com/pavixonpl/projects-on-containers/wiki/Explore-the-application). Application is created for cloud, that's why there is a possibility of existing multiple organizations with own users for each of them, where nothing connects one organization to another.
 ## Swagger of Web BFF
