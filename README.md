@@ -10,7 +10,7 @@ Please follow this instructions: [Running with Visual Studio 2022 on Windows](ht
 
 ## Architecture overview
 
-![](img/Architecture_graph.png)
+![](img/ArchitectureGraph2.png)
 
 ## Read futher
 
